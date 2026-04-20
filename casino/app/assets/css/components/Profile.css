@@ -1,0 +1,231 @@
+.user-top-activator {
+  color: #fff !important;
+  font-size: 20px;
+  box-shadow: none;
+}
+
+.user-top-activator svg {
+  font-size: 20px;
+  fill: currentColor;
+}
+
+.user-top-activator .v-btn__overlay,
+.user-top-activator .v-btn__underlay,
+.user-top-activator .v-ripple__container {
+  display: none;
+}
+
+.v-menu > .v-overlay__content > .v-card,
+.v-menu > .v-overlay__content > .v-sheet,
+.v-menu > .v-overlay__content > .v-list {
+  background: #21242e !important;
+  padding: 8px 16px 16px;
+  border-radius: 4px !important;
+}
+
+.v-list-item--density-default.v-list-item--one-line {
+  min-height: auto !important;
+  padding: 7px 0 !important;
+  color: #fff;
+  cursor: pointer;
+}
+
+.user-profile-list .v-list-item__overlay,
+.user-profile-list .v-list-item__underlay {
+  display: none;
+}
+
+.user-profile-list .svg-icon {
+  font-size: 24px;
+  margin-right: 8px;
+  fill: currentColor;
+}
+
+.user-profile-list .v-list-item:hover .v-list-item-title::after {
+  border: 1px solid var(--textlink-light-text-color);
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  width: 100%;
+  left: 0;
+}
+
+.user-profile-list .v-list-item-title {
+  font-size: 14px;
+  font-weight: 400;
+  position: relative;
+  overflow: visible;
+}
+
+.user-profile-list .v-list-item__content {
+  overflow: visible !important;
+}
+
+.v-toolbar-title {
+  flex: none !important;
+}
+
+hr.desp {
+  background: #434343 !important;
+  border: none;
+  height: 1px;
+  margin: 24px 0;
+  opacity: 0.5;
+  width: 100%;
+}
+
+.settings-title {
+  line-height: 1.5;
+  font-size: 16px;
+  position: relative;
+  color: #fff;
+  font-weight: 700;
+}
+
+.settings-title::after {
+  border-bottom: 2px solid var(--textlink-light-text-color);
+  bottom: -0;
+  content: '';
+  left: 0;
+  position: absolute;
+  width: 56px;
+}
+
+.v-input__control .v-label {
+  color: #fff;
+}
+
+.v-selection-control__input {
+  width: 20px !important;
+  height: 20px;
+}
+
+.v-selection-control--density-default.custom-select {
+  --v-selection-control-size: 20px !important;
+}
+
+.v-selection-control__wrapper {
+  justify-content: flex-start !important;
+}
+
+.password-wrapper .v-expansion-panel-text__wrapper {
+  padding-right: 0 !important;
+}
+
+.no-results-wrapper {
+  display: flex;
+  width: 100%;
+  height: 240px;
+  background-color: #181b22;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.transactions-table {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0px;
+  color: #fff;
+}
+
+.transactions-table thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0px;
+  font-size: 16px;
+}
+
+.transactions-table thead tr {
+  color: inherit;
+  display: table-row;
+  vertical-align: middle;
+  outline: 0px;
+}
+
+.transactions-table thead th {
+  background-color: #212338;
+  max-width: 200px !important;
+  padding: 12px 4px !important;
+  word-break: break-all !important;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.transactions-table thead tr th:first-of-type {
+  border-top-left-radius: 8px;
+}
+
+.transactions-table thead tr th:last-of-type {
+  border-top-right-radius: 8px;
+}
+
+.transactions-table tbody {
+  display: block;
+  height: 350px;
+  overflow-y: auto;
+}
+
+.transactions-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.transactions-table tbody td {
+  color: inherit;
+  display: table-row;
+  vertical-align: middle;
+  outline: 0px;
+  position: relative;
+  max-width: 200px !important;
+  overflow-wrap: break-word !important;
+  padding: 6px 2px !important;
+  font-size: 14px !important;
+  line-height: 1.43;
+  display: table-cell;
+  text-align: center;
+}
+
+.transaction-text-overlay {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 10ch;
+}
+
+.transitions_wrapper {
+  position: relative;
+}
+
+.activity-pagination {
+  background-color: #212338;
+  color: #fff;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.activity-pagination button {
+  border: none;
+  box-shadow: none;
+}
+
+.activity-pagination .v-pagination__item--is-active button {
+  background-color: var(--arrowbut-text-color);
+}
+
+.transactions_loader {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  color: var(--arrowbut-text-color) !important;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+}

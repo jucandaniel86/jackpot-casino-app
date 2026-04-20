@@ -1,0 +1,127 @@
+.v-footer {
+  background: var(--footer-background) !important;
+  flex: 1 1 auto !important;
+  padding: var(--mainLayoutGutter) !important;
+  box-shadow: none !important;
+}
+
+.v-footer.desktop {
+  width: calc(100% - var(--mainLayoutGutter) * 2px) !important;
+  margin: 0 calc(var(--mainLayoutGutter) * -1);
+}
+
+.v-footer .footer-layout {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  place-items: normal;
+  gap: 17px;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+
+.v-footer .footer-layout-lg,
+.v-footer .footer-layout-md {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  place-items: normal;
+  gap: 15px;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+
+.v-footer .footer-layout-sm,
+.v-footer .footer-layout-xs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: normal;
+  gap: 17px;
+  justify-content: space-around;
+}
+
+.v-footer .links {
+  display: flex;
+  flex-direction: column;
+  justify-content: normal;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.f-link {
+  color: #fff;
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: normal;
+  position: relative;
+  text-decoration: none !important;
+  text-shadow: none;
+  vertical-align: sub;
+}
+
+.f-link:hover::after {
+  border-bottom: 2px solid var(--textlink-light-text-color);
+  bottom: -4px;
+  content: '';
+  position: absolute;
+  width: 100%;
+}
+
+.f-title {
+  color: rgb(255, 255, 255) !important;
+  font-size: 16px !important;
+  font-weight: 700;
+}
+
+.v-footer .disclaimer {
+  color: #808080;
+  font-size: 9pt;
+}
+
+.v-footer .footer-contact {
+  min-width: 0%;
+  border-radius: 24px;
+  width: auto;
+  box-sizing: border-box;
+  background: rgb(21, 24, 30);
+}
+
+.v-footer .copyright {
+  color: #fff;
+  font-size: 9pt;
+}
+
+.v-footer .social-icons {
+  width: 30px;
+  height: 30px;
+  vertical-align: top;
+  color: #fff;
+}
+
+.footer-contact h3 {
+  font-size: 14pt;
+  color: #fff;
+}
+
+.v-footer .contact-details {
+  font-size: 10pt;
+  color: #a7a7a7;
+}
+
+.v-footer .v-select {
+  background: var(--background-color);
+  border-radius: 6px;
+  color: #acb0c3;
+  border: 0;
+}
+
+.v-footer .v-select .v-field__outline {
+  display: none;
+}
+
+.v-footer .v-container {
+  /* padding: 16px var(--mainLayoutGutter); */
+}

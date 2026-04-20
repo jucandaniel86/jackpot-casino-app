@@ -1,0 +1,98 @@
+.gameplay-wrapper {
+  height: unset;
+  max-height: calc(100vh - 64px);
+  display: flex;
+  flex: 1;
+  gap: 24px;
+}
+
+.gameplay-content {
+  aspect-ratio: 16 / 9;
+  min-height: 400px;
+  display: flex;
+  flex: 1;
+}
+
+.gameplay-overlay {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.gameplay-currencymessage {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  justify-content: center;
+  opacity: 0.9;
+  padding: 40px;
+  position: absolute;
+  width: 100%;
+  color: #fff;
+  background-color: #0d0e12;
+}
+
+.game-wrapper {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+.game-wrapper.blurred {
+  filter: blur(4px);
+}
+
+.game-wrapper .game-iframe-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  text-align: center;
+}
+
+.game-iframe {
+  border: none;
+  height: 100%;
+  width: 100%;
+}
+
+.game-tool-btn {
+  border: 1px solid #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  min-height: 24px;
+  width: 24px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.game-tool-btn:disabled {
+  opacity: 0.6;
+  cursor: none;
+  pointer-events: none;
+}
+
+.game-tool-btn svg {
+  width: 24px;
+  height: 24px;
+  color: #fff;
+  fill: #fff;
+}
+
+.game-iframe-loader {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}

@@ -1,0 +1,15 @@
+.file-manager-wrapper {
+  width: 285px;
+  // min-height: calc(100vh - 150px);
+  min-height: 100vh;
+
+  [data-simplebar],
+  .simplebar-content {
+    height: 100%;
+  }
+}
+
+.file-manager-right-wrapper {
+  width: 315px;
+  min-height: calc(100vh - 150px);
+}

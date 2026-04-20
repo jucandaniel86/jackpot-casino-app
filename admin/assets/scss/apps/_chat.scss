@@ -1,0 +1,63 @@
+.chat-leftsidebar {
+  height: calc(100vh - 155px);
+}
+
+.chat-room-list {
+  max-height: calc(100vh - 305px);
+
+  @media (max-width: 991.98px) {
+    height: calc(100vh - 275px);
+  }
+}
+
+.contact-list-title {
+
+  &:after {
+    content: "";
+    height: 1px;
+    position: absolute;
+    top: 10%;
+    transform: translateY(-50%);
+    left: 40px;
+    right: 10px;
+    background-color: var(--#{$prefix}border-color);
+  }
+}
+
+.chat-conversation {
+  height: calc(100vh - 320px);
+  width: 100%;
+
+  .simplebar-content-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .simplebar-content {
+      margin-top: auto;
+    }
+  }
+}
+
+.chat-wrapper-menu {
+  height: calc(100vh - 155px);
+}
+
+.chat-call-list,
+.chat-bookmark-list,
+.chat-attachment-list {
+  height: calc(100vh - 210px);
+
+  @media (max-width: 991.98px) {
+    height: calc(100vh - 125px);
+  }
+}
+
+.chat-message-input {
+  input.v-field__input {
+    padding: 0 10px;
+  }
+}
+
+.attach-file-name {
+  max-width: 100px;
+}

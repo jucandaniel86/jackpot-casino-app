@@ -1,0 +1,64 @@
+.promotions__wrapper {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.v-card.promotion {
+  gap: 16px;
+  flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px -2px 4px 0px;
+  border-radius: 0px 0px 8px 8px;
+  padding: 0px 24px 24px;
+  background: rgb(24, 27, 34);
+}
+
+.promotion__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.promotion__item > img {
+  border-radius: 8px 8px 0px 0px;
+  height: 100%;
+  max-height: 158px;
+  object-fit: cover;
+}
+
+.promotion__item .content {
+  gap: 16px;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px -2px 4px 0px;
+  border-radius: 0px 0px 8px 8px;
+  padding: 0px 24px 24px;
+  background: rgb(24, 27, 34);
+  overflow-wrap: break-word;
+  color: #fff;
+}
+
+.promotion__item .title {
+  gap: 10px;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.promotion__item .title h2 {
+  overflow-wrap: break-word;
+  display: block;
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+  color: #fff;
+}
+
+.v-expansion-panel-text p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}

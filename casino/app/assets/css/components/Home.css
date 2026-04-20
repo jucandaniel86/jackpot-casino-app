@@ -1,0 +1,30 @@
+.offer-card {
+  width: 100%;
+  border-radius: 20px !important;
+  overflow: hidden;
+  text-align: center;
+  border: 1px solid #494f65 !important;
+  background-color: #12151b !important;
+  box-shadow: none;
+}
+
+.offer-card .v-card-subtitle {
+  background-color: #12151b;
+  padding: 0px 25px;
+  opacity: 1;
+  white-space: inherit !important;
+  letter-spacing: normal;
+}
+
+.offer-card .v-card-subtitle > p {
+  font-weight: 400;
+  font-size: 19.04px;
+  text-align: center !important;
+  vertical-align: middle;
+  color: #dddddd;
+  padding: 0px 15px 0px 15px;
+  height: 93px;
+  overflow-wrap: break-word;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+}

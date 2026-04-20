@@ -1,0 +1,51 @@
+:root {
+  --footer-menu-height: 56px;
+}
+.FooterMenu {
+  position: fixed;
+  bottom: 0px;
+  height: var(--footer-menu-height);
+  width: 100%;
+  box-shadow: -3px -2px 5px #0a1c2766;
+  box-sizing: border-box;
+  background: #212338;
+  z-index: 1201;
+}
+
+.FooterMenu .content {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 0px 0px 10px !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+  background: rgb(21, 24, 30) !important;
+}
+
+.FooterMenuItem {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+.FooterMenuItem svg {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  font-size: 24px;
+  fill: rgb(224, 230, 255);
+}
+
+.FooterMenuItem p {
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  margin: 0;
+  color: #fff;
+}

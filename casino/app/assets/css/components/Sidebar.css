@@ -1,0 +1,105 @@
+.brand-icon {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.v-navigation-drawer {
+  background-color: #181b22 !important;
+  box-shadow: none;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+.v-navigation-drawer.extended {
+  padding: 0 16px 16px 16px !important;
+}
+
+.v-navigation-drawer .v-divider {
+  border-color: #3f4260;
+  opacity: 1;
+  margin: 5px 0;
+}
+
+.v-navigation-drawer .v-list-item--variant-plain:hover,
+.v-list-item--variant-plain:hover,
+.v-navigation-drawer .v-list-item--variant-plain.active {
+  background-color: var(--textlink-light-text-color);
+  border-radius: 6px;
+}
+.v-navigation-drawer .v-list-item--variant-plain {
+  opacity: 1;
+}
+
+.v-list-item--density-compact.v-list-item--one-line {
+  padding: 4px 8px;
+  min-height: auto !important;
+  margin: 8px 0;
+}
+
+.v-navigation-drawer .v-list-item--variant-plain:hover .brand-icon,
+.v-navigation-drawer .v-list-item--variant-plain.active .brand-icon {
+  fill: #fff;
+}
+
+.v-navigation-drawer .v-list-item-title {
+  color: #fff;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.v-btn--variant-elevated.rail-arrow {
+  padding: 5px;
+  color: rgb(255, 255, 255);
+  font-size: 1.125rem;
+  background-color: #0d0e12;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  width: 34px !important;
+  height: 34px !important;
+  margin-right: 8px;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+
+.v-btn--variant-elevated.rail-arrow.right {
+  transform: rotate(180deg);
+  transition: transform 0.1s linear !important;
+}
+
+.sidebar-arrow-container.expanded {
+  z-index: 1201;
+  position: absolute;
+  height: 34px;
+  top: var(--interactive-layout-header-height);
+  left: calc(var(--interactive-layout-left-sidebar-expanded-width) - 17px);
+  right: auto;
+}
+
+.sidebar-arrow-container.expandedMobile {
+  right: 0 !important;
+}
+
+.sidebar-arrow-container {
+  position: relative;
+  height: var(--interactive-layout-header-height);
+}
+
+.svg-arrow {
+  user-select: none;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  fill: currentcolor;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+}
+
+.v-list-item--active {
+  background-color: var(--textlink-light-text-color);
+  border-radius: 6px;
+}

@@ -1,0 +1,45 @@
+:root {
+  --input-background-color: #21242e;
+  --input-hover-background-color: #2c303f;
+  --input-border-radius: 6px;
+  --text-color: #acb0c3;
+  --input-font-size: 16px;
+  --input-font-weight: 400;
+  --input-height: 23px;
+  --input-padding: 8px;
+  --gametile-border-radius: 20px;
+  --search-results-bgcolor: #212338;
+  --base-color: #f2cf8e;
+
+  --arrowbut-text-color: #f2cf8e;
+  --arrowbut-bg-color: #000;
+
+  --gamesCategoryColumnCount: 8;
+
+  --aspectRatio: 127%;
+
+  --itemsPerRowLG: 5;
+
+  --accordion-header-background-color: #212338;
+  --accordion-header-text-color: #fff;
+  --accordion-border-radius: 8px;
+  --accordion-padding-left: 8px;
+
+  --textlink-light-text-color: #f2cf8e;
+
+  /** tabs */
+  --tab-border-width: 2px;
+  --active-tab-indicator: #f2cf8e;
+  --tab-border-radius: 1px;
+  --tab-font-size: 14px;
+  --tab-padding: 12px;
+  --tab-text-color: #acb0c3;
+  --tab-font-weight: 700;
+
+  /** footer */
+  --footer-background: #181b22;
+  --background-color: #35394a;
+
+  --balance-header-component-height: 147;
+  --balance-footer-atom-height: 60;
+}

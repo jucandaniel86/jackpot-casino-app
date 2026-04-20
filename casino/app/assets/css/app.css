@@ -1,0 +1,26 @@
+@import './shared/Fonts.css';
+@import './shared/Main.css';
+@import './shared/Colors.css';
+
+@import './components/Sidebar.css';
+@import './components/Header.css';
+@import './components/Search.css';
+@import './components/GameItem.css';
+@import './components/Tabs.css';
+@import './components/General.css';
+@import './components/Accordion.css';
+@import './components/Content.css';
+@import './components/Footer.css';
+@import './components/Overlays.css';
+@import './components/Buttons.css';
+@import './components/Home.css';
+@import './components/BetFeed.css';
+@import './components/Logos.css';
+@import './components/ProviderLogos.css';
+@import './components/Profile.css';
+@import './components/Wallet.css';
+@import './components/GamePage.css';
+@import './components/Banner.css';
+@import './components/FooterMenu.css';
+@import './components/Slider.css';
+@import './components/Promotions.css';

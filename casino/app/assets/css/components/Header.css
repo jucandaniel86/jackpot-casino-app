@@ -1,0 +1,82 @@
+.v-app-bar.v-toolbar.layout-header {
+  background: var(--header-background-color) !important;
+  height: var(--interactive-layout-header-height);
+}
+
+.v-btn.text-secondary {
+  background: #21242e !important;
+  border: solid 1px #494f65 !important;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.5) !important;
+  color: #fff !important;
+  font-weight: 400;
+  padding: 10px 13px;
+}
+
+.v-btn.text-secondary:hover {
+  background-color: #14151a !important;
+  border: solid 1px #494f65 !important;
+}
+
+.layout-logo {
+  height: 40px;
+  width: auto;
+}
+
+.mobile-wallet-button {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.mobile-wallet-button svg {
+  font-size: 24px;
+  color: #fff;
+  fill: #fff;
+}
+
+.logo-wrapper {
+  position: relative;
+}
+.logo-wrapper a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.logo-wrapper sup {
+  position: absolute;
+  top: 0.5rem;
+  right: -30%;
+  font-size: 0.7rem;
+}
+
+.logo {
+  max-width: 100%;
+}
+
+.header-content {
+  position: relative;
+}
+
+.buy-crypto-container {
+  position: absolute;
+  left: 50%;
+  display: flex;
+  gap: 12px;
+  left: 200px;
+}
+
+.buy-crypto-container a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: underline;
+}
+
+.buy-crypto-container a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,77 @@
+@use "sass:color";
+
+//theme-light
+:root {
+  --#{$prefix}card-logo-dark: block;
+  --#{$prefix}card-logo-light: none;
+}
+
+[data-bs-theme="light"] {
+  --#{$prefix}light: rgb(238, 240, 247);
+  --#{$prefix}light-rgb: rgb(238, 240, 247);
+  --#{$prefix}secondary-bg: #fff;
+  --#{$prefix}primary-bg-subtle: #e1e7fc;
+
+}
+
+//theme dark
+[data-bs-theme="dark"] {
+  &:is(
+      [data-theme="default"],
+      [data-theme="minimal"],
+      [data-theme="material"],
+      [data-theme="modern"],
+      [data-theme="creative"],
+      [data-theme="interaction"]
+    ) {
+    --#{$prefix}light: rgb(34, 36, 39);
+    --#{$prefix}light-rgb: rgb(34, 36, 39);
+    --#{$prefix}light-text-emphasis: #4b4d4f; 
+    --#{$prefix}light-bg-subtle: #27292c; 
+    --#{$prefix}light-border-subtle: #27292c;
+    --#{$prefix}secondary-bg: #15171a;
+
+    --#{$prefix}dark: #{$dark-color};
+    --#{$prefix}dark-rgb: #{$dark-color};
+    --#{$prefix}dark-text-emphasis: #{$dark-text-emphasis-dark};
+    --#{$prefix}dark-bg-subtle: #{$dark-bg-subtle-dark};
+    --#{$prefix}dark-border-subtle: #{$dark-border-subtle-dark};
+    //custom color scheme
+    --#{$prefix}body-bg: #{$body-bg-dark};
+    --#{$prefix}primary-bg-subtle: rgba(55, 98, 234, 0.15);
+  }
+
+  // card
+  --#{$prefix}card-logo-dark: none;
+  --#{$prefix}card-logo-light: block;
+
+  //footer
+  --#{$prefix}footer-bg: #191c22;
+  --#{$prefix}footer-color: #{$gray-600};
+
+  --#{$prefix}email-bg: #{rgba($body-bg-dark, 3.5%)};
+  --#{$prefix}email-sidebar-bg: #{rgba($body-bg-dark, 5.5%)};
+
+  // boxed
+  --#{$prefix}boxed-body-bg: #{color.adjust($body-bg-dark, $lightness: -1.5%)};
+
+  //custom components styles
+  .btn-light,
+  .btn-outline-light {
+    --#{$prefix}btn-color: #{$white};
+    --#{$prefix}btn-hover-color: #{$white};
+  }
+
+  .table-light {
+    --tb-table-color: $light-dark; // #{lighten($light-dark, 100%)};
+    --tb-table-bg: var(--#{$prefix}light);
+    --tb-table-border-color: var(--#{$prefix}border-color);
+    --tb-table-striped-bg: var(--#{$prefix}light);
+    --tb-table-striped-color: $light-dark; // #{lighten($light-dark, 100%)};
+    --tb-table-active-bg: var(--#{$prefix}light);
+    --tb-table-active-color: $light-dark; // #{lighten($light-dark, 100%)};
+    --tb-table-hover-bg: var(--#{$prefix}light);
+    --tb-table-hover-color: $light-dark; // #{lighten($light-dark, 100%)};
+  }
+  //   }
+}

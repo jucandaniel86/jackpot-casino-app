@@ -1,0 +1,113 @@
+.real-estate-grid-card-rating {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+}
+
+.real-estate-grid-card-option {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+}
+
+.real-estate-map-card-chip {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  z-index: 2;
+}
+
+.gallery-action-menu {
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  top: 10px;
+}
+
+.gallery-chip {
+  position: absolute;
+  left: -10px;
+  top: 10px;
+}
+
+.agent-grid-card-action {
+  position: absolute;
+  right: 15px;
+}
+
+.agent-grid-card-tag {
+  position: absolute;
+  background-color: #{$secondary};
+  color: #fff;
+  font-weight: bold;
+
+  transform: rotate(-45deg);
+  width: 93px;
+  height: 52px;
+  left: -36px;
+  top: -16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.real-estate-msg {
+  max-width: 200px;
+}
+
+.real-estate-overview-card-chip {
+  position: absolute;
+  top: 35px;
+}
+
+.real-estate-orders-calender {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  width: 250px;
+  cursor: pointer;
+  .dp__input {
+    border: none !important;
+    font-size: 13px;
+    background-color: inherit;
+    color: inherit;
+  }
+}
+
+[dir="rtl"] {
+  .real-estate-grid-card-option {
+    left: 20px;
+    right: auto;
+  }
+
+  .real-estate-map-card-chip {
+    right: 15px;
+    left: auto;
+  }
+
+  .gallery-chip {
+    right: -10px;
+    left: auto;
+  }
+
+  .gallery-action-menu {
+    left: 10px;
+    right: auto;
+  }
+
+  .agent-grid-card-action {
+    left: 15px;
+    right: auto;
+  }
+
+  .agent-grid-card-tag {
+    transform: rotate(45deg);
+    width: 95px;
+    height: 50px;
+    right: -38px;
+    top: -19px;
+  }
+}

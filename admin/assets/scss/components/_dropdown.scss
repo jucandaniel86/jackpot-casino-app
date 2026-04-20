@@ -1,0 +1,18 @@
+.dropdown-menu {
+  background-color: var(--#{$prefix}dropdown-bg) !important;
+}
+
+// card color variant
+@each $state in map-keys($theme-colors) {
+  .dropdown-item {
+    font-size: $font-size;
+    .v-list-item-title {
+      font-size: $font-size;
+    }
+    &:is(:focus, :hover, .active) {
+      background-color: var(--#{$prefix}#{$state}-bg-subtle);
+      color: var(--#{$prefix}#{$state});
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+.v-carousel__controls__item .v-icon {
+}
+
+.v-carousel__controls__item {
+  box-shadow: none !important;
+}
+
+.v-carousel__controls__item .v-icon {
+  opacity: 1 !important;
+}
+
+.v-carousel__controls__item.v-btn {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.v-btn--variant-text .v-btn__overlay,
+.v-btn--variant-text .v-btn__underlay {
+  display: none;
+}
+
+.v-btn--active .v-icon {
+  box-shadow: none;
+  color: var(--textlink-light-text-color) !important;
+}

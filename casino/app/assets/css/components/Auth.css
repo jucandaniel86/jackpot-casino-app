@@ -1,0 +1,18 @@
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper button {
+  cursor: pointer;
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.password-wrapper button svg {
+  width: 24px;
+  height: 24px;
+}

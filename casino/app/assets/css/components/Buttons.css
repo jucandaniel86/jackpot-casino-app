@@ -1,0 +1,127 @@
+.v-btn {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.5);
+  text-transform: none !important;
+  height: 42px !important;
+  min-height: 1px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  min-width: 1px !important;
+}
+
+.v-btn.bg-purple {
+  background: var(--textlink-light-text-color) !important;
+}
+.v-btn.bg-purple:hover {
+  background: var(--textlink-light-text-color) !important;
+  color: #000 !important;
+}
+
+.v-btn.bg-primary {
+  background: #21242e !important;
+  border: 1px solid #494f65 !important;
+  text-shadow: none !important;
+  color: #fff !important;
+}
+.v-btn.v-btn.bg-primary:hover,
+.v-btn.v-btn.bg-primary:focus {
+  background: #14151a !important;
+  border: 1px solid 1px #494f65 !important;
+}
+
+/** FORM INPUTS **/
+.v-field__input {
+  background: #21242e;
+  color: rgb(172, 176, 195) !important;
+  border-radius: 6px;
+}
+
+.v-input:hover .v-field__input {
+  background: #2c303f;
+}
+.v-input .v-field__outline {
+  display: none;
+}
+
+.v-field--error .v-field__input {
+  border: 1px solid #ff2e2e;
+}
+
+.v-input--error .v-messages__message {
+  color: #ff2e2e;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.v-text-field .v-input__details {
+  padding-left: 7px !important;
+}
+
+a.purple {
+  color: var(--textlink-light-text-color);
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.mdi-checkbox-blank-outline {
+  color: #fff;
+  opacity: 1 !important;
+}
+
+.mdi-checkbox-marked {
+  color: var(--textlink-light-text-color);
+  opacity: 1 !important;
+}
+a.purple:hover {
+  color: #fff;
+}
+
+.v-label--clickable p {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.v-picker.v-date-picker,
+.v-date-picker--month {
+  background: #212338 !important;
+  border-radius: 4px !important;
+}
+
+.v-field__append-inner {
+  color: #fff !important;
+  opacity: 1;
+  background: #21242e;
+  margin-left: -2px;
+}
+
+.v-field__append-inner i,
+.v-field__append-inner svg {
+  opacity: 1 !important;
+}
+
+.v-field.v-field--appended {
+  padding-right: 0 !important;
+}
+
+.v-date-picker-controls > .v-btn,
+.v-date-picker-month__day .v-btn.v-date-picker-month__day-btn,
+.v-btn--icon.v-btn--density-comfortable,
+.v-date-picker-month__day {
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.v-date-picker-controls {
+  border-bottom: 1px solid #fff;
+}
+
+.v-btn.back-btn {
+  background: none;
+  padding: 0;
+  color: #fff;
+}
+
+.v-btn.back-btn .v-btn__overlay,
+.v-btn.back-btn .v-btn__underlay {
+  display: none;
+}

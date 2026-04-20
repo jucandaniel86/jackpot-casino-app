@@ -1,0 +1,25 @@
+.avatar-xxs {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.avatar-xs {
+  height: 2rem;
+  width: 2rem;
+}
+
+.avatar-sm {
+  height: 3rem;
+  width: 3rem;
+}
+
+.avatar-title {
+  align-items: center;
+  background-color: $primary-text-emphasis;
+  color: $white;
+  display: flex;
+  font-weight: $font-weight-medium;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}

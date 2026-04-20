@@ -1,0 +1,101 @@
+:root {
+  --interactive-layout-header-height: 64px;
+  --interactive-layout-header-box-shadow:
+    #0003 0 4px 6px -1px, #0000001f 0 2px 4px -1px: #0003 0 4px 6px -1px, #0000001f 0 2px 4px -1px;
+  --interactive-layout-left-sidebar-expanded-width: 240px;
+  --header-background-color: linear-gradient(180deg, #0d0e12 0%, #15181e 100%);
+  --palette-background-color: #0d0e12;
+  --interactive-layout-bottombar-box-shadow: -3px -2px 5px #0a1c2766;
+}
+
+html ::-webkit-scrollbar-thumb {
+  background: #ffffff0d;
+  border-radius: 6px;
+  border: 0px #180434 solid;
+  background-clip: padding-box;
+}
+
+body {
+  background-color: var(--palette-background-color);
+  font-family: Inter, Poppins, Arial, Helvetica, 'sans-serif';
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.v-navigation-drawer__scrim {
+  position: fixed !important;
+}
+
+html ::-webkit-scrollbar {
+  width: 2px;
+  height: 12px;
+}
+
+html ::-webkit-scrollbar-thumb {
+  background: #ffffff0d;
+  border-radius: 6px;
+  border: 0px #180434 solid;
+  background-clip: padding-box;
+}
+
+html ::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+
+html {
+  --mainLayoutGutter: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  html {
+    --mainLayoutGutter: 40px;
+  }
+}
+
+svg {
+  outline: 0;
+}
+
+.root-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  gap: 24px;
+}
+
+.svg-icon {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+}
+
+.v-container {
+  max-width: 1200px !important;
+  /* padding: 16px var(--mainLayoutGutter) !important; */
+}
+
+#__nuxt {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.v-date-picker-years__content .v-btn,
+.v-date-picker-months__content .v-btn {
+  background-color: rgba(255, 255, 255) !important;
+  margin-top: 5px;
+  padding: 0 !important;
+  border-radius: 2px !important;
+}
+
+.v-date-picker-months__content .v-btn.v-btn--active {
+  background-color: var(--active-tab-indicator) !important;
+}

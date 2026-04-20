@@ -1,0 +1,29 @@
+.v-tab--selected .v-tab__slider {
+  border-bottom: var(--tab-border-width) solid var(--active-tab-indicator) !important;
+}
+
+.v-tab {
+  min-height: 44px;
+  border-radius: var(--tab-border-radius) !important;
+  color: var(--tab-text-color) !important;
+  font-size: var(--tab-font-size) !important;
+  font-weight: var(--tab-font-weight) !important;
+  line-height: var(--tab-line-height) !important;
+  min-height: var(--min-height) !important;
+  opacity: 1 !important;
+  padding: var(--tab-padding) !important;
+  text-shadow: none;
+  text-transform: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.v-tab.v-tab--selected,
+.v-tab:hover {
+  color: #fff !important;
+  background: none !important;
+}
+
+.v-tab:hover .v-btn__overlay {
+  display: none;
+}

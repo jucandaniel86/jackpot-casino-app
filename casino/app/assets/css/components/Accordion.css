@@ -1,0 +1,74 @@
+.v-expansion-panel-text {
+  padding: 8px 16px 16px;
+  overflow-wrap: break-word;
+  font-size: 16px;
+  flex-direction: column;
+}
+
+.v-expansion-panel-text img {
+  max-width: 100%;
+}
+
+.v-expansion-panel h1 {
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.v-expansion-panel h2 {
+  display: block;
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+
+.v-expansion-panel p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.v-expansion-panel ol,
+.v-expansion-panel ul {
+  display: block;
+  list-style-type: decimal;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  padding-inline-start: 40px;
+}
+
+.v-expansion-panel a {
+  color: var(--textlink-light-text-color);
+  text-decoration-color: var(--textlink-light-decoration-color);
+}
+
+.v-expansion-panel a:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
+.v-expansion-panel {
+  background-color: transparent !important;
+  color: #fff !important;
+}
+
+.v-expansion-panel-title {
+  background-color: var(--accordion-header-background-color) !important;
+  color: var(--accordion-header-text-color) !important;
+  border-radius: 0;
+  border-top-left-radius: var(--accordion-border-radius) !important;
+  border-top-right-radius: var(--accordion-border-radius) !important;
+  padding: 0px 16px;
+  transition:
+    min-height 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  padding-left: var(--accordion-padding-left) !important;
+  min-height: 0 !important;
+}

@@ -1,0 +1,67 @@
+.app-search {
+  --v-input-control-height: 46px !important;
+  margin-top: 4px;
+  --v-input-control-height: 42px;
+  min-height: auto !important;
+
+  box-shadow: none;
+}
+
+.app-search .v-field {
+  background-color: var(--input-background-color);
+  border-radius: var(--input-border-radius) !important;
+}
+
+.app-search:hover .v-field {
+  background-color: var(--input-hover-background-color);
+}
+
+.app-search:hover .v-field__input {
+  background: none !important;
+}
+
+.app-search .v-field__prepend-inner,
+.app-search .v-icon {
+  color: #fff;
+  opacity: 1 !important;
+}
+
+/**  background-color: var(--input-hover-background-color); **/
+
+.v-card.search-results {
+  background: var(--search-results-bgcolor) !important;
+  box-shadow: none !important;
+  top: 50px;
+  z-index: 99;
+}
+
+.search__title {
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.b-bottom {
+  border-bottom: 1px solid #fff;
+}
+
+.game-search-list {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.game-search-list .game__item {
+  box-sizing: border-box;
+  height: 100%;
+  overflow: visible;
+  padding: 4px;
+  width: 100%;
+}
+
+.results__title {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.5;
+}

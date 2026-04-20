@@ -1,0 +1,56 @@
+.invoice-detail-card-image {
+  position: absolute;
+  left: 0;
+}
+
+.invoice-detail-top {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.invoice-details-wrapper {
+  margin-top: 170px;
+}
+
+.invoice-detail-card-image-bottom {
+  position: absolute;
+  bottom: -80px;
+  right: 0;
+  transform: rotate(180deg);
+  z-index: -1;
+}
+
+.invoice-logo {
+  position: absolute;
+  top: 35px;
+  left: 25px;
+}
+
+.invoice-auth-signature {
+  position: absolute;
+  bottom: 10px;
+}
+
+[dir="rtl"] {
+  .invoice-detail-card-image {
+    right: 0;
+    left: auto;
+    transform: rotateY(180deg);
+  }
+
+  .invoice-logo {
+    transform: rotateY(180deg);
+  }
+
+  .invoice-detail-top {
+    left: 10px;
+    right: auto;
+  }
+
+  .invoice-detail-card-image-bottom {
+    left: 0;
+    right: auto;
+    transform: rotateX(180deg);
+  }
+}

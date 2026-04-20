@@ -1,0 +1,52 @@
+.betfeed__table {
+  table-layout: fixed;
+  border-radius: 8px;
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0px;
+  color: #fff;
+  font-size: 16px;
+}
+.betfeed__table thead {
+  display: table-header-group;
+}
+
+.betfeed__table thead tr,
+.betfeed__table tbody tr {
+  color: inherit;
+  display: table-row;
+  vertical-align: middle;
+  outline: 0px;
+  position: relative;
+}
+
+.betfeed__table th {
+  color: #b6b7b7;
+  border-top-left-radius: 8px;
+  word-break: break-word;
+  padding: 8px 16px;
+  max-width: 200px !important;
+
+  line-height: 1.5rem;
+  font-size: 14px;
+  text-align: left;
+}
+
+.betfeed__table tbody {
+  display: table-row-group;
+}
+
+.betfeed__table tbody tr:nth-child(odd) td {
+  background-color: #181b22;
+}
+.betfeed__table td {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+  padding: 24px 16px;
+  max-width: 200px !important;
+  overflow-wrap: break-word !important;
+  font-size: 16px;
+}

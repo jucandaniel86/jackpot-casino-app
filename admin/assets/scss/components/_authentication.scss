@@ -1,0 +1,124 @@
+.auth-layout-wrapper {
+  @media (min-width: 600px) {
+    height: 100dvh;
+  }
+}
+
+.auth-card {
+  .auth-effect-main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media (min-width: 600px) {
+      width: 444px;
+      height: 444px;
+      border: 1px solid rgba(#e3e3e3, 0.2);
+
+      .effect-circle-1 {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 396px;
+        height: 396px;
+        border: 1px solid rgba(#e3e3e3, 0.2);
+
+        .effect-circle-2 {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          width: 348px;
+          height: 348px;
+          border: 1px solid rgba(#e3e3e3, 0.2);
+
+          .effect-circle-3 {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 300px;
+            height: 300px;
+            border: 1px solid rgba(#e3e3e3, 0.2);
+          }
+        }
+      }
+    }
+
+    .auth-user-list {
+      .login-avatar {
+        position: absolute;
+        box-shadow: 0 5px 10px rgba(30, 32, 37, 0.12);
+
+        &:nth-child(1) {
+          bottom: 82px;
+          left: 48px;
+        }
+
+        &:nth-child(2) {
+          top: 95px;
+          left: 66px;
+        }
+
+        &:nth-child(3) {
+          top: 20px;
+          right: 98px;
+        }
+
+        &:nth-child(4) {
+          bottom: -25px;
+          right: 144px;
+        }
+
+        &:nth-child(5) {
+          bottom: 185px;
+          right: 35px;
+        }
+      }
+    }
+  }
+}
+
+[data-theme="material"] {
+  .auth-banner-action {
+    .mdi-heart {
+      color: var(--#{$prefix}primary) !important;
+    }
+  }
+}
+
+[dir="rtl"] {
+  .auth-card {
+    .auth-user-list {
+      .login-avatar {
+        &:nth-child(1) {
+          right: 48px;
+          left: auto;
+        }
+
+        &:nth-child(2) {
+          right: 66px;
+          left: auto;
+        }
+
+        &:nth-child(3) {
+          left: 98px;
+          right: auto;
+        }
+
+        &:nth-child(4) {
+          left: 144px;
+          right: auto;
+        }
+
+        &:nth-child(5) {
+          left: 35px;
+          right: auto;
+        }
+      }
+    }
+  }
+}

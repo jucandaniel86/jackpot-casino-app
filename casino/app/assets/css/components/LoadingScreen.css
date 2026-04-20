@@ -1,0 +1,55 @@
+.loading-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  z-index: 9999;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.loading-screen-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.loading-screen .logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.loading-indicator {
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background-color: #fff;
+  z-index: 1;
+  max-width: 240px;
+}
+
+.loading-progress-bar {
+  height: 4px;
+  border-radius: 4px;
+  background-color: var(--textlink-light-text-color);
+  z-index: 2;
+  animation-duration: 10s;
+  animation-name: changeWidth;
+  animation-iteration-count: infinite;
+}
+
+@keyframes changeWidth {
+  0% {
+    width: 1%;
+  }
+  100% {
+    width: 100%;
+  }
+}

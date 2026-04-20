@@ -1,0 +1,50 @@
+//  core files
+@import "./_variables";
+@import "./variables-dark";
+@import "./icons";
+
+@import "./custom";
+
+// themes
+@import "./theme/creative";
+@import "./theme/default";
+@import "./theme/interaction";
+@import "./theme/material";
+@import "./theme/minimal";
+@import "./theme/modern";
+
+// plugins
+@import "./plugins/custom-scrollbar";
+@import "./plugins/swiper";
+@import "./plugins/_apexcharts";
+
+// structure
+@import "./structure/_vertical";
+@import "./structure/topbar";
+@import "./structure/rightSideBar";
+@import "./structure/horizontal";
+@import "./structure/footer";
+@import "./structure/two-column";
+@import "./structure/layouts";
+
+// components
+@import "./components/root";
+@import "./components/dropdown";
+@import "./components/avatar";
+@import "./components/authentication";
+
+// apps
+@import "./apps/chat";
+@import "./apps/email";
+@import "./apps/ecommerce";
+@import "./apps/file-manager";
+@import "./apps/learning";
+@import "./apps/invoice";
+@import "./apps/real_estate";
+
+// rtl scss
+// @import "./rtl/structure/structure";
+// @import "./rtl/components/components";
+// @import "./rtl/plugins/plugins";
+// @import "./rtl/apps/apps";
+// @import "./rtl/pages/pages";
