@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sovereign Vault | Buy Bundles</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#f5c542",
+                        "on-primary-container": "#6b5200",
+                        "surface-container-lowest": "#0e0e0e",
+                        "outline": "#9a907b",
+                        "on-secondary-fixed-variant": "#564515",
+                        "primary": "#ffe5aa",
+                        "surface-bright": "#3a3939",
+                        "on-secondary": "#3e2e01",
+                        "secondary": "#dec489",
+                        "on-primary-fixed": "#251a00",
+                        "secondary-container": "#564515",
+                        "primary-fixed-dim": "#f0c03e",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#005e74",
+                        "surface-dim": "#131313",
+                        "background": "#131313",
+                        "on-tertiary": "#003544",
+                        "tertiary-fixed": "#b8eaff",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "on-primary": "#3e2e00",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#594400",
+                        "on-tertiary-fixed-variant": "#004d61",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary-container": "#ccb279",
+                        "tertiary": "#c5eeff",
+                        "on-surface-variant": "#d1c5ae",
+                        "tertiary-fixed-dim": "#63d4fa",
+                        "on-tertiary-fixed": "#001f28",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-container": "#69d9ff",
+                        "secondary-fixed-dim": "#dec489",
+                        "inverse-primary": "#765a00",
+                        "surface-container": "#201f1f",
+                        "surface-variant": "#353534",
+                        "surface-tint": "#f0c03e",
+                        "secondary-fixed": "#fbe0a2",
+                        "error-container": "#93000a",
+                        "on-background": "#e5e2e1",
+                        "outline-variant": "#4e4634",
+                        "primary-fixed": "#ffdf95",
+                        "surface-container-low": "#1c1b1b",
+                        "surface": "#131313",
+                        "on-secondary-fixed": "#251a00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(53, 53, 52, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .gold-shimmer {
+            background: linear-gradient(90deg, transparent, rgba(245, 197, 66, 0.1), transparent);
+            background-size: 200% 100%;
+        }
+        .liquid-gold {
+            background: linear-gradient(135deg, #ffe5aa 0%, #f5c542 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-neutral-900/80 backdrop-blur-2xl bg-neutral-900/40 border-b border-white/5 shadow-2xl shadow-black/50">
+<div class="flex items-center gap-8">
+<span class="font-manrope font-black tracking-tighter text-2xl bg-gradient-to-br from-[#ffe5aa] to-[#f5c542] bg-clip-text text-transparent">Sovereign Vault</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-neutral-400 font-medium hover:text-[#ffe5aa] transition-colors duration-300" href="#">Lobby</a>
+<a class="text-neutral-400 font-medium hover:text-[#ffe5aa] transition-colors duration-300" href="#">High Stakes</a>
+<a class="text-[#f5c542] font-bold border-b-2 border-[#f5c542] transition-colors duration-300" href="#">Bundles</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+<span class="material-symbols-outlined text-[#f5c542]" style="font-variation-settings: 'FILL' 1;">monetization_on</span>
+<span class="font-headline font-bold text-primary">1,240,500</span>
+</div>
+<button class="text-[#f5c542] hover:text-[#ffe5aa] transition-colors duration-300 p-2">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</button>
+<button class="text-[#f5c542] hover:text-[#ffe5aa] transition-colors duration-300 p-2">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-[#f5c542]/30">
+<img alt="VIP User Avatar" class="w-full h-full object-cover" data-alt="close-up portrait of a sophisticated person with elegant lighting and luxury aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeOK6a03jRVASU1UBCpbr-evj-jy_sZJLv8HOrG85uepyf6w3HH9IM3GW-jq2odRcmy7OdFGw28KtmWJDH390C-m8lTl5nD_sKmF5uvJ-Z4HU4CAhMZEuhO8DzvptHQab9njlJYA4D84h0_M93-5xHeUXANoHG6iMoFKjdm_B_6O0EN1oWKBeMA3T1Ie39cgiAyWnZf7u66WhPCMWwTJ1rsTsJRVBX-lpdH4wvNnpU8rKCeSDVRIVsmPK1kZrWHkZvvbNRiB2I7iXF"/>
+</div>
+</div>
+</header>
+<main class="pt-28 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tighter mb-4 text-on-surface">Buy Bundles</h1>
+<p class="text-on-surface-variant text-lg max-w-xl font-light">Elevate your play with exclusive coin packages. Precision crafted for the discerning high roller.</p>
+</div>
+<!-- Filter Bar -->
+<div class="flex p-1 bg-surface-container-low rounded-xl">
+<button class="px-6 py-2 rounded-lg bg-surface-container-highest text-primary font-semibold text-sm">All</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant hover:text-on-surface transition-colors text-sm font-medium">Featured</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant hover:text-on-surface transition-colors text-sm font-medium">Popular</button>
+</div>
+</div>
+</section>
+<!-- Featured Bundles -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+<!-- Starter Pack -->
+<div class="glass-card rounded-xl p-8 border border-white/5 flex flex-col items-center text-center relative overflow-hidden group">
+<div class="absolute inset-0 gold-shimmer opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="mb-6 h-32 flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-on-surface-variant/30">database</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-2">Starter Pack</h3>
+<div class="text-4xl font-black text-white mb-4">8,000 <span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest block">Coins</span></div>
+<div class="mt-auto w-full pt-8">
+<div class="text-2xl font-bold text-on-surface mb-4">$9.99</div>
+<button class="w-full py-4 rounded-xl liquid-gold text-on-primary font-black uppercase tracking-widest text-sm shadow-xl shadow-primary-container/20 hover:scale-[1.02] active:scale-95 transition-all">Buy Now</button>
+</div>
+</div>
+<!-- High Roller Pack (Featured) -->
+<div class="glass-card rounded-xl p-8 border-2 border-primary-container/30 flex flex-col items-center text-center relative overflow-hidden scale-105 z-10 shadow-[0_0_50px_rgba(245,197,66,0.15)] group">
+<div class="absolute top-4 right-4 bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Best Value</div>
+<div class="absolute inset-0 gold-shimmer opacity-20"></div>
+<div class="mb-6 h-32 flex items-center justify-center">
+<span class="material-symbols-outlined text-8xl text-primary-container" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<h3 class="font-headline text-3xl font-black mb-2 text-primary">High Roller Pack</h3>
+<div class="text-5xl font-black text-white mb-1">100,000 <span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest block">Coins</span></div>
+<div class="inline-block px-3 py-1 bg-primary-container/10 border border-primary-container/20 rounded-full text-primary-container text-xs font-bold mb-4">+25% Bonus Included</div>
+<div class="mt-auto w-full pt-8">
+<div class="text-3xl font-bold text-white mb-4">$99.99</div>
+<button class="w-full py-5 rounded-xl liquid-gold text-on-primary font-black uppercase tracking-widest text-base shadow-2xl shadow-primary-container/40 hover:scale-[1.02] active:scale-95 transition-all">Buy Now</button>
+</div>
+</div>
+<!-- Pro Pack -->
+<div class="glass-card rounded-xl p-8 border border-white/5 flex flex-col items-center text-center relative overflow-hidden group">
+<div class="absolute top-4 right-4 bg-surface-container-highest text-secondary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Popular</div>
+<div class="absolute inset-0 gold-shimmer opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="mb-6 h-32 flex items-center justify-center">
+<span class="material-symbols-outlined text-7xl text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-2">Pro Pack</h3>
+<div class="text-4xl font-black text-white mb-1">45,000 <span class="text-sm font-medium text-on-surface-variant uppercase tracking-widest block">Coins</span></div>
+<div class="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-on-surface-variant text-xs font-bold mb-4">+15% Bonus</div>
+<div class="mt-auto w-full pt-8">
+<div class="text-2xl font-bold text-on-surface mb-4">$49.99</div>
+<button class="w-full py-4 rounded-xl liquid-gold text-on-primary font-black uppercase tracking-widest text-sm shadow-xl shadow-primary-container/20 hover:scale-[1.02] active:scale-95 transition-all">Buy Now</button>
+</div>
+</div>
+</section>
+<!-- All Bundles Grid -->
+<section>
+<h2 class="font-headline text-2xl font-bold mb-8 flex items-center gap-3">
+<span class="w-8 h-1 bg-primary-container rounded-full"></span>
+                Standard Packages
+            </h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Grid Item 1 -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-white/5 hover:border-primary-container/20 transition-all group">
+<div class="text-on-surface-variant text-xs font-bold uppercase tracking-tighter mb-1">Micro Pack</div>
+<div class="text-2xl font-black text-white mb-4">1,500 <span class="text-[10px] text-on-surface-variant">Coins</span></div>
+<div class="flex items-center justify-between">
+<span class="text-lg font-bold">$1.99</span>
+<button class="px-4 py-2 rounded-lg bg-surface-container-highest text-primary-container font-black text-[10px] uppercase tracking-widest group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">Buy</button>
+</div>
+</div>
+<!-- Grid Item 2 -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-white/5 hover:border-primary-container/20 transition-all group">
+<div class="text-on-surface-variant text-xs font-bold uppercase tracking-tighter mb-1">Small Pack</div>
+<div class="text-2xl font-black text-white mb-4">4,000 <span class="text-[10px] text-on-surface-variant">Coins</span></div>
+<div class="flex items-center justify-between">
+<span class="text-lg font-bold">$4.99</span>
+<button class="px-4 py-2 rounded-lg bg-surface-container-highest text-primary-container font-black text-[10px] uppercase tracking-widest group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">Buy</button>
+</div>
+</div>
+<!-- Grid Item 3 -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-white/5 hover:border-primary-container/20 transition-all group">
+<div class="text-on-surface-variant text-xs font-bold uppercase tracking-tighter mb-1">Classic Pack</div>
+<div class="text-2xl font-black text-white mb-4">15,000 <span class="text-[10px] text-on-surface-variant">Coins</span></div>
+<div class="flex items-center justify-between">
+<span class="text-lg font-bold">$19.99</span>
+<button class="px-4 py-2 rounded-lg bg-surface-container-highest text-primary-container font-black text-[10px] uppercase tracking-widest group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">Buy</button>
+</div>
+</div>
+<!-- Grid Item 4 -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-white/5 hover:border-primary-container/20 transition-all group">
+<div class="text-on-surface-variant text-xs font-bold uppercase tracking-tighter mb-1">Gamer Pack</div>
+<div class="text-2xl font-black text-white mb-4">25,000 <span class="text-[10px] text-on-surface-variant">Coins</span></div>
+<div class="flex items-center justify-between">
+<span class="text-lg font-bold">$29.99</span>
+<button class="px-4 py-2 rounded-lg bg-surface-container-highest text-primary-container font-black text-[10px] uppercase tracking-widest group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">Buy</button>
+</div>
+</div>
+<!-- Grid Item 5 -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-white/5 hover:border-primary-container/20 transition-all group">
+<div class="text-on-surface-variant text-xs font-bold uppercase tracking-tighter mb-1">Vault Pack</div>
+<div class="text-2xl font-black text-white mb-4">60,000 <span class="text-[10px] text-on-surface-variant">Coins</span></div>
+<div class="flex items-center justify-between">
+<span class="text-lg font-bold">$59.99</span>
+<button class="px-4 py-2 rounded-lg bg-surface-container-highest text-primary-container font-black text-[10px] uppercase tracking-widest group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">Buy</button>
+</div>
+</div>
+<!-- Grid Item 6 -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-white/5 hover:border-primary-container/20 transition-all group">
+<div class="text-on-surface-variant text-xs font-bold uppercase tracking-tighter mb-1">Executive Pack</div>
+<div class="text-2xl font-black text-white mb-4">80,000 <span class="text-[10px] text-on-surface-variant">Coins</span></div>
+<div class="flex items-center justify-between">
+<span class="text-lg font-bold">$79.99</span>
+<button class="px-4 py-2 rounded-lg bg-surface-container-highest text-primary-container font-black text-[10px] uppercase tracking-widest group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">Buy</button>
+</div>
+</div>
+<!-- Grid Item 7 -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-white/5 hover:border-primary-container/20 transition-all group">
+<div class="text-on-surface-variant text-xs font-bold uppercase tracking-tighter mb-1">Whale Pack</div>
+<div class="text-2xl font-black text-white mb-4">150,000 <span class="text-[10px] text-on-surface-variant">Coins</span></div>
+<div class="flex items-center justify-between">
+<span class="text-lg font-bold">$149.99</span>
+<button class="px-4 py-2 rounded-lg bg-surface-container-highest text-primary-container font-black text-[10px] uppercase tracking-widest group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">Buy</button>
+</div>
+</div>
+<!-- Grid Item 8 -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-white/5 hover:border-primary-container/20 transition-all group">
+<div class="text-on-surface-variant text-xs font-bold uppercase tracking-tighter mb-1">Sovereign Pack</div>
+<div class="text-2xl font-black text-white mb-4">500,000 <span class="text-[10px] text-on-surface-variant">Coins</span></div>
+<div class="flex items-center justify-between">
+<span class="text-lg font-bold">$499.99</span>
+<button class="px-4 py-2 rounded-lg bg-surface-container-highest text-primary-container font-black text-[10px] uppercase tracking-widest group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors">Buy</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Promotional Banner -->
+<section class="mt-20">
+<div class="relative w-full rounded-2xl overflow-hidden h-64 flex items-center px-12 bg-surface-container-high border border-primary-container/20">
+<div class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent z-10"></div>
+<img alt="VIP Casino Lounge" class="absolute inset-0 w-full h-full object-cover" data-alt="ultra-luxury private casino lounge with golden accents, dim atmospheric lighting, and high-end mahogany furniture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClORxkjtY3UL73-W-4hEniAlT8XlokGVrZ3RBOExxCvOob_ub-rVBPK2Zuo2FMaPjNofjMwZVoLu5N4MND0ul1DNNQDM4lqfImKPJiZdqGrIIYCeHSzT1Coi0RWprlD773il1chyr4cpallDf5uzVAdppsGjkYy1jNRO1G1TxvjsmjCgwNNM6VhXPruSUrqmP0uN6qN8Ky8E5KPlBr3MY13zSbTrUfz7FDJrsZSbcmU3jsNMJAdzZHlerco4Sn76IJnoQ0CTQxakEV"/>
+<div class="relative z-20 max-w-lg">
+<h2 class="font-headline text-3xl font-black text-primary mb-2">Exclusive VIP Rewards</h2>
+<p class="text-on-surface-variant mb-6">Join the Sovereign Circle for daily coin drops and early access to high-limit tables.</p>
+<button class="px-8 py-3 bg-primary-container text-on-primary-container font-black rounded-lg text-sm uppercase tracking-widest hover:bg-primary transition-colors">Learn More</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-neutral-950/90 backdrop-blur-3xl border-t border-white/5 shadow-[0_-10px_40px_rgba(0,0,0,0.8)] rounded-t-2xl">
+<button class="flex flex-col items-center justify-center text-neutral-500 hover:text-neutral-300 transition-all duration-300 scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="casino">casino</span>
+<span class="font-inter text-[10px] uppercase tracking-widest font-semibold mt-1">Lobby</span>
+</button>
+<button class="flex flex-col items-center justify-center text-neutral-500 hover:text-neutral-300 transition-all duration-300 scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="font-inter text-[10px] uppercase tracking-widest font-semibold mt-1">Stakes</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#f5c542] bg-white/5 rounded-xl px-4 py-2 transition-all duration-300 scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+<span class="font-inter text-[10px] uppercase tracking-widest font-semibold mt-1">Bundles</span>
+</button>
+<button class="flex flex-col items-center justify-center text-neutral-500 hover:text-neutral-300 transition-all duration-300 scale-95 active:scale-90">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-inter text-[10px] uppercase tracking-widest font-semibold mt-1">Account</span>
+</button>
+</nav>
+</body></html>

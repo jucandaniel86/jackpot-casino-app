@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Test Tournaments</title>
+	<script src="https://g-prod.xyzspins.com/gffeapi/gffeapi.js?v=1776709922833"></script>
+	<script>
+		const socket = new WebSocket('wss://dev.igameforge.com/gforge/comm/websocket')
+		socket.addEventListener('open', () => {
+			socket.send(JSON.stringify({
+					brandID: "0",
+					fixedID: "dab27a61-b723-41e1-9061-95c91f54d425",
+					funReal: "1", 
+					gameID: "11660",
+					requestType: "login",
+					sessionID: "MOCKUSER_97_EUR",
+					siteID: "MOCK"
+			}));
+
+			socket.addEventListener('message', (res) => {
+				const response = JSON.parse(res.data);
+				GFFEAPI.showTournamentsGui({
+					token: response.response.playerDetails.token,
+					points: 1
+				})
+ 
+			})
+		})
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

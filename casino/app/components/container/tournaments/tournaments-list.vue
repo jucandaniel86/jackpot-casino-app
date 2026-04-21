@@ -50,6 +50,7 @@ const tab = ref<'active' | 'upcoming' | 'finished'>('active')
           v-else
           :key="tournament.id"
           :tournament="tournament"
+          :closed="true"
         />
       </v-window-item>
 
@@ -61,6 +62,7 @@ const tab = ref<'active' | 'upcoming' | 'finished'>('active')
           v-else
           :key="tournament.id"
           :tournament="tournament"
+          :closed="true"
         />
       </v-window-item>
     </v-window>
