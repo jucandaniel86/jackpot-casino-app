@@ -208,6 +208,11 @@ const save = async () =>
             :item="props.item"
             @on-update="handleDataChange"
           />
+					<SectionTournaments
+            v-if="props.item.container === ContainerSection.TOURNAMENTS"
+            :item="props.item"
+            @on-update="handleDataChange"
+          />
         </v-card-text>
         <v-card-actions>
           <div class="d-flex justify-end align-center">

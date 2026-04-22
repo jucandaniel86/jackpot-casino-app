@@ -19,6 +19,8 @@ export enum ContainerSection {
   BONUS = "HomepageBonusContainer",
   OFFER = "HomepageOfferContainer",
   PLAYER_FAVORITES = "PlayerFavouritesContainer",
+	TOURNAMENTS = "TournamentsContainer",
+	BUNDLEDS = "BundlesContainer"
 }
 
 export type ResolutionConfig = {
@@ -117,5 +119,9 @@ export const APP_SECTIONS: SelectedSectionsT[] = [
   {
     label: "Player Favourites Games",
     container: ContainerSection.PLAYER_FAVORITES,
+  },
+	  {
+    label: "Tournaments",
+    container: ContainerSection.TOURNAMENTS,
   },
 ];

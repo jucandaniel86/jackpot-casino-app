@@ -101,6 +101,9 @@
 					case ContainerSection::PLAYER_FAVORITES->value:
 						$_return[] = $this->parsePlayerFavoritesContainer($section);
 						break;
+          case ContainerSection::TOURNAMENTS->value:
+            $_return[] = $this->parsePlayerFavoritesContainer($section);
+            break;
 				}
 			}
 			return $_return;

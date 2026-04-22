@@ -28,4 +28,6 @@
 		case BONUS = 'HomepageBonusContainer';
 		case OFFER = 'HomepageOfferContainer';
 		case PLAYER_FAVORITES = 'PlayerFavouritesContainer';
+    case TOURNAMENTS = 'TournamentsContainer';
+    case BUNDLES = 'BundlesContainer';
 	}

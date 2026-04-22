@@ -27,6 +27,8 @@ export enum ContainerSection {
   BONUS = 'HomepageBonusContainer',
   OFFER = 'HomepageOfferContainer',
   PLAYER_FAVORITES = 'PlayerFavouritesContainer',
+  TOURNAMENTS = 'TournamentsContainer',
+  BUNDLEDS = 'BundlesContainer',
 }
 
 export type ResolutionConfig = {

@@ -145,6 +145,11 @@ watch(props, () => {
         :key="section.id"
         :options="section"
       />
+      <container-tournaments-list
+        v-if="section.container === ContainerSection.TOURNAMENTS"
+        :key="section.id"
+        :options="section"
+      />
     </template>
   </div>
 </template>

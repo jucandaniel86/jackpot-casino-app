@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="401fd9b1-32aa-4fdb-8b69-e6b94a3c2af5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/api.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../casino/app/components/container/tournaments/tournaments-item.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/components/container/tournaments/tournaments-item.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../casino/app/components/container/tournaments/tournaments-list.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/components/container/tournaments/tournaments-list.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Enums/ContainerSection.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/ContainerSection.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,6 +187,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -206,7 +205,10 @@
       <option name="presentableId" value="Default" />
       <updated>1776776170747</updated>
       <workItem from="1776776172386" duration="2232000" />
-      <workItem from="1776783373535" duration="680000" />
+      <workItem from="1776783373535" duration="1355000" />
+      <workItem from="1776846686941" duration="108000" />
+      <workItem from="1776846821097" duration="170000" />
+      <workItem from="1776847001080" duration="1210000" />
     </task>
     <servers />
   </component>
