@@ -1,13 +1,15 @@
 .game__item {
   box-sizing: border-box;
   height: 100%;
-  transition: transform 0.2s;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
   width: 100%;
   z-index: 1;
 }
 
 .game__item:hover {
-  transform: scale(1.04);
+  transform: translateY(-3px) scale(1.02);
 }
 
 .game__item > .wrapper {
@@ -18,17 +20,49 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+  background: var(--surface-high);
+  isolation: isolate;
+  box-shadow:
+    inset 0 0 0 1px var(--surface-border),
+    0 12px 26px rgba(0, 0, 0, 0.22);
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.game__item > .wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, transparent 42%, rgba(0, 0, 0, 0.62)),
+    linear-gradient(135deg, color-mix(in srgb, var(--base-color) 18%, transparent), transparent 38%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 0;
+}
+
+.game__item:hover > .wrapper {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--base-color) 34%, transparent),
+    0 18px 36px rgba(0, 0, 0, 0.34);
+}
+
+.game__item:hover > .wrapper::after {
+  opacity: 1;
 }
 
 .game__item img {
-  background: #434343 !important;
+  background: var(--surface-high) !important;
   border-radius: var(--gametile-border-radius);
   /* height: 100%; */
   width: 100%;
 }
 
 .game__item:hover img {
-  filter: blur(4px);
+  filter: blur(3px) saturate(0.92) brightness(0.68);
   z-index: -1;
 }
 
@@ -45,6 +79,7 @@
   width: 80%;
   color: #fff;
   font-size: 16px;
+  z-index: 2;
 }
 
 .game__item:hover .game__title {
@@ -82,10 +117,20 @@
 .category_header {
   align-items: center;
   display: flex;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 900;
   gap: 8px;
   color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.category_header::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--base-color);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--base-color) 34%, transparent);
 }
 
 .view-more {
@@ -95,7 +140,12 @@
   text-align: right;
   margin: 0px;
   text-decoration: none;
-  color: rgb(255, 255, 255);
+  color: var(--base-color);
+  transition: color 0.2s ease;
+}
+
+.view-more:hover {
+  color: color-mix(in srgb, var(--base-color) 76%, #ffffff);
 }
 
 .v-window__left,
@@ -124,6 +174,10 @@
 }
 
 .game__item .real-play {
+  width: 60px;
+  max-width: 60px;
+  height: 60px;
+  max-height: 60px;
   margin-top: 3px;
 }
 
@@ -136,6 +190,7 @@
   width: 60px;
   height: 60px;
   margin-top: 0;
+  z-index: 2;
 }
 
 .real-play > button {
@@ -144,7 +199,9 @@
   cursor: pointer;
   border: none;
   border-radius: 50%;
-  box-shadow: 0 2px 7px #0000007d !important;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--base-color) 28%, transparent),
+    0 10px 26px #00000080 !important;
   height: 100%;
   transition: 0s !important;
   width: 100%;
@@ -238,16 +295,17 @@
 }
 
 .carousel_btn {
-  box-shadow: 0 2px 9px #000000d9;
+  box-shadow: 0 10px 26px #00000080;
   height: 38px;
   opacity: 0.7;
   transition: 0s !important;
   width: 38px;
   z-index: 1;
-  background: #fff !important;
-  color: #000;
+  background: rgba(13, 14, 18, 0.9) !important;
+  color: var(--base-color);
   padding: 8px;
   border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--base-color) 24%, transparent);
   display: none;
   position: absolute;
 }

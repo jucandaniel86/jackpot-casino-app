@@ -17,21 +17,22 @@
 }
 
 .provider-link {
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
   min-height: 42px;
   display: flex;
-  background: #13151b;
-  border: 1px solid #303443;
+  background: var(--surface-low);
+  border: 1px solid var(--surface-border);
   width: 100%;
   height: 100%;
   padding: 0 !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   align-items: center;
   justify-content: center;
 }
 
 .provider-link:hover {
-  border-color: var(--textlink-light-text-color);
+  border-color: color-mix(in srgb, var(--base-color) 38%, transparent);
+  background: var(--surface-high);
 }
 
 .provider-link img {

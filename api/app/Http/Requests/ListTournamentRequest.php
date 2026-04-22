@@ -21,7 +21,7 @@ class ListTournamentRequest extends FormRequest
 			'ended_from' => 'nullable|date',
 			'ended_to' => 'nullable|date',
 			'search' => 'nullable|string|max:255',
-			'game_id' => 'nullable|uuid',
+			'game_id' => 'nullable',
 			'per_page' => 'nullable|integer|min:1|max:100',
 			'sort_by' => 'nullable|in:name,started_at,ended_at,status,created_at',
 			'sort_direction' => 'nullable|in:asc,desc',

@@ -1,5 +1,6 @@
 .v-footer {
-  background: var(--footer-background) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 30%), var(--footer-background) !important;
   flex: 1 1 auto !important;
   padding: var(--mainLayoutGutter) !important;
   box-shadow: none !important;
@@ -86,7 +87,8 @@
   border-radius: 24px;
   width: auto;
   box-sizing: border-box;
-  background: rgb(21, 24, 30);
+  background: var(--surface-low);
+  border: 1px solid var(--surface-border);
 }
 
 .v-footer .copyright {
@@ -112,8 +114,8 @@
 }
 
 .v-footer .v-select {
-  background: var(--background-color);
-  border-radius: 6px;
+  background: var(--surface-high);
+  border-radius: var(--input-border-radius);
   color: #acb0c3;
   border: 0;
 }

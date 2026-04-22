@@ -1,6 +1,9 @@
 .overlay-bg {
-  background: #14141f !important;
-  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 30%), var(--surface-low) !important;
+  border-right: 1px solid var(--surface-border);
+  border-radius: 0 14px 14px 0;
+  box-shadow: var(--premium-shadow);
 }
 
 .overlay-bg > .v-navigation-drawer__content {
@@ -25,7 +28,7 @@
 
 .overlay-close {
   background: transparent !important;
-  color: var(--textlink-light-text-color) !important;
+  color: var(--base-color) !important;
   box-shadow: none !important;
   padding: 8px !important;
   position: absolute !important;
@@ -39,7 +42,7 @@
 }
 
 .overlay-close svg {
-  color: var(--textlink-light-text-color) !important;
+  color: var(--base-color) !important;
   width: 1em;
   height: 1em;
   display: inline-block;

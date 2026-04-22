@@ -22,7 +22,7 @@ class UpdateTournamentRequest extends FormRequest
 			'status' => 'required|in:draft,scheduled,active,finished,cancelled',
 			'point_rate' => 'required|integer|min:1',
 			'game_ids' => 'required|array|min:1',
-			'game_ids.*' => 'required|uuid',
+			'game_ids.*' => 'required',
 			'prizes' => 'nullable|array',
 			'prizes.*.prize_name' => 'required|string|max:255',
 			'prizes.*.prize_type' => 'required|in:rank,threshold',

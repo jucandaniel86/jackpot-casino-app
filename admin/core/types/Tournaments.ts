@@ -7,8 +7,19 @@ export type TournamentStatus =
 
 export type TournamentGame = {
   id: string;
-  tournament_id: string;
   game_id: string;
+  tournament_id?: string;
+  name?: string;
+  slug?: string;
+  thumbnail?: string | null;
+  thumbnail_url?: string | null;
+  pivot?: {
+    id?: string;
+    tournament_id?: string;
+    game_id?: string;
+    created_at?: string;
+    updated_at?: string;
+  };
   created_at?: string;
   updated_at?: string;
 };
@@ -102,4 +113,3 @@ export type TournamentApiResponse<T> = {
   message?: string;
   data: T;
 };
-

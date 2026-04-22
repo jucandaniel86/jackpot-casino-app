@@ -44,6 +44,7 @@
 					'message' => 'Page not found'
 				];
 			}
+
 			return $this->generateLayoutResponse($this->parseSections($CurrentPage->sections), $casinoID, $CurrentPage->seo);
 		}
 
@@ -101,9 +102,9 @@
 					case ContainerSection::PLAYER_FAVORITES->value:
 						$_return[] = $this->parsePlayerFavoritesContainer($section);
 						break;
-          case ContainerSection::TOURNAMENTS->value:
-            $_return[] = $this->parsePlayerFavoritesContainer($section);
-            break;
+					case ContainerSection::TOURNAMENTS->value:
+    				$_return[] = $this->parseTournamentsContainer($section);
+						break;
 				}
 			}
 			return $_return;

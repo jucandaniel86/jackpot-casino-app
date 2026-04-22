@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TournamentGame extends Model
 {
@@ -15,5 +16,14 @@ class TournamentGame extends Model
 		'tournament_id',
 		'game_id',
 	];
-}
 
+	public function tournament(): BelongsTo
+	{
+		return $this->belongsTo(Tournament::class, 'tournament_id');
+	}
+
+	public function game(): BelongsTo
+	{
+		return $this->belongsTo(Game::class, 'game_id', 'game_id');
+	}
+}

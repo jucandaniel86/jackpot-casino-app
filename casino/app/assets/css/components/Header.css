@@ -1,25 +1,31 @@
 .v-app-bar.v-toolbar.layout-header {
   background: var(--header-background-color) !important;
   height: var(--interactive-layout-header-height);
+  border-bottom: 1px solid var(--surface-border);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32) !important;
+  backdrop-filter: blur(18px);
 }
 
 .v-btn.text-secondary {
-  background: #21242e !important;
-  border: solid 1px #494f65 !important;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.5) !important;
+  background: var(--surface-high) !important;
+  border: solid 1px var(--surface-border-strong) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.26) !important;
   color: #fff !important;
   font-weight: 400;
   padding: 10px 13px;
 }
 
 .v-btn.text-secondary:hover {
-  background-color: #14151a !important;
-  border: solid 1px #494f65 !important;
+  background-color: var(--surface-hover) !important;
+  border: solid 1px color-mix(in srgb, var(--base-color) 32%, transparent) !important;
 }
 
 .layout-logo {
-  height: 40px;
-  width: auto;
+  width: min(200px, 100%);
+  max-width: 200px;
+  height: auto;
+  max-height: 40px;
+  object-fit: contain;
 }
 
 .mobile-wallet-button {
@@ -72,11 +78,20 @@
   color: #fff;
   text-decoration: none;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1;
-  text-decoration: underline;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: var(--base-color-soft);
+  border: 1px solid color-mix(in srgb, var(--base-color) 20%, transparent);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .buy-crypto-container a:hover {
-  text-decoration: underline;
+  color: var(--base-color);
+  border-color: color-mix(in srgb, var(--base-color) 38%, transparent);
 }

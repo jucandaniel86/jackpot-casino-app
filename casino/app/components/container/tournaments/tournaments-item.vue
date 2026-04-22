@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { Tournament } from './tournaments-config'
+import type { GameType } from '~/core/types/Game'
 
 const props = defineProps<{ tournament: Tournament; closed?: boolean }>()
 
 const panel = ref<'leaderboard' | 'prizes'>('leaderboard')
 const detailsOpen = ref(!props.closed)
+const gamesIndex = ref(0)
 
 watch(
   () => props.closed,
@@ -38,6 +40,53 @@ const rulesNote = computed(() => props.tournament.ui?.rules_note ?? null)
 const leaderboard = computed(() => props.tournament.ui?.leaderboard ?? [])
 const standing = computed(() => props.tournament.ui?.user_standing ?? null)
 const showDetails = computed(() => !props.closed || detailsOpen.value)
+
+const tournamentGames = computed<GameType[]>(() =>
+  (props.tournament.games ?? [])
+    .map((game) => {
+      const gameId = String(game.game_id ?? game.pivot?.game_id ?? game.id ?? '')
+      const slug = game.slug || gameId
+      const imageUrl = game.thumbnail_url || game.thumbnail || props.tournament.thumbnail || ''
+
+      if (!gameId || !imageUrl) return null
+
+      return {
+        id: gameId,
+        name: game.name || `Game ${gameId}`,
+        imageUrl,
+        realPlayUrl: slug,
+        demoPlayUrl: slug,
+        hasDemo: false,
+      }
+    })
+    .filter((game): game is GameType => game !== null),
+)
+const canSlideGames = computed(() => tournamentGames.value.length > 3)
+const maxGamesIndex = computed(() => Math.max(0, tournamentGames.value.length - 3))
+const gamesTrackStyle = computed(() => ({
+  transform: `translateX(-${gamesIndex.value * (100 / 3)}%)`,
+}))
+
+watch(
+  () => props.tournament.id,
+  () => {
+    gamesIndex.value = 0
+  },
+)
+
+watch(maxGamesIndex, (maxIndex) => {
+  if (gamesIndex.value > maxIndex) {
+    gamesIndex.value = maxIndex
+  }
+})
+
+const goPrevGame = () => {
+  gamesIndex.value = Math.max(0, gamesIndex.value - 1)
+}
+
+const goNextGame = () => {
+  gamesIndex.value = Math.min(maxGamesIndex.value, gamesIndex.value + 1)
+}
 </script>
 <template>
   <div class="t-root mb-5">
@@ -134,6 +183,46 @@ const showDetails = computed(() => !props.closed || detailsOpen.value)
               <div class="t-rules__text">
                 <p v-if="description" class="t-desc">{{ description }}</p>
                 <p v-if="rulesNote" class="t-note">{{ rulesNote }}</p>
+              </div>
+
+              <div v-if="tournamentGames.length" class="t-games">
+                <div class="t-games__header">
+                  <div>
+                    <div class="t-games__eyebrow">Eligible Games</div>
+                    <div class="t-games__title">Play these games to score</div>
+                  </div>
+
+                  <div v-if="canSlideGames" class="t-games__arrows">
+                    <v-btn
+                      class="t-games__arrow"
+                      icon="mdi-chevron-left"
+                      variant="text"
+                      :disabled="gamesIndex === 0"
+                      @click="goPrevGame"
+                    />
+                    <v-btn
+                      class="t-games__arrow"
+                      icon="mdi-chevron-right"
+                      variant="text"
+                      :disabled="gamesIndex === maxGamesIndex"
+                      @click="goNextGame"
+                    />
+                  </div>
+                </div>
+
+                <div class="t-games__viewport">
+                  <div class="t-games__track" :style="gamesTrackStyle">
+                    <div
+                      v-for="game in tournamentGames"
+                      :key="`t-game-${props.tournament.id}-${game.id}`"
+                      class="t-games__slide"
+                    >
+                      <div class="t-games__tile">
+                        <GameItem :game="game" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </v-card>

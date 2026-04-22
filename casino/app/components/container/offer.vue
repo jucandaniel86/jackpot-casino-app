@@ -36,14 +36,15 @@ const { display } = useContainerOptions(options)
 }
 .offer-item {
   width: auto;
-  border-radius: 20px;
+  border-radius: var(--premium-radius);
   overflow: hidden;
   text-align: center;
-  border: 1px solid #494f65;
-  background-color: #12151b;
+  border: 1px solid var(--surface-border);
+  background-color: var(--surface-mid);
+  box-shadow: var(--premium-shadow);
 }
 .offer-content {
-  background-color: #12151b;
+  background-color: var(--surface-mid);
   padding: 0px 25px;
 }
 .offer-content p {

@@ -35,7 +35,9 @@
   position: absolute;
   width: 100%;
   color: #fff;
-  background-color: #0d0e12;
+  background:
+    radial-gradient(circle at 50% 35%, var(--base-color-soft), transparent 34%),
+    var(--surface-lowest);
 }
 
 .game-wrapper {
@@ -63,8 +65,8 @@
 }
 
 .game-tool-btn {
-  border: 1px solid #fff;
-  border-radius: 4px;
+  border: 1px solid var(--surface-border-strong);
+  border-radius: 8px;
   cursor: pointer;
   padding: 0;
   min-height: 24px;
@@ -74,6 +76,15 @@
   align-items: center;
   justify-content: center;
   color: #fff;
+  background: var(--surface-low);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.game-tool-btn:hover {
+  background: var(--surface-high);
+  border-color: color-mix(in srgb, var(--base-color) 32%, transparent);
 }
 
 .game-tool-btn:disabled {

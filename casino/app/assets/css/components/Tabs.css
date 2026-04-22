@@ -1,5 +1,6 @@
 .v-tab--selected .v-tab__slider {
   border-bottom: var(--tab-border-width) solid var(--active-tab-indicator) !important;
+  border-radius: 999px;
 }
 
 .v-tab {
@@ -14,16 +15,27 @@
   padding: var(--tab-padding) !important;
   text-shadow: none;
   text-transform: none !important;
-  background: none !important;
+  background: transparent !important;
   box-shadow: none !important;
+  margin-right: 4px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease !important;
 }
 
 .v-tab.v-tab--selected,
 .v-tab:hover {
   color: #fff !important;
-  background: none !important;
+  background: var(--base-color-soft) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--base-color) 18%, transparent) !important;
+  transform: none;
 }
 
 .v-tab:hover .v-btn__overlay {
   display: none;
+}
+
+.v-tabs {
+  border-radius: 999px;
 }

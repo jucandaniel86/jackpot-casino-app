@@ -11,7 +11,7 @@ return new class extends Migration
 		Schema::create('tournament_games', function (Blueprint $table) {
 			$table->uuid('id')->primary();
 			$table->uuid('tournament_id');
-			$table->uuid('game_id');
+			$table->string('game_id');
 			$table->timestamps();
 
 			$table->foreign('tournament_id')->references('id')->on('tournaments');
@@ -27,4 +27,3 @@ return new class extends Migration
 		Schema::dropIfExists('tournament_games');
 	}
 };
-

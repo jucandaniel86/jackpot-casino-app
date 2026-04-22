@@ -2,9 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="401fd9b1-32aa-4fdb-8b69-e6b94a3c2af5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Enums/ContainerSection.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Enums/ContainerSection.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Accordion.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Accordion.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Banner.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Banner.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Buttons.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Buttons.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Content.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Content.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Footer.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Footer.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/FooterMenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/FooterMenu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/GameItem.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/GameItem.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/GamePage.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/GamePage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/General.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/General.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Header.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Header.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Overlays.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Overlays.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Promotions.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Promotions.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/ProviderLogos.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/ProviderLogos.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Search.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Search.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Sidebar.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Sidebar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Tabs.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Tabs.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/Wallet.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/Wallet.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/shared/Colors.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/shared/Colors.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/components/auth/Wallet.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/components/auth/Wallet.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/components/base/FooterMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/components/base/FooterMenu.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/components/container/offer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/components/container/offer.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/components/icon/Logo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/components/icon/Logo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/components/icon/LogoSm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/components/icon/LogoSm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/components/wallet/deposit/deposit-walletconnect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/components/wallet/deposit/deposit-walletconnect.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/nuxt.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/nuxt.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/public/pepcasino_logo_sm.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,7 +233,7 @@
       <workItem from="1776783373535" duration="1355000" />
       <workItem from="1776846686941" duration="108000" />
       <workItem from="1776846821097" duration="170000" />
-      <workItem from="1776847001080" duration="1210000" />
+      <workItem from="1776847001080" duration="1848000" />
     </task>
     <servers />
   </component>

@@ -39,7 +39,7 @@
 }
 
 .content-page__wraper a {
-  color: var(--textlink-light-text-color);
+  color: var(--base-color);
   text-decoration-color: var(--textlink-light-decoration-color);
 }
 

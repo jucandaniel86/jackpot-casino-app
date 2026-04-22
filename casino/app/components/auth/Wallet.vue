@@ -66,10 +66,6 @@ const depositPepagy = async (): Promise<void> => {
   }, 600)
 }
 
-const buyPepagy = (): void => {
-  window.open(useRuntimeConfig().public.pepagyBuyURL, '_blank')
-  menu.value = false
-}
 const convertBalance = (balance: number, decimal: number) => Number(balance).toFixed(decimal)
 
 //computed
@@ -186,8 +182,8 @@ watch(isLogged, () => {
                 </div>
               </div>
               <div class="pa-2 d-flex align-center justify-center ga-2">
-                <v-btn color="purple" @click.prevent="depositPepagy">Deposit Pepagy</v-btn>
-                <v-btn color="purple" @click.prevent="buyPepagy">Buy Pepagy</v-btn>
+                <v-btn color="purple" @click.prevent="depositPepagy">Deposit</v-btn>
+                <v-btn color="purple">Buy</v-btn>
               </div>
             </div>
             <div class="wallet_currencies_wrapper">

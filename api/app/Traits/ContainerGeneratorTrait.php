@@ -11,7 +11,9 @@
 	use App\Models\Promotion;
 	use App\Models\Providers;
 	use App\Models\Sliders;
+	use App\Models\Tournament;
 	use App\Repositories\MenuRepository;
+	use Illuminate\Support\Carbon;
 	use Illuminate\Support\Str;
 
 	trait ContainerGeneratorTrait
@@ -297,6 +299,203 @@
 				'appearance' => [
 					'resolutionConfig' => $this->handleResolutionConfig($section)
 				]
+			];
+		}
+
+		/**
+		 * parseTournamentsContainer {ContainerSection::TOURNAMENTS}
+		 * returns tournaments in the format expected by the casino frontend tournaments-config.ts
+		 * @param $section
+		 * @return array
+		 */
+		private function parseTournamentsContainer($section): array
+		{
+			$data = is_array($section->data) ? $section->data : [];
+			$statuses = $data['statuses'] ?? ['active', 'upcoming', 'finished'];
+			$limit = (int)($data['limit'] ?? 20);
+
+			if (!is_array($statuses) || count($statuses) === 0) {
+				$statuses = ['active', 'upcoming', 'finished'];
+			}
+
+			if ($limit <= 0) {
+				$limit = 20;
+			}
+
+			$Tournaments = Tournament::query()
+				->with(['games', 'prizes'])
+				->whereIn('status', $statuses)
+				->orderByRaw("FIELD(status, 'active', 'upcoming', 'finished', 'scheduled', 'draft', 'cancelled')")
+				->orderBy('started_at')
+				->limit($limit)
+				->get()
+				->map(fn (Tournament $tournament) => $this->formatTournamentForFrontend($tournament))
+				->values();
+
+			return [
+				'id' => $section->id,
+				'children' => [],
+				'container' => $section->container,
+				'appearance' => [
+					'resolutionConfig' => $this->handleResolutionConfig($section)
+				],
+				'data' => [
+					'tournaments' => $Tournaments,
+				],
+			];
+		}
+
+		private function formatTournamentForFrontend(Tournament $tournament): array
+		{
+			$startedAt = $tournament->started_at ? Carbon::parse($tournament->started_at) : null;
+			$endedAt = $tournament->ended_at ? Carbon::parse($tournament->ended_at) : null;
+			$now = now();
+
+			return [
+				'id' => (string)$tournament->id,
+				'name' => (string)$tournament->name,
+				'thumbnail' => $tournament->thumbnail,
+				'started_at' => $this->formatTournamentDate($startedAt),
+				'ended_at' => $this->formatTournamentDate($endedAt),
+				'status' => (string)$tournament->status,
+				'point_rate' => (int)$tournament->point_rate,
+				'games' => $tournament->games->map(fn ($game) => [
+					'id' => (string)($game->pivot?->id ?? $game->id),
+					'tournament_id' => (string)($game->pivot?->tournament_id ?? $tournament->id),
+					'game_id' => (string)($game->game_id ?? $game->pivot?->game_id),
+					'name' => $game->name,
+					'slug' => $game->slug,
+					'thumbnail' => $game->thumbnail,
+					'thumbnail_url' => $game->thumbnail_url,
+					'created_at' => $this->formatTournamentDate($game->pivot?->created_at ? Carbon::parse($game->pivot->created_at) : null),
+					'updated_at' => $this->formatTournamentDate($game->pivot?->updated_at ? Carbon::parse($game->pivot->updated_at) : null),
+				])->values(),
+				'prizes' => $tournament->prizes->map(fn ($prize) => [
+					'id' => (string)$prize->id,
+					'tournament_id' => (string)$prize->tournament_id,
+					'prize_name' => (string)$prize->prize_name,
+					'prize_type' => (string)$prize->prize_type,
+					'rank_from' => $prize->rank_from !== null ? (int)$prize->rank_from : null,
+					'rank_to' => $prize->rank_to !== null ? (int)$prize->rank_to : null,
+					'min_points' => $prize->min_points !== null ? (int)$prize->min_points : null,
+					'prize_currency' => $prize->prize_currency,
+					'prize_amount' => $prize->prize_amount,
+					'metadata' => $prize->metadata,
+					'created_at' => $this->formatTournamentDate($prize->created_at ? Carbon::parse($prize->created_at) : null),
+					'updated_at' => $this->formatTournamentDate($prize->updated_at ? Carbon::parse($prize->updated_at) : null),
+				])->values(),
+				'ui' => [
+					'subtitle' => $this->buildTournamentSubtitle($tournament, $startedAt, $endedAt),
+					'is_live' => $tournament->status === 'active',
+					'players_count' => null,
+					'ends_in_label' => $endedAt ? $this->buildTournamentTimeLabel($endedAt, $now) : null,
+					'prize_pool_label' => $this->buildTournamentPrizePoolLabel($tournament),
+					'progress_percent' => $this->buildTournamentProgressPercent($startedAt, $endedAt, $now),
+					'protocols' => $this->buildTournamentProtocols($tournament, $startedAt, $endedAt),
+					'description' => 'Play eligible games and earn points to climb the tournament leaderboard.',
+					'rules_note' => 'Leaderboard and standing data are shown when scoring data is available.',
+					'leaderboard' => [],
+					'user_standing' => null,
+				],
+				'created_at' => $this->formatTournamentDate($tournament->created_at ? Carbon::parse($tournament->created_at) : null),
+				'updated_at' => $this->formatTournamentDate($tournament->updated_at ? Carbon::parse($tournament->updated_at) : null),
+			];
+		}
+
+		private function formatTournamentDate(?Carbon $date): ?string
+		{
+			return $date?->toIso8601String();
+		}
+
+		private function buildTournamentSubtitle(Tournament $tournament, ?Carbon $startedAt, ?Carbon $endedAt): ?string
+		{
+			if ($tournament->status === 'active' && $endedAt) {
+				return 'Live until ' . $endedAt->format('M j, Y H:i');
+			}
+
+			if (in_array($tournament->status, ['upcoming', 'scheduled'], true) && $startedAt) {
+				return 'Starts ' . $startedAt->format('M j, Y H:i');
+			}
+
+			if ($tournament->status === 'finished' && $endedAt) {
+				return 'Finished ' . $endedAt->format('M j, Y H:i');
+			}
+
+			return null;
+		}
+
+		private function buildTournamentTimeLabel(Carbon $endedAt, Carbon $now): string
+		{
+			if ($endedAt->lessThanOrEqualTo($now)) {
+				return 'Ended';
+			}
+
+			return $endedAt->diffForHumans($now, [
+				'parts' => 2,
+				'short' => true,
+				'syntax' => Carbon::DIFF_ABSOLUTE,
+			]);
+		}
+
+		private function buildTournamentPrizePoolLabel(Tournament $tournament): ?string
+		{
+			if ($tournament->prizes->isEmpty()) {
+				return null;
+			}
+
+			$currency = (string)($tournament->prizes->first()->prize_currency ?? 'GC');
+			$total = $tournament->prizes->sum(fn ($prize) => (float)$prize->prize_amount);
+
+			return trim($currency . ' ' . number_format($total, 2, '.', ','));
+		}
+
+		private function buildTournamentProgressPercent(?Carbon $startedAt, ?Carbon $endedAt, Carbon $now): int
+		{
+			if (!$startedAt || !$endedAt) {
+				return 0;
+			}
+
+			if ($now->lessThanOrEqualTo($startedAt)) {
+				return 0;
+			}
+
+			if ($now->greaterThanOrEqualTo($endedAt)) {
+				return 100;
+			}
+
+			$totalSeconds = max(1, $startedAt->diffInSeconds($endedAt));
+			$elapsedSeconds = $startedAt->diffInSeconds($now);
+
+			return (int)round(min(100, max(0, ($elapsedSeconds / $totalSeconds) * 100)));
+		}
+
+		private function buildTournamentProtocols(Tournament $tournament, ?Carbon $startedAt, ?Carbon $endedAt): array
+		{
+			return [
+				[
+					'label' => 'Start',
+					'value' => $startedAt ? $startedAt->format('M j, Y H:i') : '-',
+				],
+				[
+					'label' => 'End',
+					'value' => $endedAt ? $endedAt->format('M j, Y H:i') : '-',
+				],
+				[
+					'label' => 'Point Rate',
+					'value' => (int)$tournament->point_rate . ' points',
+				],
+				[
+					'label' => 'Games',
+					'value' => (string)$tournament->games->count(),
+				],
+				[
+					'label' => 'Prizes',
+					'value' => (string)$tournament->prizes->count(),
+				],
+				[
+					'label' => 'Status',
+					'value' => strtoupper((string)$tournament->status),
+				],
 			];
 		}
 

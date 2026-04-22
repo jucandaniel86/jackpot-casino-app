@@ -105,9 +105,9 @@ watchEffect(() => {
 </template>
 <style scoped>
 .wallet-address {
-  background: #21242e;
-  border: solid 1px #494f65;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.5);
+  background: var(--surface-high);
+  border: solid 1px var(--surface-border-strong);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
   color: #fff;
   height: 42px;
   min-height: 42px;
@@ -138,20 +138,20 @@ watchEffect(() => {
   width: 120px;
 }
 .wallet-address:hover {
-  background-color: #14151a;
-  border: 1px solid #494f65;
+  background-color: var(--surface-hover);
+  border: 1px solid color-mix(in srgb, var(--base-color) 34%, transparent);
 }
 .wallet-balance {
   color: rgb(172, 176, 195);
   height: 42px;
   margin-top: 5px;
-  background: rgb(33, 36, 46);
-  border-radius: 6px;
+  background: var(--surface-high);
+  border-radius: var(--input-border-radius);
   cursor: default;
   padding: 8px;
 }
 .wallet-balance:hover {
-  background: #2c303f;
+  background: var(--surface-hover);
 }
 .disclaimer {
   font-size: 14px;
@@ -162,7 +162,7 @@ watchEffect(() => {
 .back-btn {
   width: 100%;
   cursor: default;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
   height: 42px;
   min-height: 42px;
   padding: 10px 13px;
@@ -174,8 +174,12 @@ watchEffect(() => {
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1),
     border-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
     color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: var(--textlink-light-text-color);
-  color: #fff;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--base-color) 78%, #ffffff),
+    var(--base-color)
+  );
+  color: #111;
 }
 
 .deposit-btn:disabled {
@@ -184,11 +188,12 @@ watchEffect(() => {
 }
 
 .back-btn {
-  background-color: #21242e;
-  border: solid 1px #494f65;
+  background-color: var(--surface-high);
+  border: solid 1px var(--surface-border-strong);
+  color: #fff;
 }
 .back-btn:hover {
-  background-color: #14151a;
-  border: solid 1px #494f65;
+  background-color: var(--surface-hover);
+  border: solid 1px color-mix(in srgb, var(--base-color) 34%, transparent);
 }
 </style>

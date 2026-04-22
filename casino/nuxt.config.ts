@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Pepagy San Casino',
-      link: [{ rel: 'icon', type: 'image/png', href: '/pepcasino_logo_sm.png' }],
+      link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
     },
   },
 
@@ -15,17 +15,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseURL: process.env.API_URL || 'https://api.example.com/',
-      casinoID: process.env.CASINO_ID || 'gf-coin-casino',
-      seoTitle: process.env.SEO_TITLE || 'Pepagy Casino',
+      casinoID: process.env.CASINO_ID || 'jackpot-ro',
+      seoTitle: process.env.SEO_TITLE || 'Jackpot Casino',
       seoDescription:
-        process.env.SEO_DESCRIPTION || 'Pepagy Casino - Crypto casino and sportsbook.',
-      seoDisplayTitle: process.env.SEO_DISPLAY_TITLE || 'Pepagy Casino',
+        process.env.SEO_DESCRIPTION || 'Jackpot Casino - Crypto casino and sportsbook.',
+      seoDisplayTitle: process.env.SEO_DISPLAY_TITLE || 'Jackpot Casino',
       seoDisplayDescription:
-        process.env.SEO_DISPLAY_DESCRIPTION || 'Play with crypto at Pepagy Casino.',
-      pepagyBuyURL:
-        process.env.PEPAGY_BUY_URL ||
-        'https://pump.fun/coin/DdEgvcQxVP4dPHhPJJb5KqeYoZcEzVMd7PvXtB9Rpump',
-      pepagyBuyURLRadium: process.env.PEPAGY_BUY_RADIUM,
+        process.env.SEO_DISPLAY_DESCRIPTION || 'Play with crypto at Jackpot Casino.',
       payloadCryptoKey: process.env.NUXT_PUBLIC_PAYLOAD_CRYPTO_KEY,
       encrypted: process.env.NUXT_PUBLIC_ENCRYPTED || false,
       favoriteOption: process.env.ENABLE_FAVORITE_OPTION || 1,

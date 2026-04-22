@@ -1,18 +1,29 @@
 :root {
   --input-background-color: #21242e;
   --input-hover-background-color: #2c303f;
-  --input-border-radius: 6px;
+  --input-border-radius: 10px;
   --text-color: #acb0c3;
   --input-font-size: 16px;
   --input-font-weight: 400;
   --input-height: 23px;
   --input-padding: 8px;
-  --gametile-border-radius: 20px;
-  --search-results-bgcolor: #212338;
+  --gametile-border-radius: 14px;
+  --search-results-bgcolor: #181b22;
   --base-color: #ed5b25;
+  --base-color-soft: color-mix(in srgb, var(--base-color) 14%, transparent);
+  --base-color-muted: color-mix(in srgb, var(--base-color) 34%, #ffffff);
+  --surface-lowest: #0d0e12;
+  --surface-low: #15181e;
+  --surface-mid: #181b22;
+  --surface-high: #21242e;
+  --surface-hover: #2c303f;
+  --surface-border: rgba(255, 255, 255, 0.07);
+  --surface-border-strong: rgba(255, 255, 255, 0.12);
+  --premium-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
+  --premium-radius: 12px;
 
-  --arrowbut-text-color: #f2cf8e;
-  --arrowbut-bg-color: #000;
+  --arrowbut-text-color: var(--base-color);
+  --arrowbut-bg-color: rgba(13, 14, 18, 0.86);
 
   --gamesCategoryColumnCount: 8;
 
@@ -20,25 +31,25 @@
 
   --itemsPerRowLG: 5;
 
-  --accordion-header-background-color: #212338;
+  --accordion-header-background-color: #181b22;
   --accordion-header-text-color: #fff;
-  --accordion-border-radius: 8px;
+  --accordion-border-radius: 10px;
   --accordion-padding-left: 8px;
 
-  --textlink-light-text-color: #f2cf8e;
+  --textlink-light-text-color: var(--base-color);
 
   /** tabs */
   --tab-border-width: 2px;
-  --active-tab-indicator: #f2cf8e;
-  --tab-border-radius: 1px;
+  --active-tab-indicator: var(--base-color);
+  --tab-border-radius: 999px;
   --tab-font-size: 14px;
-  --tab-padding: 12px;
+  --tab-padding: 10px 14px;
   --tab-text-color: #acb0c3;
   --tab-font-weight: 700;
 
   /** footer */
-  --footer-background: #181b22;
-  --background-color: #35394a;
+  --footer-background: var(--surface-mid);
+  --background-color: var(--surface-high);
 
   --balance-header-component-height: 147;
   --balance-footer-atom-height: 60;

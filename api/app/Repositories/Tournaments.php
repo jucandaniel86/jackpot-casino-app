@@ -76,7 +76,7 @@ class Tournaments
 		if (!empty($filters['game_id'])) {
 			$gameId = (string)$filters['game_id'];
 			$query->whereHas('games', function ($q) use ($gameId) {
-				$q->where('game_id', $gameId);
+				$q->where('games.game_id', $gameId);
 			});
 		}
 
@@ -210,7 +210,7 @@ class Tournaments
 			]);
 			$tournament->save();
 
-			$tournament->games()->delete();
+			$tournament->tournamentGames()->delete();
 			$gameIds = $data['game_ids'] ?? [];
 			foreach ($gameIds as $gameId) {
 				TournamentGame::query()->create([
@@ -247,4 +247,3 @@ class Tournaments
 		$tournament->delete();
 	}
 }
-

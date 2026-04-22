@@ -6,9 +6,10 @@
   bottom: 0px;
   height: var(--footer-menu-height);
   width: 100%;
-  box-shadow: -3px -2px 5px #0a1c2766;
+  box-shadow: 0 -14px 34px rgba(0, 0, 0, 0.36);
   box-sizing: border-box;
-  background: #212338;
+  background: var(--surface-mid);
+  border-top: 1px solid var(--surface-border);
   z-index: 1201;
 }
 
@@ -20,7 +21,8 @@
   padding: 0px 0px 10px !important;
   height: 100% !important;
   box-sizing: border-box !important;
-  background: rgb(21, 24, 30) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent), var(--surface-low) !important;
 }
 
 .FooterMenuItem {
@@ -32,6 +34,15 @@
   margin: 0;
   border: 0;
   box-shadow: none;
+  border-radius: 12px;
+  min-width: 56px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.FooterMenuItem:hover {
+  background: var(--base-color-soft);
 }
 
 .FooterMenuItem svg {
@@ -41,6 +52,11 @@
   width: 1em;
   font-size: 24px;
   fill: rgb(224, 230, 255);
+  transition: fill 0.2s ease;
+}
+
+.FooterMenuItem:hover svg {
+  fill: var(--base-color);
 }
 
 .FooterMenuItem p {

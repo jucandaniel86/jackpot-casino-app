@@ -78,7 +78,8 @@ const mapFromItem = (item: Tournament) => {
   model.status = item.status ?? "draft";
   model.point_rate = Number(item.point_rate ?? 1);
   model.game_ids = Array.isArray(item.games)
-    ? item.games.map((g: any) => String(g.game_id))
+    ? item.games.map((g: any) => String(g.game_id ?? g.pivot?.game_id ?? ""))
+        .filter(Boolean)
     : [];
 
   model.prizes = Array.isArray(item.prizes)
@@ -186,15 +187,7 @@ function buildPayload(): TournamentPayload | null {
     return null;
   }
 
-  // Backend currently validates UUIDs for game_ids. Keep the UI flexible but warn early.
-  const invalidGameIds = model.game_ids.filter((id) => !uuidLike(String(id)));
-  if (invalidGameIds.length) {
-    toastError(
-      `Some game IDs are not valid UUIDs:\n${invalidGameIds.join("\n")}`,
-    );
-    return null;
-  }
-
+ 
   const prizes: TournamentPrizePayload[] = model.prizes.map((p) => {
     let meta: any = null;
     const raw = (p as any).metadata_text;

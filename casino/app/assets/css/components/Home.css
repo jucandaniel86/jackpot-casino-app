@@ -1,15 +1,15 @@
 .offer-card {
   width: 100%;
-  border-radius: 20px !important;
+  border-radius: var(--premium-radius) !important;
   overflow: hidden;
   text-align: center;
-  border: 1px solid #494f65 !important;
-  background-color: #12151b !important;
-  box-shadow: none;
+  border: 1px solid var(--surface-border) !important;
+  background-color: var(--surface-mid) !important;
+  box-shadow: var(--premium-shadow);
 }
 
 .offer-card .v-card-subtitle {
-  background-color: #12151b;
+  background-color: var(--surface-mid);
   padding: 0px 25px;
   opacity: 1;
   white-space: inherit !important;
