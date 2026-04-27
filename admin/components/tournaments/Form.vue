@@ -332,18 +332,9 @@ async function onSave() {
       </v-card-title>
       <v-divider />
       <v-card-text>
-        <div class="text-caption text-medium-emphasis mb-2">
-          Add game UUIDs. If you have a games lookup endpoint for UUIDs, this can
-          be wired into an async autocomplete.
-        </div>
-        <v-combobox
+        <SelectGames
           v-model="model.game_ids"
-          label="Game IDs"
-          multiple
-          chips
-          closable-chips
-          variant="outlined"
-          density="comfortable"
+          :initial-items="props.item?.games ?? []"
           :rules="[
             (v: any) =>
               Array.isArray(v) && v.length > 0
