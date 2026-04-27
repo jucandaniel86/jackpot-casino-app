@@ -9,11 +9,56 @@ const { display, styles } = useContainerOptions(options)
 const tournaments: Tournament[] = options.data.tournaments
 
 //composables
-const activeTournaments = tournaments.filter((t) => t.status === 'active')
-const upcomingTournaments = tournaments.filter((t) => t.status === 'upcoming')
-const finishedTournaments = tournaments.filter((t) => t.status === 'finished')
+const now = ref(new Date())
+
+const getTournamentStatusByDate = (tournament: Tournament) => {
+  const start = new Date(tournament.started_at)
+  const end = new Date(tournament.ended_at)
+
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return tournament.status
+  }
+
+  const currentTime = now.value.getTime()
+
+  if (currentTime < start.getTime()) return 'upcoming'
+  if (currentTime > end.getTime()) return 'finished'
+
+  return 'active'
+}
+
+const tournamentsByDate = computed<Tournament[]>(() =>
+  tournaments.map((tournament) => ({
+    ...tournament,
+    status: getTournamentStatusByDate(tournament),
+  })),
+)
+
+const activeTournaments = computed(() =>
+  tournamentsByDate.value.filter((tournament) => tournament.status === 'active'),
+)
+const upcomingTournaments = computed(() =>
+  tournamentsByDate.value.filter((tournament) => tournament.status === 'upcoming'),
+)
+const finishedTournaments = computed(() =>
+  tournamentsByDate.value.filter((tournament) => tournament.status === 'finished'),
+)
 
 const tab = ref<'active' | 'upcoming' | 'finished'>('active')
+
+let nowInterval: ReturnType<typeof setInterval> | null = null
+
+onMounted(() => {
+  nowInterval = setInterval(() => {
+    now.value = new Date()
+  }, 60 * 1000)
+})
+
+onBeforeUnmount(() => {
+  if (nowInterval) {
+    clearInterval(nowInterval)
+  }
+})
 </script>
 
 <template>

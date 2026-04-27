@@ -213,7 +213,7 @@
 			return Game::
 			when($request->has('name') && strlen($request->get('name')) > 1, function ($query) use ($request) {
 				$query->whereRaw("`name` LIKE '%{$request->get('name')}%' OR game_id LIKE '%{$request->get('name')}%'");
-			})->selectRaw('name, id, thumbnail')
+			})->selectRaw('name, id, game_id, thumbnail')
 				->get()->toArray();
 		}
 

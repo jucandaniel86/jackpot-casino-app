@@ -2,7 +2,9 @@
 
 	namespace App\Providers;
 
+	use App\Models\Bet;
 	use App\Models\Player;
+	use App\Observers\BetObserver;
 	use App\Observers\PlayerObserver;
 	use Illuminate\Support\ServiceProvider;
 	use Illuminate\Mail\Events\MessageSending;
@@ -29,6 +31,7 @@
 		public function boot(): void
 		{
 			Player::observe(PlayerObserver::class);
+			Bet::observe(BetObserver::class);
 
 			Event::listen([MessageSending::class, MessageSent::class], function (object $event) {
 				$message = $event->message ?? null;

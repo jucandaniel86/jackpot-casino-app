@@ -12,8 +12,12 @@
 	use App\Models\Providers;
 	use App\Models\Sliders;
 	use App\Models\Tournament;
+	use App\Models\TournamentPrize;
 	use App\Repositories\MenuRepository;
+	use Illuminate\Support\Collection;
 	use Illuminate\Support\Carbon;
+	use Illuminate\Support\Facades\DB;
+	use Illuminate\Support\Facades\Schema;
 	use Illuminate\Support\Str;
 
 	trait ContainerGeneratorTrait
@@ -384,23 +388,23 @@
 					'created_at' => $this->formatTournamentDate($prize->created_at ? Carbon::parse($prize->created_at) : null),
 					'updated_at' => $this->formatTournamentDate($prize->updated_at ? Carbon::parse($prize->updated_at) : null),
 				])->values(),
-				'ui' => [
-					'subtitle' => $this->buildTournamentSubtitle($tournament, $startedAt, $endedAt),
-					'is_live' => $tournament->status === 'active',
-					'players_count' => null,
-					'ends_in_label' => $endedAt ? $this->buildTournamentTimeLabel($endedAt, $now) : null,
-					'prize_pool_label' => $this->buildTournamentPrizePoolLabel($tournament),
-					'progress_percent' => $this->buildTournamentProgressPercent($startedAt, $endedAt, $now),
-					'protocols' => $this->buildTournamentProtocols($tournament, $startedAt, $endedAt),
-					'description' => 'Play eligible games and earn points to climb the tournament leaderboard.',
-					'rules_note' => 'Leaderboard and standing data are shown when scoring data is available.',
-					'leaderboard' => [],
-					'user_standing' => null,
-				],
-				'created_at' => $this->formatTournamentDate($tournament->created_at ? Carbon::parse($tournament->created_at) : null),
-				'updated_at' => $this->formatTournamentDate($tournament->updated_at ? Carbon::parse($tournament->updated_at) : null),
-			];
-		}
+					'ui' => [
+						'subtitle' => $this->buildTournamentSubtitle($tournament, $startedAt, $endedAt),
+						'is_live' => $tournament->status === 'active',
+						'players_count' => $this->buildTournamentPlayersCount($tournament),
+						'ends_in_label' => $endedAt ? $this->buildTournamentTimeLabel($endedAt, $now) : null,
+						'prize_pool_label' => $this->buildTournamentPrizePoolLabel($tournament),
+						'progress_percent' => $this->buildTournamentProgressPercent($startedAt, $endedAt, $now),
+						'protocols' => $this->buildTournamentProtocols($tournament, $startedAt, $endedAt),
+						'description' => 'Play eligible games and earn points to climb the tournament leaderboard.',
+						'rules_note' => 'Leaderboard and standing data are shown when scoring data is available.',
+						'leaderboard' => $this->buildTournamentLeaderboard($tournament, 10),
+						'user_standing' => null,
+					],
+					'created_at' => $this->formatTournamentDate($tournament->created_at ? Carbon::parse($tournament->created_at) : null),
+					'updated_at' => $this->formatTournamentDate($tournament->updated_at ? Carbon::parse($tournament->updated_at) : null),
+				];
+			}
 
 		private function formatTournamentDate(?Carbon $date): ?string
 		{
@@ -469,9 +473,9 @@
 			return (int)round(min(100, max(0, ($elapsedSeconds / $totalSeconds) * 100)));
 		}
 
-		private function buildTournamentProtocols(Tournament $tournament, ?Carbon $startedAt, ?Carbon $endedAt): array
-		{
-			return [
+			private function buildTournamentProtocols(Tournament $tournament, ?Carbon $startedAt, ?Carbon $endedAt): array
+			{
+				return [
 				[
 					'label' => 'Start',
 					'value' => $startedAt ? $startedAt->format('M j, Y H:i') : '-',
@@ -496,8 +500,86 @@
 					'label' => 'Status',
 					'value' => strtoupper((string)$tournament->status),
 				],
-			];
-		}
+				];
+			}
+
+			private function buildTournamentPlayersCount(Tournament $tournament): ?int
+			{
+				if (!Schema::hasTable('tournament_scores')) {
+					return null;
+				}
+
+				return (int)DB::table('tournament_scores')
+					->where('tournament_id', $tournament->id)
+					->count();
+			}
+
+			private function buildTournamentLeaderboard(Tournament $tournament, int $limit = 10): array
+			{
+				if (!Schema::hasTable('tournament_scores')) {
+					return [];
+				}
+
+				$limit = max(1, min(50, $limit));
+
+				$rows = DB::table('tournament_scores as ts')
+					->join('players as p', 'p.id', '=', 'ts.user_id')
+					->where('ts.tournament_id', $tournament->id)
+					->orderByDesc('ts.points')
+					->orderBy('ts.updated_at')
+					->orderBy('ts.user_id')
+					->limit($limit)
+					->get([
+						'ts.points as points',
+						'p.username as username',
+					]);
+
+				$leaderboard = [];
+				$position = 1;
+				foreach ($rows as $row) {
+					$score = (int)$row->points;
+					$leaderboard[] = [
+						'position' => $position,
+						'player' => (string)$row->username,
+						'score' => $score,
+						'prize_label' => $this->buildTournamentPrizeLabelFor($tournament->prizes, $position, $score),
+					];
+					$position++;
+				}
+
+				return $leaderboard;
+			}
+
+			private function buildTournamentPrizeLabelFor(Collection $prizes, int $position, int $score): string
+			{
+				$rankPrize = $prizes
+					->where('prize_type', 'rank')
+					->first(function (TournamentPrize $prize) use ($position) {
+						$from = $prize->rank_from !== null ? (int)$prize->rank_from : null;
+						$to = $prize->rank_to !== null ? (int)$prize->rank_to : null;
+
+						if ($from === null || $to === null) {
+							return false;
+						}
+						return $position >= $from && $position <= $to;
+					});
+
+				if ($rankPrize) {
+					return (string)$rankPrize->prize_name;
+				}
+
+				$thresholdPrize = $prizes
+					->where('prize_type', 'threshold')
+					->filter(fn (TournamentPrize $prize) => $prize->min_points !== null && $score >= (int)$prize->min_points)
+					->sortByDesc(fn (TournamentPrize $prize) => (int)$prize->min_points)
+					->first();
+
+				if ($thresholdPrize) {
+					return (string)$thresholdPrize->prize_name;
+				}
+
+				return '-';
+			}
 
 		/**
 		 * @param string $container
