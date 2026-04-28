@@ -8,6 +8,7 @@
 	use App\Http\Resources\PromotionCardResource;
 	use App\Http\Resources\ProviderResource;
 	use App\Http\Resources\SliderResource;
+	use App\Models\Bundle;
 	use App\Models\Promotion;
 	use App\Models\Providers;
 	use App\Models\Sliders;
@@ -327,7 +328,7 @@
 			}
 
 			$Tournaments = Tournament::query()
-				->with(['games', 'prizes'])
+				->with(['tournamentGames.game', 'prizes'])
 				->whereIn('status', $statuses)
 				->orderByRaw("FIELD(status, 'active', 'upcoming', 'finished', 'scheduled', 'draft', 'cancelled')")
 				->orderBy('started_at')
@@ -354,25 +355,28 @@
 			$startedAt = $tournament->started_at ? Carbon::parse($tournament->started_at) : null;
 			$endedAt = $tournament->ended_at ? Carbon::parse($tournament->ended_at) : null;
 			$now = now();
+			$tournamentGames = $tournament->tournamentGames
+				->filter(fn ($tournamentGame) => $tournamentGame->game !== null)
+				->values();
 
 			return [
 				'id' => (string)$tournament->id,
 				'name' => (string)$tournament->name,
-				'thumbnail' => $tournament->thumbnail,
+				'thumbnail' => $tournament->thumbnail_url ?? ($tournament->thumbnail ? url(config('casino.uploads.tournaments') . $tournament->thumbnail) : null),
 				'started_at' => $this->formatTournamentDate($startedAt),
 				'ended_at' => $this->formatTournamentDate($endedAt),
 				'status' => (string)$tournament->status,
 				'point_rate' => (int)$tournament->point_rate,
-				'games' => $tournament->games->map(fn ($game) => [
-					'id' => (string)($game->pivot?->id ?? $game->id),
-					'tournament_id' => (string)($game->pivot?->tournament_id ?? $tournament->id),
-					'game_id' => (string)($game->game_id ?? $game->pivot?->game_id),
-					'name' => $game->name,
-					'slug' => $game->slug,
-					'thumbnail' => $game->thumbnail,
-					'thumbnail_url' => $game->thumbnail_url,
-					'created_at' => $this->formatTournamentDate($game->pivot?->created_at ? Carbon::parse($game->pivot->created_at) : null),
-					'updated_at' => $this->formatTournamentDate($game->pivot?->updated_at ? Carbon::parse($game->pivot->updated_at) : null),
+				'games' => $tournamentGames->map(fn ($tournamentGame) => [
+					'id' => (string)$tournamentGame->id,
+					'tournament_id' => (string)$tournamentGame->tournament_id,
+					'game_id' => (string)$tournamentGame->game_id,
+					'name' => $tournamentGame->game->name,
+					'slug' => $tournamentGame->game->slug,
+					'thumbnail' => $tournamentGame->game->thumbnail,
+					'thumbnail_url' => $tournamentGame->game->thumbnail_url,
+					'created_at' => $this->formatTournamentDate($tournamentGame->created_at ? Carbon::parse($tournamentGame->created_at) : null),
+					'updated_at' => $this->formatTournamentDate($tournamentGame->updated_at ? Carbon::parse($tournamentGame->updated_at) : null),
 				])->values(),
 				'prizes' => $tournament->prizes->map(fn ($prize) => [
 					'id' => (string)$prize->id,
@@ -596,6 +600,78 @@
 				'appearance' => [
 					'resolutionConfig' => $this->handleResolutionConfig([])
 				]
+			];
+		}
+
+    private function parseBundlesContainer($section): array
+    {
+      $now = now();
+      $limit = (int)($section->data['limit'] ?? 24);
+
+      if ($limit <= 0) {
+        $limit = 24;
+      }
+
+      $bundles = Bundle::query()
+        ->where('is_active', true)
+        ->where(function ($query) use ($now) {
+          $query->whereNull('starts_at')->orWhere('starts_at', '<=', $now);
+        })
+        ->where(function ($query) use ($now) {
+          $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
+        })
+        ->orderByDesc('is_featured')
+        ->orderBy('sort_order')
+        ->orderByDesc('created_at')
+        ->limit($limit)
+        ->get()
+        ->map(fn (Bundle $bundle) => $this->formatBundleForFrontend($bundle))
+        ->values();
+
+      return [
+        'id' => $section->id,
+        'children' => [],
+        'data' => [
+          'bundles' => $bundles,
+          'featuredBundles' => $bundles->where('tier', 'featured')->values(),
+          'standardBundles' => $bundles->where('tier', 'standard')->values(),
+        ],
+        'container' => $section->container,
+        'appearance' => [
+          'resolutionConfig' => $this->handleResolutionConfig($section)
+        ]
+      ];
+    }
+
+		private function formatBundleForFrontend(Bundle $bundle): array
+		{
+			$priceAmount = (float)$bundle->price_amount;
+			$coins = (int)round((float)$bundle->coin_amount > 0 ? (float)$bundle->coin_amount : (float)$bundle->gc_amount);
+			$priceCurrency = strtoupper((string)($bundle->price_currency ?: 'EUR'));
+			$priceLabel = trim($priceCurrency . ' ' . number_format($priceAmount, 2, '.', ','));
+
+			return [
+				'id' => (string)$bundle->id,
+				'name' => (string)$bundle->name,
+				'coins' => $coins,
+				'priceLabel' => $priceLabel,
+				'icon' => $bundle->icon ?: 'mdi-coins',
+				'tier' => $bundle->is_featured ? 'featured' : 'standard',
+				'badge' => $bundle->badge_text ?: $bundle->label,
+				'bonusLabel' => $bundle->ribbon_text ?: $bundle->subtitle,
+				'featured' => (bool)$bundle->is_featured,
+				'popular' => (bool)$bundle->is_popular,
+				'thumbnail' => $bundle->thumbnail,
+				'image_url' => $bundle->image_url,
+				'slug' => $bundle->slug,
+				'short_description' => $bundle->short_description,
+				'description' => $bundle->description,
+				'price_amount' => $bundle->price_amount,
+				'price_currency' => $bundle->price_currency,
+				'gc_amount' => $bundle->gc_amount,
+				'coin_amount' => $bundle->coin_amount,
+				'cta_text' => $bundle->cta_text,
+				'metadata' => $bundle->metadata,
 			];
 		}
 	}

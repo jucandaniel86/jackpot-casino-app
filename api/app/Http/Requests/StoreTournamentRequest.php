@@ -17,6 +17,7 @@ class StoreTournamentRequest extends FormRequest
 		return [
 			'name' => 'required|string|max:255',
 			'thumbnail' => 'nullable|string|max:500',
+			'thumbnail_file' => 'nullable|image|max:5120',
 			'started_at' => 'required|date',
 			'ended_at' => 'required|date|after:started_at',
 			'status' => 'required|in:draft,scheduled,active,finished,cancelled',
@@ -63,4 +64,3 @@ class StoreTournamentRequest extends FormRequest
 		});
 	}
 }
-

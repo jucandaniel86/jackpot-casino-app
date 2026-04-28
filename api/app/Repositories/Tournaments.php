@@ -2,9 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Models\Game;
 use App\Models\Tournament;
 use App\Models\TournamentGame;
 use App\Models\TournamentPrize;
+use App\Traits\UploadFilesTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
@@ -12,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 
 class Tournaments
 {
+	use UploadFilesTrait;
+
 	/**
 	 * @param array{
 	 *   status?: string|null,
@@ -32,7 +36,7 @@ class Tournaments
 		$now = now();
 
 		$query = Tournament::query()
-			->with(['games', 'prizes']);
+			->with(['tournamentGames.game', 'prizes']);
 
 		if (!empty($filters['status'])) {
 			$query->where('status', (string)$filters['status']);
@@ -75,8 +79,8 @@ class Tournaments
 
 		if (!empty($filters['game_id'])) {
 			$gameId = (string)$filters['game_id'];
-			$query->whereHas('games', function ($q) use ($gameId) {
-				$q->where('games.game_id', $gameId);
+			$query->whereHas('tournamentGames', function ($q) use ($gameId) {
+				$q->where('game_id', $gameId);
 			});
 		}
 
@@ -98,20 +102,23 @@ class Tournaments
 			$perPage = 100;
 		}
 
-		return $query->paginate($perPage);
+		$paginator = $query->paginate($perPage);
+		$paginator->getCollection()->transform(fn (Tournament $tournament) => $this->hydrateGamesRelation($tournament));
+
+		return $paginator;
 	}
 
 	public function find(string $id): Tournament
 	{
 		$tournament = Tournament::query()
-			->with(['games', 'prizes'])
+			->with(['tournamentGames.game', 'prizes'])
 			->find($id);
 
 		if (!$tournament) {
 			throw (new ModelNotFoundException())->setModel(Tournament::class, [$id]);
 		}
 
-		return $tournament;
+		return $this->hydrateGamesRelation($tournament);
 	}
 
 	/**
@@ -147,8 +154,10 @@ class Tournaments
 				'point_rate' => (int)$data['point_rate'],
 			]);
 
+			$this->persistThumbnail($tournament, $data);
+
 			$gameIds = $data['game_ids'] ?? [];
-			foreach ($gameIds as $gameId) {
+			foreach ($this->normalizeGameIds($gameIds) as $gameId) {
 				TournamentGame::query()->create([
 					'tournament_id' => $tournament->id,
 					'game_id' => $gameId,
@@ -210,9 +219,11 @@ class Tournaments
 			]);
 			$tournament->save();
 
+			$this->persistThumbnail($tournament, $data);
+
 			$tournament->tournamentGames()->delete();
 			$gameIds = $data['game_ids'] ?? [];
-			foreach ($gameIds as $gameId) {
+			foreach ($this->normalizeGameIds($gameIds) as $gameId) {
 				TournamentGame::query()->create([
 					'tournament_id' => $tournament->id,
 					'game_id' => $gameId,
@@ -242,8 +253,88 @@ class Tournaments
 	public function delete(string $id): void
 	{
 		$tournament = $this->find($id);
+		$this->deleteTournamentThumbnail($tournament);
 
 		// Keep children rows intact for audit/history; the tournament is soft-deleted only.
 		$tournament->delete();
+	}
+
+	private function hydrateGamesRelation(Tournament $tournament): Tournament
+	{
+		$games = $tournament->tournamentGames
+			->filter(fn (TournamentGame $tournamentGame) => $tournamentGame->game !== null)
+			->map(function (TournamentGame $tournamentGame) use ($tournament) {
+				$game = $tournamentGame->game;
+				$game->setAttribute('tournament_id', (string)$tournament->id);
+				$game->setAttribute('created_at', $tournamentGame->created_at);
+				$game->setAttribute('updated_at', $tournamentGame->updated_at);
+
+				return $game;
+			})
+			->values();
+
+		$tournament->setRelation('games', $games);
+
+		return $tournament;
+	}
+
+	/**
+	 * Accept both games.id and games.game_id from admin/API input,
+	 * but always persist the external game_id in tournament_games.
+	 *
+	 * @param array<int, string|int> $gameIds
+	 * @return array<int, string>
+	 */
+	private function normalizeGameIds(array $gameIds): array
+	{
+		$normalized = [];
+
+		foreach ($gameIds as $rawGameId) {
+			$value = trim((string)$rawGameId);
+
+			if ($value === '') {
+				continue;
+			}
+
+			$game = Game::query()
+				->where('game_id', $value)
+				->orWhere('id', $value)
+				->first();
+
+			$normalized[] = (string)($game?->game_id ?? $value);
+		}
+
+		return array_values(array_unique($normalized));
+	}
+
+	/**
+	 * @param array<string, mixed> $data
+	 */
+	private function persistThumbnail(Tournament $tournament, array $data): void
+	{
+		if (!isset($data['thumbnail_file']) || $data['thumbnail_file'] === 'null' || $data['thumbnail_file'] === null) {
+			return;
+		}
+
+		$path = config('casino.uploads.tournaments');
+		$filePath = $path . $tournament->thumbnail;
+
+		$thumbnail = $this->uploadThumbnail($data['thumbnail_file'], $path, $tournament->name, function () use ($filePath) {
+			if (@is_file(public_path($filePath))) {
+				@unlink(public_path($filePath));
+			}
+		});
+
+		$tournament->thumbnail = $thumbnail;
+		$tournament->save();
+	}
+
+	private function deleteTournamentThumbnail(Tournament $tournament): void
+	{
+		$filePath = config('casino.uploads.tournaments') . $tournament->thumbnail;
+
+		if (@is_file(public_path($filePath))) {
+			@unlink(public_path($filePath));
+		}
 	}
 }

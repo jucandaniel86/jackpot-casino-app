@@ -150,6 +150,11 @@ watch(props, () => {
         :key="section.id"
         :options="section"
       />
+      <container-buy-bundles-list
+        v-if="section.container === ContainerSection.BUNDLES"
+        :key="section.id"
+        :options="section"
+      />
     </template>
   </div>
 </template>

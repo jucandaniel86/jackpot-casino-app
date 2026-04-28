@@ -15,7 +15,7 @@
 		'rpc' => [
 			'solana' => env('SOLANA_RPC_URL', 'https://api.mainnet-beta.solana.com'),
 		],
-		'defaultCurrency' => 'SOLANA:PEP',
+		'defaultCurrency' => 'JKP',
 		'treasury_wallet_ids' => [
 			// currency_id => wallet_id
 			'PEP' => env('TREASURY_WALLET_ID_SOLANA_PEP'),

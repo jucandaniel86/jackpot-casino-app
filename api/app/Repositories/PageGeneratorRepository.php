@@ -105,6 +105,9 @@
 					case ContainerSection::TOURNAMENTS->value:
     				$_return[] = $this->parseTournamentsContainer($section);
 						break;
+          case ContainerSection::BUNDLES->value:
+            $_return[] = $this->parseBundlesContainer($section);
+            break;
 				}
 			}
 			return $_return;

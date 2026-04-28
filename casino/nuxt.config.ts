@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'Pepagy San Casino',
+      title: 'Jackpot Casino',
       link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
     },
   },

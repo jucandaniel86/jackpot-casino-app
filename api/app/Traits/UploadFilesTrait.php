@@ -9,12 +9,17 @@ trait UploadFilesTrait
 {
     function uploadThumbnail($file, $path, $name = '', $deleteCallback = null) {
         $new_thumbnail_name = Str::slug($name, '-') . '_' .  Str::random(5)  .  '.' . $file->getClientOriginalExtension();
+        $directory = public_path($path);
 
         if(is_callable($deleteCallback)) {
             $deleteCallback();
         }
 
-        $file->move(public_path($path), $new_thumbnail_name);
+        if (!is_dir($directory)) {
+            @mkdir($directory, 0755, true);
+        }
+
+        $file->move($directory, $new_thumbnail_name);
 
         return $new_thumbnail_name;
     }

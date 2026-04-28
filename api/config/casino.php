@@ -11,7 +11,8 @@
 			'logos' => '/uploads/logos/',
 			'promotions' => '/uploads/promotions/',
 			'providers' => '/uploads/providers/',
-			'sliders' => '/uploads/sliders/'
+			'sliders' => '/uploads/sliders/',
+			'tournaments' => '/uploads/tournaments/'
 		],
 		'demoCurrency' => 'FUN',
 		'defaultCasinoId' => env('DEFAULT_CASINO_ID', 'gf-coin-casino')

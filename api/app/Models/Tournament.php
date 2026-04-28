@@ -22,10 +22,23 @@ class Tournament extends Model
 		'point_rate',
 	];
 
+	protected $appends = [
+		'thumbnail_url',
+	];
+
 	protected $casts = [
 		'started_at' => 'datetime',
 		'ended_at' => 'datetime',
 	];
+
+	public function getThumbnailUrlAttribute(): ?string
+	{
+		if (!$this->thumbnail) {
+			return null;
+		}
+
+		return url(config('casino.uploads.tournaments') . $this->thumbnail);
+	}
 
 	public function games(): BelongsToMany
 	{

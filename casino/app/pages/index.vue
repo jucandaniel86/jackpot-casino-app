@@ -10,7 +10,7 @@ import { useSeoSettings } from '~/composables/useSeoSettings'
 import { useSidebarStore } from '~/core/store/sidebar'
 
 useHead({
-  title: 'Pepagy San Casino',
+  title: 'Jackpot Casino',
 })
 
 definePageMeta({

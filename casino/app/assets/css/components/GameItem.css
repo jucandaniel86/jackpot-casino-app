@@ -310,6 +310,13 @@
   position: absolute;
 }
 
+.carousel_btn svg {
+  width: 20px;
+  height: 20px;
+  color: var(--base-color);
+  fill: currentcolor;
+}
+
 .carousel_btn:hover {
   opacity: 1;
 }

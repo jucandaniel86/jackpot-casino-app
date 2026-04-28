@@ -11,6 +11,7 @@
 	use Illuminate\Mail\Events\MessageSent;
 	use Illuminate\Support\Facades\Event;
 	use Illuminate\Support\Facades\Log;
+	use Illuminate\Support\Facades\URL;
 
 	class AppServiceProvider extends ServiceProvider
 	{
@@ -30,6 +31,10 @@
 		 */
 		public function boot(): void
 		{
+			if (app()->environment('production')) {
+				URL::forceScheme('https');
+			}
+
 			Player::observe(PlayerObserver::class);
 			Bet::observe(BetObserver::class);
 

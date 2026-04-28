@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/core/store/auth'
 import { OverlaysTypes } from '~/core/types/Overlays'
-import BuyBundleCard from './BuyBundleCard.vue'
+import BuyBundleCard from './bundle-item.vue'
 import {
   buyBundleFilters,
   featuredBuyBundles,
@@ -9,6 +9,10 @@ import {
   type BuyBundle,
   type BuyBundleFilter,
 } from './buy-bundles-config'
+import type { ContainerType } from '~/core/types/Container'
+
+const { options } = defineProps<{ options: ContainerType }>()
+const { display, styles } = useContainerOptions(options)
 
 const router = useRouter()
 const { isLogged } = storeToRefs(useAuthStore())
@@ -34,7 +38,7 @@ const openPurchaseFlow = () => {
 </script>
 
 <template>
-  <div class="bb-page">
+  <div v-if="display" :id="options.id" :style="styles" class="bb-page">
     <section class="bb-hero">
       <div class="bb-hero__copy">
         <div class="bb-eyebrow">Sovereign Vault</div>

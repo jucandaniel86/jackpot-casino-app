@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div v-if="display" :id="options.id" :style="styles">
-    <v-btn-toggle v-model="tab" class="t-tabs" mandatory>
+    <v-btn-toggle v-model="tab" class="t-tabs mt-4" mandatory>
       <v-btn class="t-tab" :class="{ 't-tab--active': tab === 'active' }" value="active">
         Active
       </v-btn>

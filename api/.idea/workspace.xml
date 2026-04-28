@@ -2,18 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61ca90ed-6a03-40a4-98a4-3b2d16e4f8c6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/api.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/api.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sshConfigs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sshConfigs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreTournamentRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/StoreTournamentRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateTournamentRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/UpdateTournamentRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Tournament.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Tournament.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/GameRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/GameRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/Tournaments.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/Tournaments.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/WalletRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/WalletRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Traits/ContainerGeneratorTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/ContainerGeneratorTrait.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/integrations.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/integrations.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Traits/UploadFilesTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/UploadFilesTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/casino.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/casino.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/crypto.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/crypto.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/mailsettings.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/mailsettings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/frontend-casino.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/frontend-casino.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/GameItem.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/GameItem.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/nuxt.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/nuxt.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,10 +197,6 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ComposerRunConfigurationType" factoryName="Composer Script">
-      <option name="pathToComposerJson" value="$PROJECT_DIR$/composer.json" />
-      <method v="2" />
-    </configuration>
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner scope="XML" />
       <method v="2" />

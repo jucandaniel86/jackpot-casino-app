@@ -91,7 +91,7 @@
 		 */
 		public function remove($id)
 		{
-			$result = $this->deleteByID(Wallet::class, $id);
+			$result = $this->deleteByID(WalletType::class, $id);
 			return $result;
 		}
 
