@@ -43,6 +43,7 @@ export type Tournament = {
   id: string;
   name: string;
   thumbnail: string | null;
+  thumbnail_url?: string | null;
   started_at: string;
   ended_at: string;
   status: TournamentStatus;
@@ -84,6 +85,7 @@ export type TournamentPrizePayload = {
 export type TournamentPayload = {
   name: string;
   thumbnail?: string | null;
+  thumbnail_file?: File | File[] | null;
   started_at: string;
   ended_at: string;
   status: TournamentStatus;

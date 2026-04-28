@@ -3,7 +3,7 @@ import moment from "moment";
 import FinanceOpsOverview from "~/components/stats/FinanceOpsOverview.vue";
 import { useLayoutStore } from "~/store/app";
 
-const currency = ref("PEP");
+const currency = ref(useDefaultCurrency());
 const { currentCasinoId } = storeToRefs(useLayoutStore());
 
 // default: today

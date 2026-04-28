@@ -54,7 +54,7 @@ const deleteItem = async (id: number) => {
 };
 </script>
 <template>
-  <v-card>
+  <v-card class="games-page-card">
     <v-card-title class="d-flex justify-space-between">
       <GamesFilters :loading="loading" @onReload="reloadList" />
       <v-btn
@@ -65,7 +65,7 @@ const deleteItem = async (id: number) => {
         >Add Game</v-btn
       >
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="games-page-card__content">
       <GamesList
         :items="items"
         :loading="loading"
@@ -77,3 +77,21 @@ const deleteItem = async (id: number) => {
     </v-card-text>
   </v-card>
 </template>
+<style scoped>
+.games-page-card {
+  height: calc(100vh - 170px);
+  display: flex;
+  flex-direction: column;
+}
+
+.games-page-card__content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.games-page-card__content :deep(.games-list-table) {
+  flex: 1;
+  min-height: 0;
+}
+</style>

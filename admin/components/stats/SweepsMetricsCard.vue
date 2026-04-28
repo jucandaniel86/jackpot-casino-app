@@ -12,7 +12,7 @@ const metrics = ref({
   pending: { count: 0, amount_ui: "0" },
   failed: { count: 0, amount_ui: "0" },
 });
-const symbol = ref("PEP");
+const symbol = ref(useDefaultCurrency());
 const pendingLoading = ref(false);
 
 const periodLabel = computed(() => {

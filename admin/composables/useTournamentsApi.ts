@@ -52,6 +52,58 @@ const unwrap = <T>(payload: any): T => {
   return (payload?.data ?? payload) as T;
 };
 
+const appendTournamentFormData = (formData: FormData, payload: TournamentPayload) => {
+  formData.append("name", String(payload.name ?? ""));
+  if (payload.thumbnail !== undefined && payload.thumbnail !== null) {
+    formData.append("thumbnail", String(payload.thumbnail));
+  }
+  formData.append("started_at", String(payload.started_at ?? ""));
+  formData.append("ended_at", String(payload.ended_at ?? ""));
+  formData.append("status", String(payload.status ?? ""));
+  formData.append("point_rate", String(payload.point_rate ?? 1));
+
+  payload.game_ids.forEach((gameId, index) => {
+    formData.append(`game_ids[${index}]`, String(gameId));
+  });
+
+  (payload.prizes ?? []).forEach((prize, index) => {
+    formData.append(`prizes[${index}][prize_name]`, String(prize.prize_name ?? ""));
+    formData.append(`prizes[${index}][prize_type]`, String(prize.prize_type ?? "rank"));
+
+    if (prize.rank_from !== undefined && prize.rank_from !== null) {
+      formData.append(`prizes[${index}][rank_from]`, String(prize.rank_from));
+    }
+    if (prize.rank_to !== undefined && prize.rank_to !== null) {
+      formData.append(`prizes[${index}][rank_to]`, String(prize.rank_to));
+    }
+    if (prize.min_points !== undefined && prize.min_points !== null) {
+      formData.append(`prizes[${index}][min_points]`, String(prize.min_points));
+    }
+    if (prize.prize_currency !== undefined && prize.prize_currency !== null) {
+      formData.append(`prizes[${index}][prize_currency]`, String(prize.prize_currency));
+    }
+
+    formData.append(`prizes[${index}][prize_amount]`, String(prize.prize_amount ?? 0));
+
+    if (prize.metadata && typeof prize.metadata === "object") {
+      Object.entries(prize.metadata).forEach(([key, value]) => {
+        formData.append(
+          `prizes[${index}][metadata][${key}]`,
+          typeof value === "string" ? value : JSON.stringify(value),
+        );
+      });
+    }
+  });
+
+  const fileValue = Array.isArray(payload.thumbnail_file)
+    ? payload.thumbnail_file[0]
+    : payload.thumbnail_file;
+
+  if (fileValue instanceof File) {
+    formData.append("thumbnail_file", fileValue);
+  }
+};
+
 export const useTournamentsApi = () => {
   const listTournaments = async (
     params: TournamentListFilters,
@@ -89,7 +141,9 @@ export const useTournamentsApi = () => {
   const createTournament = async (
     payload: TournamentPayload,
   ): Promise<TournamentsApiResult<Tournament>> => {
-    const result = await useApiPostFetch("/admin/tournaments", payload);
+    const formData = new FormData();
+    appendTournamentFormData(formData, payload);
+    const result = await useApiPostFetch("/admin/tournaments", formData);
 
     if (!result.success) {
       return fail(result.error);
@@ -103,7 +157,10 @@ export const useTournamentsApi = () => {
     id: string,
     payload: TournamentPayload,
   ): Promise<TournamentsApiResult<Tournament>> => {
-    const result = await useApiPutFetch(`/admin/tournaments/${id}`, payload);
+    const formData = new FormData();
+    appendTournamentFormData(formData, payload);
+    formData.append("_method", "PUT");
+    const result = await useApiPostFetch(`/admin/tournaments/${id}`, formData);
 
     if (!result.success) {
       return fail(result.error);
@@ -134,4 +191,3 @@ export const useTournamentsApi = () => {
     deleteTournament,
   };
 };
-

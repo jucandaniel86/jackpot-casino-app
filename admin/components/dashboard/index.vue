@@ -4,9 +4,10 @@ import moment from "moment";
 import TodayStats from "./TodayStats.vue";
 import TopGamesComponent, { type TopGameItem } from "./TopGames.vue";
 import TreasuryDistributionPie from "./TreasuryDistributionPie.vue";
+import { useDefaultCurrency } from "~/composables/useDefaultCurrency";
 
 //models
-const currency = ref<string>("PEP");
+const currency = ref<string>(useDefaultCurrency());
 const trasuryPie = ref<any[]>([]);
 const treasuryPieError = ref<string>("");
 const statsData = ref<any>();

@@ -18,6 +18,8 @@ const emit = defineEmits<{
 const { toastError } = useAlert();
 
 const formRef = ref<any>(null);
+const thumbnailFile = ref<File | File[] | null>(null);
+const thumbnailPreview = ref<string | null>(null);
 
 const statusItems = [
   { title: "Draft", value: "draft" },
@@ -73,6 +75,7 @@ const normalizeDatetimeInput = (value: string) => {
 const mapFromItem = (item: Tournament) => {
   model.name = item.name ?? "";
   model.thumbnail = item.thumbnail ?? null;
+  thumbnailPreview.value = item.thumbnail_url ?? item.thumbnail ?? null;
   model.started_at = item.started_at ?? "";
   model.ended_at = item.ended_at ?? "";
   model.status = item.status ?? "draft";
@@ -115,9 +118,20 @@ watch(
   () => props.item,
   (item) => {
     if (item) mapFromItem(item);
+    else thumbnailPreview.value = null;
+    thumbnailFile.value = null;
   },
   { immediate: true },
 );
+
+watch(thumbnailFile, (fileValue, oldValue) => {
+  if (typeof thumbnailPreview.value === "string" && thumbnailPreview.value.startsWith("blob:")) {
+    URL.revokeObjectURL(thumbnailPreview.value);
+  }
+
+  const file = Array.isArray(fileValue) ? fileValue[0] : fileValue;
+  thumbnailPreview.value = file instanceof File ? URL.createObjectURL(file) : props.item?.thumbnail_url ?? props.item?.thumbnail ?? null;
+});
 
 function addPrize() {
   model.prizes.push({
@@ -221,6 +235,7 @@ function buildPayload(): TournamentPayload | null {
   return {
     name: String(model.name ?? ""),
     thumbnail: model.thumbnail ? String(model.thumbnail) : null,
+    thumbnail_file: thumbnailFile.value,
     started_at: normalizeDatetimeInput(model.started_at),
     ended_at: normalizeDatetimeInput(model.ended_at),
     status: model.status,
@@ -267,12 +282,25 @@ async function onSave() {
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-text-field
-              v-model="model.thumbnail"
-              label="Thumbnail (URL or path)"
+            <div class="mb-2">
+              <v-img
+                v-if="thumbnailPreview"
+                :src="thumbnailPreview"
+                max-width="180"
+                aspect-ratio="16/9"
+                cover
+                class="rounded"
+              />
+            </div>
+
+            <v-file-input
+              v-model="thumbnailFile"
+              label="Thumbnail image"
+              accept="image/*"
               variant="outlined"
               density="comfortable"
               clearable
+              show-size
             />
           </v-col>
 

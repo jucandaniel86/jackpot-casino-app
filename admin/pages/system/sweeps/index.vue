@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SweepsMetricsCard from "~/components/stats/SweepsMetricsCard.vue";
 
-const currency = ref("PEP");
+const currency = ref(useDefaultCurrency());
 const period = ref<[string, string]>([
   new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString(),
   new Date().toISOString(),

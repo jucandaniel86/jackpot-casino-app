@@ -25,11 +25,13 @@ const handleReload = (options: any) => emitters("onReload", options);
 </script>
 <template>
   <v-data-table-server
+    class="games-list-table"
     :headers="headers"
     :items="props.items"
     :items-length="totalItems"
     :loading="props.loading"
-    :height="400"
+    :height="'100%'"
+    fixed-header
     density="compact"
     @update:options="handleReload"
   >

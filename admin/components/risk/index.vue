@@ -9,7 +9,7 @@ const { currentCasinoId } = storeToRefs(useLayoutStore());
 const tab = ref<"overview" | "players" | "duplicates" | "gameAbuse">(
   "overview"
 );
-const currency = ref("PEP");
+const currency = ref(useDefaultCurrency());
 
 // interval default: last 7 days
 const from = ref(moment().subtract(2, "month").startOf("day").toISOString());

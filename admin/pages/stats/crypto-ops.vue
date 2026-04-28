@@ -4,7 +4,7 @@ import { useLayoutStore } from "~/store/app";
 
 const { currentCasinoId } = storeToRefs(useLayoutStore());
 
-const currency = ref("PEP");
+const currency = ref(useDefaultCurrency());
 const from = ref(new Date(Date.now() - 86400000).toISOString()); // last 24h
 const to = ref(new Date().toISOString());
 

@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseURL: process.env.API_URL || "https://api.example.com/",
+      defaultCurrency: process.env.DEFAULT_CURRENCY || "JKP",
       passport: {
         clientID: process.env.PASSPORT_CLIENT_ID,
         clientSecret: process.env.PASSPORT_CLIENT_SECRET,

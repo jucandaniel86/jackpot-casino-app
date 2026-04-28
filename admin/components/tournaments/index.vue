@@ -330,8 +330,8 @@ function fmtDate(v: any) {
       >
         <template #item.thumbnail="{ item }">
           <v-img
-            v-if="item.thumbnail"
-            :src="item.thumbnail"
+            v-if="item.thumbnail || item.thumbnail_url"
+            :src="(item.thumbnail_url || item.thumbnail) as any"
             width="120"
             height="60"
             cover

@@ -2,7 +2,7 @@
 const tab = ref<"overview" | "funnel" | "games" | "cohorts" | "segments">(
   "overview",
 );
-const currency = ref("PEP");
+const currency = ref(useDefaultCurrency());
 const period = ref<[string, string]>([
   new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString(),
   new Date().toISOString(),

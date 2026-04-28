@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{ data: any }>();
 
+const defaultCurrency = useDefaultCurrency();
 const deltaNeg = computed(() => Number(props.data.mismatch.delta_base) < 0);
 </script>
 
@@ -28,7 +29,7 @@ const deltaNeg = computed(() => Number(props.data.mismatch.delta_base) < 0);
               :ui="props.data.mismatch.treasury_onchain_ui"
               :base="props.data.mismatch.treasury_onchain_base"
               :decimals="props.data.decimals"
-              currency="PEP"
+              :currency="defaultCurrency"
               :precision="2"
             />
           </div>
@@ -39,7 +40,7 @@ const deltaNeg = computed(() => Number(props.data.mismatch.delta_base) < 0);
               :ui="props.data.mismatch.ledger_liabilities_ui"
               :base="props.data.mismatch.ledger_liabilities_base"
               :decimals="props.data.decimals"
-              currency="PEP"
+              :currency="defaultCurrency"
               :precision="2"
             />
           </div>
@@ -51,7 +52,7 @@ const deltaNeg = computed(() => Number(props.data.mismatch.delta_base) < 0);
               :ui="props.data.mismatch.delta_ui"
               :base="props.data.mismatch.delta_base"
               :decimals="props.data.decimals"
-              currency="PEP"
+              :currency="defaultCurrency"
               :precision="2"
               colored
             />

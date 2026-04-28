@@ -16,7 +16,7 @@ type Row = {
   created_at: string;
 };
 
-const currency = ref<string | null>("PEP");
+const currency = ref<string | null>(useDefaultCurrency());
 const type = ref<string | null>(null);
 const status = ref<string | null>(null);
 const period = ref([moment().subtract(1, "week"), moment()]);

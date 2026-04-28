@@ -36,6 +36,7 @@ const handleReloadList = () =>
         chips
         density="compact"
         hide-details
+        @keyup.enter="handleReloadList"
       ></v-text-field>
     </v-col>
     <v-col cols="2" md="2">
