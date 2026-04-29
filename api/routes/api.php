@@ -171,6 +171,7 @@
 		#players
 		Route::prefix('players')->group(function () {
 			Route::get('/list', [ApiPlayersController::class, 'getList']);
+			Route::get('/overview', [ApiPlayersController::class, 'overview']);
 			Route::get('/activity', [ApiPlayersController::class, 'userActivityList']);
 			Route::get('/wallets', [ApiPlayersController::class, 'userWallets']);
 			Route::get('/sessions', [ApiPlayersController::class, 'userSessions']);

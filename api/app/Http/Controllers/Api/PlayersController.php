@@ -28,6 +28,11 @@
 			return ApiResponseClass::sendResponse($this->service->list($request->all()), '');
 		}
 
+		public function overview(Request $request): JsonResponse
+		{
+			return ApiResponseClass::sendResponse($this->service->overview($request->all()), '');
+		}
+
 		/**
 		 * @url /api/players/activity
 		 * @param Request $request

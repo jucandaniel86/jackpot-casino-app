@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a286e2fe-3bff-4485-acf2-7d1847457a5b" name="[LIVE]Jackpot.RO">
+        <fileTransfer accessType="SFTP" host="jackpot-new.cname.ro" port="21" sshConfigId="80b559f1-f5f4-417e-9ead-40a768ff9c33" sshConfig="devel@jackpot-new.cname.ro:21 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" connections="1" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+        <option name="numberOfConnections" value="1" />
+      </webServer>
+    </option>
+  </component>
+</project>

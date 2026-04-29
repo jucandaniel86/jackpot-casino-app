@@ -79,12 +79,20 @@
 		 */
 		private function getUserId()
 		{
+			if ($this->user?->id) {
+				return $this->user->id;
+			}
+
+			if ($this->request->user('casino')?->id) {
+				return $this->request->user('casino')->id;
+			}
+
 			try {
-				$id = Auth::guard('casino')->user()->id;
+				$id = Auth::guard('casino')->user()?->id;
 			} catch (\Exception $e) {
 				$id = 1;
 			}
-			return $id;
+			return $id ?: 1;
 		}
 
 		/**

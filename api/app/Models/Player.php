@@ -55,4 +55,14 @@
 		{
 			return $this->hasOne(Wallet::class, 'id', 'current_wallet_id');
 		}
+
+		public function logins(): HasMany
+		{
+			return $this->hasMany(PlayerLogin::class, 'authenticatable_id', 'id');
+		}
+
+		public function latestLogin(): HasOne
+		{
+			return $this->hasOne(PlayerLogin::class, 'authenticatable_id', 'id')->latestOfMany();
+		}
 	}

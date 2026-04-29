@@ -82,6 +82,7 @@
 
 			$user = Auth::guard('casino')->user();
 			Auth::guard('casino')->logout();
+			$service->setUser($user);
 
 			$profile = PlayerProfile::query()->firstOrCreate(
 				['player_id' => $user->id],
@@ -215,6 +216,7 @@
 				return response()->json(['message' => 'Unauthorized'], 401);
 			}
 
+			$service->setUser($user);
 			$service->log(PlayerActivityEnums::USER_LOGIN, json_encode(['step' => '2fa_verified']));
 
 			return response()->json([
@@ -459,6 +461,7 @@
 					'message' => 'Unauthorized',
 				], 401);
 			}
+			$service->setUser($User);
 			$service->log(PlayerActivityEnums::USER_LOGIN);
 
 			return response()->json([

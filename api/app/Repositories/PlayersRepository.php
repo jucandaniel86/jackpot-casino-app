@@ -3,6 +3,8 @@
 	namespace App\Repositories;
 
 	use App\Repositories\Bonus\Services\BonusGrantService;
+	use App\Repositories\Crypto\Support\CurrencyDecimals;
+	use App\Repositories\Crypto\Support\Money;
 	use App\Enums\PlayerActivityEnums;
 	use App\Http\Resources\BetResource;
 	use App\Http\Resources\GameResource;
@@ -18,6 +20,7 @@
 	use Illuminate\Http\Request;
 	use Illuminate\Support\Facades\Hash;
 	use Illuminate\Support\Facades\Log;
+	use Illuminate\Support\Facades\DB;
 	use Illuminate\Support\Str;
 
 	class PlayersRepository implements PlayersInterface
@@ -182,12 +185,167 @@
 			when(isset($params['search']) && strlen($params['search']) > 1, function ($query) use ($params) {
 				$query->whereRaw("`email` LIKE '%{$params['search']}%' OR username LIKE '%{$params['search']}%' OR  fixed_id LIKE '%{$params['search']}%'");
 			})
-				->when($casinoID, fn($qq) => $qq->where('int_casino_id', '=', $casinoID));
+				->when($casinoID, fn($qq) => $qq->where('int_casino_id', '=', $casinoID))
+				->select('players.*')
+				->with(['wallets.walletBalance'])
+				->addSelect([
+					'last_ip' => DB::table('player_logins')
+						->select('ip')
+						->whereColumn('player_logins.authenticatable_id', 'players.id')
+						->orderByDesc('created_at')
+						->limit(1),
+					'last_login_at' => DB::table('player_logins')
+						->select('created_at')
+						->whereColumn('player_logins.authenticatable_id', 'players.id')
+						->orderByDesc('created_at')
+						->limit(1),
+				]);
+
+			$total = $MainQuery->count();
+
+			$items = $MainQuery->limit($length)
+				->offset($offset)
+				->get()
+				->map(function (Player $player) {
+					$summary = $this->walletBalanceSummary($player);
+					$player->player_balance = $summary['total'];
+					$player->player_balance_available = $summary['available'];
+					$player->unsetRelation('wallets');
+					return $player;
+				});
 
 			return [
-				'total' => $MainQuery->count(),
-				'items' => $MainQuery->limit($length)
-					->offset($offset)->get()
+				'total' => $total,
+				'items' => $items
+			];
+		}
+
+		private function walletBalanceSummary(Player $player): array
+		{
+			$byCurrency = [];
+
+			foreach ($player->wallets as $wallet) {
+				$currency = (string)($wallet->currency_code ?? $wallet->currency ?? '');
+				if ($currency === '') {
+					$currency = 'N/A';
+				}
+
+				$availableBase = (string)($wallet->walletBalance?->available_base ?? '0');
+				$reservedBase = (string)($wallet->walletBalance?->reserved_base ?? '0');
+
+				if (!isset($byCurrency[$currency])) {
+					$byCurrency[$currency] = ['available_base' => '0', 'reserved_base' => '0'];
+				}
+
+				$byCurrency[$currency]['available_base'] = bcadd($byCurrency[$currency]['available_base'], $availableBase, 0);
+				$byCurrency[$currency]['reserved_base'] = bcadd($byCurrency[$currency]['reserved_base'], $reservedBase, 0);
+			}
+
+			if (empty($byCurrency)) {
+				return ['total' => '0', 'available' => '0'];
+			}
+
+			$total = [];
+			$available = [];
+
+			foreach ($byCurrency as $currency => $amounts) {
+				$decimals = CurrencyDecimals::internalForCurrency($currency);
+				$totalBase = bcadd($amounts['available_base'], $amounts['reserved_base'], 0);
+
+				$total[] = Money::baseToUi($totalBase, $decimals, 2) . ' ' . $currency;
+				$available[] = Money::baseToUi($amounts['available_base'], $decimals, 2) . ' ' . $currency;
+			}
+
+			return [
+				'total' => implode(' / ', $total),
+				'available' => implode(' / ', $available),
+			];
+		}
+
+		public function overview(array $params = []): array
+		{
+			$casinoID = $params['int_casino_id'] ?? null;
+
+			$playerIds = Player::query()
+				->when($casinoID, fn($qq) => $qq->where('int_casino_id', '=', $casinoID))
+				->pluck('id');
+
+			$countryRows = collect();
+			if ($playerIds->isNotEmpty()) {
+				$latestLoginIds = DB::table('player_logins')
+					->selectRaw('MAX(id) as id')
+					->whereIn('authenticatable_id', $playerIds)
+					->groupBy('authenticatable_id');
+
+				$countryRows = DB::table('player_logins as pl')
+					->joinSub($latestLoginIds, 'latest_logins', fn($join) => $join->on('pl.id', '=', 'latest_logins.id'))
+					->selectRaw("COALESCE(NULLIF(pl.country, ''), 'Unknown') as country, COUNT(*) as players_count")
+					->groupByRaw("COALESCE(NULLIF(pl.country, ''), 'Unknown')")
+					->orderByDesc('players_count')
+					->limit(10)
+					->get();
+			}
+
+			return [
+				'player_countries' => $countryRows->map(fn($row) => [
+					'country' => (string)$row->country,
+					'players_count' => (int)$row->players_count,
+				])->values(),
+				'deposit_balance' => $this->depositBalanceSummary($casinoID),
+				'total_player_balance' => $this->totalPlayerBalanceSummary($casinoID),
+			];
+		}
+
+		private function depositBalanceSummary(?string $casinoID = null): array
+		{
+			$rows = DB::table('deposits as d')
+				->join('wallets as w', 'w.id', '=', 'd.wallet_id')
+				->join('players as p', 'p.id', '=', 'w.holder_id')
+				->where('w.holder_type', Player::class)
+				->whereIn('d.status', ['confirmed', 'finalized'])
+				->when($casinoID, fn($qq) => $qq->where('p.int_casino_id', '=', $casinoID))
+				->groupBy('d.currency')
+				->selectRaw('d.currency, COALESCE(SUM(d.amount_base), 0) as amount_base')
+				->get();
+
+			return $this->formatCurrencyRows($rows, 'amount_base');
+		}
+
+		private function totalPlayerBalanceSummary(?string $casinoID = null): array
+		{
+			$rows = DB::table('wallet_balances as wb')
+				->join('wallets as w', 'w.id', '=', 'wb.wallet_id')
+				->join('players as p', 'p.id', '=', 'w.holder_id')
+				->where('w.holder_type', Player::class)
+				->when($casinoID, fn($qq) => $qq->where('p.int_casino_id', '=', $casinoID))
+				->groupBy('wb.currency')
+				->selectRaw('wb.currency, COALESCE(SUM(wb.available_base + wb.reserved_base), 0) as amount_base')
+				->get();
+
+			return $this->formatCurrencyRows($rows, 'amount_base', 2);
+		}
+
+		private function formatCurrencyRows($rows, string $amountKey, ?int $fixedDisplayDecimals = null): array
+		{
+			$items = collect($rows)->map(function ($row) use ($amountKey, $fixedDisplayDecimals) {
+				$currency = (string)($row->currency ?? 'N/A');
+				$amountBase = (string)($row->{$amountKey} ?? '0');
+				$decimals = CurrencyDecimals::internalForCurrency($currency);
+				$uiDecimals = CurrencyDecimals::uiForCurrency($currency);
+				$displayDecimals = $fixedDisplayDecimals ?? ($uiDecimals > 0 ? $uiDecimals : $decimals);
+
+				return [
+					'currency' => $currency,
+					'amount_base' => $amountBase,
+					'amount_ui' => Money::baseToUi($amountBase, $decimals, $displayDecimals),
+				];
+			})->values();
+
+			return [
+				'items' => $items,
+				'display' => $items->isEmpty()
+					? '0'
+					: $items->map(fn($item) => "{$item['amount_ui']} {$item['currency']}")->implode(' / '),
 			];
 		}
 

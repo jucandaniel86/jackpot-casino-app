@@ -37,6 +37,11 @@
 			return $this->hasMany(Transaction::class);
 		}
 
+		public function walletBalance(): HasOne
+		{
+			return $this->hasOne(WalletBalance::class, 'wallet_id', 'id');
+		}
+
 		public function getCurrencyIdAttribute($value)
 		{
 			return $value ?? $this->currency; // fallback

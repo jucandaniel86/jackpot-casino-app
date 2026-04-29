@@ -2,28 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61ca90ed-6a03-40a4-98a4-3b2d16e4f8c6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/sshConfigs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sshConfigs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreTournamentRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/StoreTournamentRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateTournamentRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/UpdateTournamentRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Tournament.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Tournament.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/Tournaments.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/Tournaments.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/WalletRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/WalletRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Traits/ContainerGeneratorTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/ContainerGeneratorTrait.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Traits/UploadFilesTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/UploadFilesTrait.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/casino.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/casino.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/crypto.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/crypto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/mailsettings.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/mailsettings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../casino/app/assets/css/components/GameItem.css" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/assets/css/components/GameItem.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../casino/nuxt.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/nuxt.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Player.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Player.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Wallet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Wallet.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/PlayersRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/PlayersRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -193,6 +183,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -211,6 +206,8 @@
       <option name="presentableId" value="Default" />
       <updated>1777031956772</updated>
       <workItem from="1777031958790" duration="4865000" />
+      <workItem from="1777454955242" duration="707000" />
+      <workItem from="1777455760536" duration="1275000" />
     </task>
     <servers />
   </component>

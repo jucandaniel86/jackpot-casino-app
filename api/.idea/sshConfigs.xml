@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig authType="PASSWORD" host="jackpot-new.cname.ro" id="b427f7c4-f244-4c78-b820-bf0ca1492fe2" port="21" nameFormat="DESCRIPTIVE" username="devel" useOpenSSHConfig="true" />
+      <sshConfig authType="PASSWORD" host="jackpot-new.cname.ro" id="80b559f1-f5f4-417e-9ead-40a768ff9c33" port="21" nameFormat="DESCRIPTIVE" username="devel" useOpenSSHConfig="true" />
     </configs>
   </component>
 </project>

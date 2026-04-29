@@ -16,6 +16,8 @@
 
 		public function list(array $params = []): array;
 
+		public function overview(array $params = []): array;
+
 		public function playerSessions(int $playerID): array;
 
 		public function toggleGameFavorite($gameID): array;
