@@ -4,15 +4,13 @@ import { useAppStore } from '~/core/store/app'
 import { useAuthStore } from '~/core/store/auth'
 import { useWalletStore } from '~/core/store/wallet'
 import { OverlaysTypes } from '~/core/types/Overlays'
-import type { WalletT } from '~/core/types/Wallet'
 
 //composables
-const { setCurrentWalletDepositPage } = useWalletStore()
 const { currentWallet, wallets } = storeToRefs(useWalletStore())
 const { isLogged } = storeToRefs(useAuthStore())
 const { logout } = useAuthStore()
 const { getCurrentWallet, setWallets } = useWalletStore()
-const { replace } = useRouter()
+const { replace, push } = useRouter()
 const { name } = useDisplay()
 const route = useRoute()
 const focused = useWindowFocus()
@@ -55,22 +53,19 @@ const getUserWallets = async (): Promise<void> => {
   }
 }
 
-const depositPepagy = async (): Promise<void> => {
-  menu.value = false
-
-  const opened = await openWalletModal()
-  if (!opened) return
-
-  setTimeout(() => {
-    setCurrentWalletDepositPage(currentWallet.value as WalletT)
-  }, 600)
-}
-
 const convertBalance = (balance: number, decimal: number) => Number(balance).toFixed(decimal)
+
+const redeem = () => {
+  push('/redeem')
+  menu.value = false
+}
+const buyBundles = () => {
+  push('/bundles')
+  menu.value = false
+}
 
 //computed
 const isMobile = computed(() => ['xs', 'sm'].indexOf(name.value) !== -1)
-const isDesktop = computed(() => ['lg', 'md', 'xl'].indexOf(name.value) !== -1)
 const inGame = computed(() => route.name === 'game-slug')
 const bonusWallet = computed(() => wallets.value.find((wallet) => wallet.purpose === 'bonus'))
 const totalBalance = computed(() => {
@@ -182,8 +177,8 @@ watch(isLogged, () => {
                 </div>
               </div>
               <div class="pa-2 d-flex align-center justify-center ga-2">
-                <v-btn color="purple" @click.prevent="depositPepagy">Deposit</v-btn>
-                <v-btn color="purple">Buy</v-btn>
+                <v-btn color="purple" @click.prevent="buyBundles">Buy</v-btn>
+                <v-btn color="purple" @click.prevent="redeem">Redeem</v-btn>
               </div>
             </div>
             <div class="wallet_currencies_wrapper">
@@ -193,14 +188,14 @@ watch(isLogged, () => {
         </div>
       </v-card>
     </v-menu>
-    <v-btn
+    <!-- <v-btn
       v-if="isDesktop && !inGame"
       color="primary"
       variant="flat"
       class="wallet_trigger_btn"
       @click.prevent="openWalletModal"
       >{{ t('wallet.wallet') }}</v-btn
-    >
+    > -->
     <v-btn
       v-if="isMobile && !inGame"
       class="mobile-wallet-button ml-2"

@@ -11,6 +11,11 @@
 				'ui_decimals' => (int)env('SOLANA_PEP_UI_DECIMALS', env('SOLANA_PEP_INTERNAL_DECIMALS', 9)),
 				'decimals' => (int)env('SOLANA_PEP_INTERNAL_DECIMALS', 9), // legacy alias
 			],
+      'JKP' => [
+        'internal_decimals' => 9,
+        'ui_decimals' => 2,
+        'decimals' => 2,
+      ],
 		],
 		'rpc' => [
 			'solana' => env('SOLANA_RPC_URL', 'https://api.mainnet-beta.solana.com'),

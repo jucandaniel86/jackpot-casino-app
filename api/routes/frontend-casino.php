@@ -13,6 +13,7 @@ use App\Http\Controllers\FE\NotificationController;
 use App\Http\Controllers\FE\PlayersController;
 use App\Http\Controllers\FE\PromotionController as PromoController;
 use App\Http\Controllers\FE\ProviderController;
+use App\Http\Controllers\FE\RedeemController;
 use App\Http\Controllers\FE\SearchController;
 use App\Http\Controllers\FE\TabController;
 use App\Http\Controllers\FE\TransactionsController;
@@ -43,6 +44,7 @@ Route::middleware(['payload.crypto:both', 'casino.id.decode'])->group(function (
 
 	Route::middleware('throttle:casino-auth')->group(function () {
 		Route::post('/registration', [PlayersController::class, 'registration']);
+		Route::post('/redeem', RedeemController::class);
 		Route::post('/forgot-password', [ForgotPasswordController::class, 'requestReset']);
 		Route::post('/forgot-password/validate', [ForgotPasswordController::class, 'validateToken']);
 		Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'reset']);

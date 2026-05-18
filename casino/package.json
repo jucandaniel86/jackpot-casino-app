@@ -2,7 +2,7 @@
   "name": "pepagy-casino",
   "type": "module",
   "private": true,
-  "version": "1.0.24",
+  "version": "1.0.2",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61ca90ed-6a03-40a4-98a4-3b2d16e4f8c6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/sshConfigs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sshConfigs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Player.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Player.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Wallet.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Wallet.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/PlayersRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/PlayersRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/SGFEProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/SGFEProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/crypto.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/crypto.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/frontend-casino.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/frontend-casino.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,8 +187,14 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/Interfaces" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/Interfaces" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -207,7 +212,8 @@
       <updated>1777031956772</updated>
       <workItem from="1777031958790" duration="4865000" />
       <workItem from="1777454955242" duration="707000" />
-      <workItem from="1777455760536" duration="1275000" />
+      <workItem from="1777455760536" duration="1276000" />
+      <workItem from="1779092461537" duration="1652000" />
     </task>
     <servers />
   </component>
