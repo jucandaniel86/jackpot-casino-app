@@ -34,9 +34,11 @@ export const useSidebarStore = defineStore(
   },
   {
     persist: {
-			key: 'casino-sidebar',
-			storage: localStorage,
-		},
-		
+      key: 'casino-sidebar',
+      pick: ['sidebar'],
+      storage: piniaPluginPersistedstate.cookies({
+        maxAge: 60 * 60 * 24,
+      }),
+    },
   },
 )
