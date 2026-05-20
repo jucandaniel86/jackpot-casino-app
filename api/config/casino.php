@@ -11,6 +11,7 @@
 			'logos' => '/uploads/logos/',
 			'promotions' => '/uploads/promotions/',
 			'providers' => '/uploads/providers/',
+			'rewards' => '/uploads/rewards/',
 			'sliders' => '/uploads/sliders/',
 			'tournaments' => '/uploads/tournaments/'
 		],

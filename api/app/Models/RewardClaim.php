@@ -11,8 +11,9 @@ class RewardClaim extends Model
         'player_id',
         'wallet_id',
         'int_casino_id',
+        'reward_id',
+        'period_key',
         'email',
-        'reward_type',
         'amount_base',
         'amount',
         'decimals',
@@ -36,5 +37,10 @@ class RewardClaim extends Model
     public function wallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class);
+    }
+
+    public function reward(): BelongsTo
+    {
+        return $this->belongsTo(Reward::class);
     }
 }

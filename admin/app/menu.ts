@@ -127,6 +127,11 @@ export const menuItems: MenuItemType[] = [
         link: "/casino/promotions",
         id: "casinoPromotions",
       },
+      {
+        label: "Rewards",
+        link: "/casino/rewards",
+        id: "casinoRewards",
+      },
       { label: "Casino Menu", link: "/casino/menu", id: "casinoMenu" },
     ],
   },

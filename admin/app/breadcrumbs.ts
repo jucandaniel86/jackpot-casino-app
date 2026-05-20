@@ -217,6 +217,21 @@ export const APP_BREADCRUMBS: BreadcrumbsInterface = {
       disabled: true,
     },
   ],
+  REWARDS: [
+    {
+      title: "Dashboard",
+      disabled: false,
+      to: "/",
+    },
+    {
+      title: "Casino",
+      disabled: true,
+    },
+    {
+      title: "Rewards",
+      disabled: true,
+    },
+  ],
   TOURNAMENTS: [
     {
       title: "Dashboard",

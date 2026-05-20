@@ -14,6 +14,7 @@ use App\Http\Controllers\FE\PlayersController;
 use App\Http\Controllers\FE\PromotionController as PromoController;
 use App\Http\Controllers\FE\ProviderController;
 use App\Http\Controllers\FE\RedeemController;
+use App\Http\Controllers\FE\RewardController;
 use App\Http\Controllers\FE\SearchController;
 use App\Http\Controllers\FE\TabController;
 use App\Http\Controllers\FE\TransactionsController;
@@ -37,6 +38,7 @@ Route::middleware(['payload.crypto:both', 'casino.id.decode'])->group(function (
 		Route::get('/search', SearchController::class);
 		Route::get('/tabs-container/{slug}', TabController::class)->name('fe:tab-container');
 		Route::get('/promotion/{slug}', PromoController::class);
+		Route::get('/rewards', RewardController::class);
 		Route::get('/search/game', [SearchController::class, 'game']);
 		Route::get('/fx/rate', [ExchangeRateController::class, 'show']);
 		Route::get('/import-games', [GameController::class, 'importGames']);
@@ -87,6 +89,7 @@ Route::middleware(['payload.crypto:both', 'casino.id.decode'])->group(function (
 
 			Route::get('/withdraw-requests', WithdrawRequestsHistoryController::class);
 			Route::post('/withdraw-requests', WithdrawRequestsController::class);
+			Route::post('/rewards/{uid}/claim', [RedeemController::class, 'claim']);
 		});
 	});
 });

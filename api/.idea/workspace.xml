@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="61ca90ed-6a03-40a4-98a4-3b2d16e4f8c6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/RewardClaim.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/RewardClaim.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Providers/SGFEProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/SGFEProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/crypto.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/crypto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/frontend-casino.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/frontend-casino.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/casino.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/casino.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +214,7 @@
       <workItem from="1777031958790" duration="4865000" />
       <workItem from="1777454955242" duration="707000" />
       <workItem from="1777455760536" duration="1276000" />
-      <workItem from="1779092461537" duration="1652000" />
+      <workItem from="1779092461537" duration="2872000" />
     </task>
     <servers />
   </component>

@@ -13,6 +13,7 @@
 		GameController,
 		TagsController,
 		PromotionController,
+		RewardController,
 		SliderController,
 		MenuController,
 		WalletsController,
@@ -143,6 +144,15 @@
 			Route::post('/save-draft', [PromotionController::class, 'saveDraft']);
 			Route::delete('/delete', [PromotionController::class, 'remove']);
 			Route::get('/get', [PromotionController::class, 'get']);
+		});
+
+		#rewards
+		Route::prefix('rewards')->group(function () {
+			Route::get('/list', [RewardController::class, 'list']);
+			Route::get('/types', [RewardController::class, 'types']);
+			Route::post('/insert', [RewardController::class, 'insert']);
+			Route::post('/update', [RewardController::class, 'update']);
+			Route::delete('/delete', [RewardController::class, 'delete']);
 		});
 
 		#sliders

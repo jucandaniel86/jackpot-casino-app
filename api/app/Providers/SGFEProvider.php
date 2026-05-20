@@ -16,6 +16,7 @@
 	use App\Interfaces\PromotionInterface;
 	use App\Interfaces\ProvidersInterface;
 	use App\Interfaces\RedeemInterface;
+	use App\Interfaces\RewardInterface;
 	use App\Interfaces\SearchInterface;
 	use App\Interfaces\SectionInterface;
 	use App\Interfaces\SliderInterface;
@@ -36,6 +37,7 @@
 	use App\Repositories\PromotionRepository;
 	use App\Repositories\ProvidersRepository;
 	use App\Repositories\RedeemRepository;
+	use App\Repositories\RewardRepository;
 	use App\Repositories\SearchRepository;
 	use App\Repositories\SectionRepository;
 	use App\Repositories\SliderRepository;
@@ -70,6 +72,7 @@
 			$this->app->bind(BetInterface::class, BetRepository::class);
 			$this->app->bind(BonusAdminInterface::class, BonusAdminRepository::class);
 			$this->app->bind(RedeemInterface::class, RedeemRepository::class);
+			$this->app->bind(RewardInterface::class, RewardRepository::class);
 		}
 
 		/**
