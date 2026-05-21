@@ -12,6 +12,12 @@ type Reward = {
   thumbnailUrl?: string | null
   type: string
   rule?: Record<string, any> | null
+  claim_state?: {
+    is_claimed: boolean
+    message?: string | null
+    next_claim_at?: string | null
+    seconds_until_next?: number | null
+  } | null
 }
 
 const props = defineProps<{

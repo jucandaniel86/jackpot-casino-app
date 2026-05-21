@@ -13,6 +13,12 @@ type Reward = {
   thumbnailUrl?: string | null
   type: string
   rule?: Record<string, any> | null
+  claim_state?: {
+    is_claimed: boolean
+    message?: string | null
+    next_claim_at?: string | null
+    seconds_until_next?: number | null
+  } | null
 }
 
 const rewards = ref<Reward[]>([])
@@ -72,6 +78,7 @@ const redeemEmailReward = async (reward: Reward, email?: string) => {
 
   alertSuccess(data.message || 'Reward claimed.')
   setLoadWallets(true)
+  await loadRewards()
 }
 
 const redeemDailyReward = async (reward: Reward) => {
@@ -98,6 +105,7 @@ const redeemDailyReward = async (reward: Reward) => {
 
   alertSuccess(data.message || 'Reward claimed.')
   setLoadWallets(true)
+  await loadRewards()
 }
 
 const redeemRegistrationReward = () => {
@@ -119,6 +127,10 @@ const redeemReward = async (payload: { reward: Reward; email?: string }) => {
 }
 
 onMounted(() => {
+  loadRewards()
+})
+
+watch(isLogged, () => {
   loadRewards()
 })
 </script>

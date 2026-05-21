@@ -6,10 +6,12 @@ use App\Enums\RewardType;
 use App\Exceptions\ApiResponseException;
 use App\Interfaces\RewardInterface;
 use App\Models\Reward;
+use App\Models\RewardClaim;
 use App\Traits\QueryTrait;
 use App\Traits\UploadFilesTrait;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class RewardRepository implements RewardInterface
@@ -28,7 +30,7 @@ class RewardRepository implements RewardInterface
 
     public function publicList(array $params = []): array
     {
-        return Reward::query()
+        $rewards = Reward::query()
             ->where('is_active', true)
             ->where(function ($query) {
                 $query->whereNull('starts_at')
@@ -43,6 +45,8 @@ class RewardRepository implements RewardInterface
             ->tap(fn (Builder $query) => $this->applyDefaultOrder($query))
             ->get()
             ->toArray();
+
+        return $this->appendClaimState($rewards);
     }
 
     public function types(): array
@@ -216,6 +220,115 @@ class RewardRepository implements RewardInterface
     private function applyDefaultOrder(Builder $query): void
     {
         $query->orderBy('page_order')->orderBy('id');
+    }
+
+    private function appendClaimState(array $rewards): array
+    {
+        if (!request()->bearerToken()) {
+            return $rewards;
+        }
+
+        try {
+            $player = Auth::guard('casino')->user();
+        } catch (\Throwable) {
+            return $rewards;
+        }
+
+        if (!$player) {
+            return $rewards;
+        }
+
+        $dailyRewards = collect($rewards)
+            ->filter(fn (array $reward) => ($reward['type'] ?? null) === RewardType::DAILY_REDEEM->value)
+            ->values();
+
+        if ($dailyRewards->isEmpty()) {
+            return $rewards;
+        }
+
+        $periodKeysByRewardId = $dailyRewards
+            ->mapWithKeys(fn (array $reward) => [
+                $reward['id'] => $this->periodKey($reward),
+            ])
+            ->all();
+
+        $claims = RewardClaim::query()
+            ->where('player_id', $player->id)
+            ->whereIn('reward_id', array_keys($periodKeysByRewardId))
+            ->whereIn('period_key', array_values($periodKeysByRewardId))
+            ->get(['reward_id', 'period_key', 'claimed_at'])
+            ->keyBy(fn (RewardClaim $claim) => $claim->reward_id . ':' . $claim->period_key);
+
+        return array_map(function (array $reward) use ($claims, $periodKeysByRewardId) {
+            if (($reward['type'] ?? null) !== RewardType::DAILY_REDEEM->value) {
+                return $reward;
+            }
+
+            $periodKey = $periodKeysByRewardId[$reward['id']] ?? $this->periodKey($reward);
+            $claim = $claims->get($reward['id'] . ':' . $periodKey);
+            $nextClaimAt = $this->nextClaimAt($reward);
+
+            $reward['claim_state'] = [
+                'is_claimed' => $claim !== null,
+                'period_key' => $periodKey,
+                'claimed_at' => $claim?->claimed_at?->toIso8601String(),
+                'next_claim_at' => $nextClaimAt?->toIso8601String(),
+                'seconds_until_next' => $nextClaimAt ? (int)ceil(max(0, now($this->rewardTimezone($reward))->diffInSeconds($nextClaimAt, false))) : null,
+                'message' => $claim !== null ? 'You already claimed today\'s reward.' : null,
+            ];
+
+            return $reward;
+        }, $rewards);
+    }
+
+    private function rewardFrequency(array $reward): string
+    {
+        $frequency = $reward['rule']['frequency'] ?? (
+            ($reward['type'] ?? null) === RewardType::DAILY_REDEEM->value ? 'daily' : 'once'
+        );
+
+        $frequency = is_string($frequency) && trim($frequency) !== ''
+            ? strtolower(trim($frequency))
+            : 'once';
+
+        if (in_array($frequency, ['once', 'daily', 'weekly', 'monthly'], true)) {
+            return $frequency;
+        }
+
+        return ($reward['type'] ?? null) === RewardType::DAILY_REDEEM->value ? 'daily' : 'once';
+    }
+
+    private function rewardTimezone(array $reward): string
+    {
+        $timezone = $reward['rule']['timezone'] ?? config('app.timezone', 'UTC');
+
+        return is_string($timezone) && in_array($timezone, timezone_identifiers_list(), true)
+            ? $timezone
+            : config('app.timezone', 'UTC');
+    }
+
+    private function periodKey(array $reward): string
+    {
+        $now = now($this->rewardTimezone($reward));
+
+        return match ($this->rewardFrequency($reward)) {
+            'daily' => $now->format('Y-m-d'),
+            'weekly' => $now->format('o-\WW'),
+            'monthly' => $now->format('Y-m'),
+            default => 'lifetime',
+        };
+    }
+
+    private function nextClaimAt(array $reward)
+    {
+        $now = now($this->rewardTimezone($reward));
+
+        return match ($this->rewardFrequency($reward)) {
+            'daily' => $now->copy()->addDay()->startOfDay(),
+            'weekly' => $now->copy()->addWeek()->startOfWeek(),
+            'monthly' => $now->copy()->addMonthNoOverflow()->startOfMonth(),
+            default => null,
+        };
     }
 
     private function makeUniqueSlug(string $title, ?string $casinoId = null, ?int $ignoreId = null): string

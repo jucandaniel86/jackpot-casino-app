@@ -5,6 +5,12 @@ type Reward = {
   description?: string | null
   thumbnailUrl?: string | null
   rule?: Record<string, any> | null
+  claim_state?: {
+    is_claimed: boolean
+    message?: string | null
+    next_claim_at?: string | null
+    seconds_until_next?: number | null
+  } | null
 }
 
 const props = defineProps<{
@@ -16,7 +22,64 @@ const emit = defineEmits<{
   'redeem-action': [payload: { reward: Reward }]
 }>()
 
-const buttonLabel = computed(() => props.reward.rule?.claim_button_label || 'Redeem')
+const resolveRemainingSeconds = () => {
+  const state = props.reward.claim_state
+
+  if (!state) return 0
+
+  if (typeof state.seconds_until_next === 'number' && state.seconds_until_next > 0) {
+    return Math.ceil(state.seconds_until_next)
+  }
+
+  if (!state.next_claim_at) return 0
+
+  return Math.max(0, Math.ceil((new Date(state.next_claim_at).getTime() - Date.now()) / 1000))
+}
+
+const remainingSeconds = ref(resolveRemainingSeconds())
+let timer: ReturnType<typeof setInterval> | null = null
+
+const isClaimed = computed(() => Boolean(props.reward.claim_state?.is_claimed))
+const buttonLabel = computed(() => (isClaimed.value ? 'Claimed' : props.reward.rule?.claim_button_label || 'Redeem'))
+const claimMessage = computed(() => props.reward.claim_state?.message || 'You already claimed today\'s reward.')
+const formattedCountdown = computed(() => {
+  const total = Math.max(0, remainingSeconds.value)
+  const hours = Math.floor(total / 3600)
+  const minutes = Math.floor((total % 3600) / 60)
+  const seconds = total % 60
+
+  return [hours, minutes, seconds].map((value) => String(value).padStart(2, '0')).join(':')
+})
+
+const startCountdown = () => {
+  if (timer) clearInterval(timer)
+
+  if (!isClaimed.value || remainingSeconds.value <= 0) return
+
+  timer = setInterval(() => {
+    remainingSeconds.value = Math.max(0, remainingSeconds.value - 1)
+
+    if (remainingSeconds.value === 0 && timer) {
+      clearInterval(timer)
+      timer = null
+    }
+  }, 1000)
+}
+
+watch(
+  () => props.reward.claim_state,
+  () => {
+    remainingSeconds.value = resolveRemainingSeconds()
+    startCountdown()
+  },
+  { deep: true },
+)
+
+onMounted(startCountdown)
+
+onBeforeUnmount(() => {
+  if (timer) clearInterval(timer)
+})
 </script>
 
 <template>
@@ -26,10 +89,16 @@ const buttonLabel = computed(() => props.reward.rule?.claim_button_label || 'Red
       <h2>{{ reward.title }}</h2>
       <p v-if="reward.description">{{ reward.description }}</p>
 
+      <v-alert v-if="isClaimed" class="reward-card__status" type="success" variant="tonal">
+        <strong>{{ claimMessage }}</strong>
+        <span v-if="remainingSeconds > 0">Next reward in {{ formattedCountdown }}</span>
+      </v-alert>
+
       <v-btn
         color="purple"
         prepend-icon="mdi-gift-outline"
         :loading="loading"
+        :disabled="isClaimed"
         @click.prevent="emit('redeem-action', { reward })"
       >
         {{ buttonLabel }}
@@ -92,6 +161,17 @@ const buttonLabel = computed(() => props.reward.rule?.claim_button_label || 'Red
   color: var(--text-color);
   font-size: 16px;
   line-height: 1.6;
+}
+
+.reward-card__status {
+  max-width: 560px;
+  margin-bottom: 22px;
+}
+
+.reward-card__status :deep(.v-alert__content) {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .reward-card__media {

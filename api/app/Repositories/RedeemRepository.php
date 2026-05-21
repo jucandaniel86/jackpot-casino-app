@@ -385,9 +385,19 @@ class RedeemRepository implements RedeemInterface
 
     private function rewardFrequency(Reward $reward): string
     {
-        $frequency = $reward->rule['frequency'] ?? 'once';
+        $frequency = $reward->rule['frequency'] ?? (
+            $reward->type === RewardType::DAILY_REDEEM->value ? 'daily' : 'once'
+        );
 
-        return is_string($frequency) && trim($frequency) !== '' ? trim($frequency) : 'once';
+        $frequency = is_string($frequency) && trim($frequency) !== ''
+            ? strtolower(trim($frequency))
+            : 'once';
+
+        if (in_array($frequency, ['once', 'daily', 'weekly', 'monthly'], true)) {
+            return $frequency;
+        }
+
+        return $reward->type === RewardType::DAILY_REDEEM->value ? 'daily' : 'once';
     }
 
     private function rewardTimezone(Reward $reward): string
