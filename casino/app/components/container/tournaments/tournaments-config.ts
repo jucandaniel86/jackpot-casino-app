@@ -6,6 +6,8 @@ export type TournamentStatus =
   | 'finished'
   | 'cancelled'
 
+export type TournamentType = 'DEFAULT' | 'RANDOM'
+
 export type TournamentGame = {
   id: string
   game_id: string
@@ -83,6 +85,9 @@ export type Tournament = {
   ended_at: string
   status: TournamentStatus
   point_rate: number
+  tournament_type?: TournamentType
+  tournament_range?: number
+  random_prizes_allocated_at?: string | null
   games: TournamentGame[]
   prizes: TournamentPrize[]
   ui?: TournamentUi | null

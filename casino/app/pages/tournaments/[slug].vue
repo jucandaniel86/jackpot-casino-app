@@ -91,6 +91,11 @@ const rulesNote = computed(() => props.tournament.ui?.rules_note ?? null)
 const leaderboard = computed(() => props.tournament.ui?.leaderboard ?? [])
 const standing = computed(() => props.tournament.ui?.user_standing ?? null)
 const showDetails = computed(() => !props.closed || detailsOpen.value)
+const showLeaderboardPrizes = computed(
+  () =>
+    props.tournament.tournament_type !== 'RANDOM' ||
+    Boolean(props.tournament.random_prizes_allocated_at),
+)
 
 const tournamentGames = computed<GameType[]>(() =>
   (props.tournament.games ?? [])
@@ -309,12 +314,14 @@ const eligibleGamesContainer = computed<ContainerType>(() => ({
                             <th>Position</th>
                             <th>Player</th>
                             <th class="t-right-align">Score</th>
-                            <th class="t-right-align">Prizes</th>
+                            <th v-if="showLeaderboardPrizes" class="t-right-align">Prizes</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr v-if="leaderboard.length === 0">
-                            <td class="t-muted t-center" colspan="4">No leaderboard data.</td>
+                            <td class="t-muted t-center" :colspan="showLeaderboardPrizes ? 4 : 3">
+                              No leaderboard data.
+                            </td>
                           </tr>
                           <tr v-for="row in leaderboard" :key="`lb-${row.position}-${row.player}`">
                             <td>
@@ -331,7 +338,9 @@ const eligibleGamesContainer = computed<ContainerType>(() => ({
                             </td>
                             <td class="t-player">{{ row.player }}</td>
                             <td class="t-right-align t-score">{{ row.score.toLocaleString() }}</td>
-                            <td class="t-right-align t-prize">{{ row.prize_label }}</td>
+                            <td v-if="showLeaderboardPrizes" class="t-right-align t-prize">
+                              {{ row.prize_label }}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
