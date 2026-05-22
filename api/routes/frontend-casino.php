@@ -18,6 +18,7 @@ use App\Http\Controllers\FE\RewardController;
 use App\Http\Controllers\FE\SearchController;
 use App\Http\Controllers\FE\TabController;
 use App\Http\Controllers\FE\TransactionsController;
+use App\Http\Controllers\FE\TournamentController;
 use App\Http\Controllers\FE\TournamentLeaderboardController;
 use App\Http\Controllers\FE\WalletController;
 use App\Http\Controllers\FE\WinStreamController;
@@ -33,6 +34,7 @@ Route::middleware(['payload.crypto:both', 'casino.id.decode'])->group(function (
 		Route::get('/provider/games/{slug}', [ProviderController::class, 'games'])->name('fe.provider-games');
 		Route::get('/category/{slug}', FeCategoryController::class);
 		Route::get('/category/games/{slug}', FeCategoryGamesController::class)->name('fe:category-games');
+		Route::get('/tournaments/{id}', [TournamentController::class, 'show']);
 		Route::get('/tournaments/{id}/leaderboard', [TournamentLeaderboardController::class, 'leaderboard']);
 		Route::get('/icons', [IconsController::class, 'list']);
 		Route::get('/search', SearchController::class);

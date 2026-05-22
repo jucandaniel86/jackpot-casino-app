@@ -29,6 +29,19 @@ const statusItems = [
   { title: "Cancelled", value: "cancelled" },
 ] as const;
 
+const typeItems = ref([
+  { title: "Default", value: "DEFAULT" },
+  { title: "Random extraction", value: "RANDOM" },
+]);
+
+const rangeItems = [
+  { title: "All players", value: -1 },
+  { title: "Top 10", value: 10 },
+  { title: "Top 20", value: 20 },
+  { title: "Top 50", value: 50 },
+  { title: "Top 100", value: 100 },
+];
+
 type PrizeForm = TournamentPrizePayload & { metadata_text?: string };
 
 const model = reactive<{
@@ -38,6 +51,8 @@ const model = reactive<{
   ended_at: string;
   status: any;
   point_rate: number | null;
+  tournament_type: any;
+  tournament_range: number | null;
   game_ids: string[];
   prizes: PrizeForm[];
 }>({
@@ -47,6 +62,8 @@ const model = reactive<{
   ended_at: "",
   status: "draft",
   point_rate: 1,
+  tournament_type: "DEFAULT",
+  tournament_range: -1,
   game_ids: [],
   prizes: [],
 });
@@ -54,6 +71,8 @@ const model = reactive<{
 const required = (v: any) => !!v || "Required.";
 const minPointRate = (v: any) =>
   v !== null && v !== undefined && Number(v) >= 1 ? true : "Min 1.";
+const validTournamentRange = (v: any) =>
+  Number(v) === -1 || Number(v) >= 1 ? true : "Use -1 for ALL or a value >= 1.";
 const nonNegative = (v: any) =>
   v === null || v === undefined || v === "" || Number(v) >= 0
     ? true
@@ -80,6 +99,8 @@ const mapFromItem = (item: Tournament) => {
   model.ended_at = item.ended_at ?? "";
   model.status = item.status ?? "draft";
   model.point_rate = Number(item.point_rate ?? 1);
+  model.tournament_type = item.tournament_type ?? "DEFAULT";
+  model.tournament_range = Number(item.tournament_range ?? -1);
   model.game_ids = Array.isArray(item.games)
     ? item.games.map((g: any) => String(g.game_id ?? g.pivot?.game_id ?? ""))
         .filter(Boolean)
@@ -131,6 +152,14 @@ watch(thumbnailFile, (fileValue, oldValue) => {
 
   const file = Array.isArray(fileValue) ? fileValue[0] : fileValue;
   thumbnailPreview.value = file instanceof File ? URL.createObjectURL(file) : props.item?.thumbnail_url ?? props.item?.thumbnail ?? null;
+});
+
+onMounted(async () => {
+  const api = useTournamentsApi();
+  const result = await api.listTournamentTypes();
+  if (result.success && Array.isArray(result.data) && result.data.length) {
+    typeItems.value = result.data;
+  }
 });
 
 function addPrize() {
@@ -240,6 +269,8 @@ function buildPayload(): TournamentPayload | null {
     ended_at: normalizeDatetimeInput(model.ended_at),
     status: model.status,
     point_rate: Number(model.point_rate ?? 1),
+    tournament_type: model.tournament_type === "RANDOM" ? "RANDOM" : "DEFAULT",
+    tournament_range: model.tournament_type === "RANDOM" ? Number(model.tournament_range ?? -1) : -1,
     game_ids: model.game_ids.map((id) => String(id)),
     prizes: prizes.length ? prizes : [],
   };
@@ -348,6 +379,36 @@ async function onSave() {
               density="comfortable"
               :rules="[required, minPointRate]"
               min="1"
+            />
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-select
+              v-model="model.tournament_type"
+              label="Tournament type"
+              :items="typeItems"
+              item-title="title"
+              item-value="value"
+              variant="outlined"
+              density="comfortable"
+              :rules="[required]"
+            />
+          </v-col>
+
+          <v-col cols="12" md="3">
+            <v-select
+              v-model="model.tournament_range"
+              label="Random range"
+              :items="rangeItems"
+              item-title="title"
+              item-value="value"
+              variant="outlined"
+              density="comfortable"
+              type="number"
+              :disabled="model.tournament_type !== 'RANDOM'"
+              :rules="[validTournamentRange]"
+              hint="ALL is stored as -1."
+              persistent-hint
             />
           </v-col>
         </v-row>

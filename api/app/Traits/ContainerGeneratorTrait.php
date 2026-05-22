@@ -328,7 +328,7 @@
 			}
 
 			$Tournaments = Tournament::query()
-				->with(['tournamentGames.game', 'prizes'])
+				->with(['tournamentGames.game', 'prizes', 'prizeAwards'])
 				->whereIn('status', $statuses)
 				->orderByRaw("FIELD(status, 'active', 'upcoming', 'finished', 'scheduled', 'draft', 'cancelled')")
 				->orderBy('started_at')
@@ -367,6 +367,9 @@
 				'ended_at' => $this->formatTournamentDate($endedAt),
 				'status' => (string)$tournament->status,
 				'point_rate' => (int)$tournament->point_rate,
+				'tournament_type' => (string)($tournament->tournament_type ?? 'DEFAULT'),
+				'tournament_range' => (int)($tournament->tournament_range ?? -1),
+				'random_prizes_allocated_at' => $this->formatTournamentDate($tournament->random_prizes_allocated_at ? Carbon::parse($tournament->random_prizes_allocated_at) : null),
 				'games' => $tournamentGames->map(fn ($tournamentGame) => [
 					'id' => (string)$tournamentGame->id,
 					'tournament_id' => (string)$tournamentGame->tournament_id,
@@ -400,8 +403,8 @@
 						'prize_pool_label' => $this->buildTournamentPrizePoolLabel($tournament),
 						'progress_percent' => $this->buildTournamentProgressPercent($startedAt, $endedAt, $now),
 						'protocols' => $this->buildTournamentProtocols($tournament, $startedAt, $endedAt),
-						'description' => 'Play eligible games and earn points to climb the tournament leaderboard.',
-						'rules_note' => 'Leaderboard and standing data are shown when scoring data is available.',
+						'description' => $this->buildTournamentDescription($tournament),
+						'rules_note' => $this->buildTournamentRulesNote($tournament),
 						'leaderboard' => $this->buildTournamentLeaderboard($tournament, 10),
 						'user_standing' => null,
 					],
@@ -504,7 +507,31 @@
 					'label' => 'Status',
 					'value' => strtoupper((string)$tournament->status),
 				],
+				[
+					'label' => 'Prize Mode',
+					'value' => ($tournament->tournament_type ?? 'DEFAULT') === 'RANDOM' ? 'RANDOM DRAW' : 'LEADERBOARD',
+				],
 				];
+			}
+
+			private function buildTournamentDescription(Tournament $tournament): string
+			{
+				if (($tournament->tournament_type ?? 'DEFAULT') === 'RANDOM') {
+					return 'Play eligible games and earn points. Each point becomes one chance in the prize draw after the tournament ends.';
+				}
+
+				return 'Play eligible games and earn points to climb the tournament leaderboard.';
+			}
+
+			private function buildTournamentRulesNote(Tournament $tournament): string
+			{
+				if (($tournament->tournament_type ?? 'DEFAULT') === 'RANDOM') {
+					$range = (int)($tournament->tournament_range ?? -1);
+					$rangeLabel = $range === -1 ? 'all players with points' : 'the top ' . $range . ' players';
+					return 'Random extraction includes ' . $rangeLabel . '. Prizes are shown on the leaderboard only after the extraction is approved.';
+				}
+
+				return 'Leaderboard and standing data are shown when scoring data is available.';
 			}
 
 			private function buildTournamentPlayersCount(Tournament $tournament): ?int
@@ -546,12 +573,29 @@
 						'position' => $position,
 						'player' => (string)$row->username,
 						'score' => $score,
-						'prize_label' => $this->buildTournamentPrizeLabelFor($tournament->prizes, $position, $score),
+						'prize_label' => $this->buildTournamentLeaderboardPrizeLabel($tournament, $position, $score),
 					];
 					$position++;
 				}
 
 				return $leaderboard;
+			}
+
+			private function buildTournamentLeaderboardPrizeLabel(Tournament $tournament, int $position, int $score): string
+			{
+				if (($tournament->tournament_type ?? 'DEFAULT') !== 'RANDOM') {
+					return $this->buildTournamentPrizeLabelFor($tournament->prizes, $position, $score);
+				}
+
+				if (!$tournament->random_prizes_allocated_at) {
+					return '-';
+				}
+
+				$award = $tournament->relationLoaded('prizeAwards')
+					? $tournament->prizeAwards->firstWhere('draw_position', $position)
+					: null;
+
+				return $award ? (string)$award->prize_name : '-';
 			}
 
 			private function buildTournamentPrizeLabelFor(Collection $prizes, int $position, int $score): string

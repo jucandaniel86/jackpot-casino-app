@@ -4,6 +4,9 @@ import type {
   TournamentListFilters,
   TournamentListResponse,
   TournamentPayload,
+  TournamentRandomExtractionResponse,
+  TournamentPrizeAward,
+  TournamentTypeOption,
 } from "~/types/tournaments";
 
 const toErrorMessage = (error: any): string => {
@@ -52,6 +55,30 @@ const unwrap = <T>(payload: any): T => {
   return (payload?.data ?? payload) as T;
 };
 
+const downloadBlob = async (path: string): Promise<TournamentsApiResult<Blob>> => {
+  const config = useRuntimeConfig();
+  const { token } = storeToRefs(useAuthStore());
+  const { currentCasinoId } = storeToRefs(useLayoutStore());
+
+  try {
+    const blob = await $fetch<Blob>(path, {
+      baseURL: config.public.baseURL,
+      query: {
+        int_casino_id: currentCasinoId.value,
+      },
+      responseType: "blob",
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+        Accept: "text/csv",
+      },
+    } as any);
+
+    return ok(blob);
+  } catch (error) {
+    return fail(error);
+  }
+};
+
 const appendTournamentFormData = (formData: FormData, payload: TournamentPayload) => {
   formData.append("name", String(payload.name ?? ""));
   if (payload.thumbnail !== undefined && payload.thumbnail !== null) {
@@ -61,6 +88,8 @@ const appendTournamentFormData = (formData: FormData, payload: TournamentPayload
   formData.append("ended_at", String(payload.ended_at ?? ""));
   formData.append("status", String(payload.status ?? ""));
   formData.append("point_rate", String(payload.point_rate ?? 1));
+  formData.append("tournament_type", String(payload.tournament_type ?? "DEFAULT"));
+  formData.append("tournament_range", String(payload.tournament_range ?? -1));
 
   payload.game_ids.forEach((gameId, index) => {
     formData.append(`game_ids[${index}]`, String(gameId));
@@ -183,11 +212,105 @@ export const useTournamentsApi = () => {
     return ok(null, res?.message);
   };
 
+  const listTournamentTypes = async (): Promise<
+    TournamentsApiResult<TournamentTypeOption[]>
+  > => {
+    const result = await useAPIFetch("/admin/tournaments/types", {});
+
+    if (!result.success) {
+      return fail(result.error);
+    }
+
+    const res = result.data as TournamentApiResponse<TournamentTypeOption[]>;
+    return ok(unwrap<TournamentTypeOption[]>(res), res?.message);
+  };
+
+  const cloneTournament = async (
+    id: string,
+  ): Promise<TournamentsApiResult<Tournament>> => {
+    const result = await useApiPostFetch(`/admin/tournaments/${id}/clone`, {});
+
+    if (!result.success) {
+      return fail(result.error);
+    }
+
+    const res = result.data as TournamentApiResponse<Tournament>;
+    return ok(unwrap<Tournament>(res), res?.message);
+  };
+
+  const endTournament = async (
+    id: string,
+  ): Promise<TournamentsApiResult<Tournament>> => {
+    const result = await useApiPostFetch(`/admin/tournaments/${id}/end`, {});
+
+    if (!result.success) {
+      return fail(result.error);
+    }
+
+    const res = result.data as TournamentApiResponse<Tournament>;
+    return ok(unwrap<Tournament>(res), res?.message);
+  };
+
+  const randomExtraction = async (
+    id: string,
+  ): Promise<TournamentsApiResult<TournamentRandomExtractionResponse>> => {
+    const result = await useApiPostFetch(`/admin/tournaments/${id}/random-extraction`, {});
+
+    if (!result.success) {
+      return fail(result.error);
+    }
+
+    const res = result.data as TournamentApiResponse<TournamentRandomExtractionResponse>;
+    return ok(unwrap<TournamentRandomExtractionResponse>(res), res?.message);
+  };
+
+  const randomExtractionEligible = async (
+    id: string,
+  ): Promise<TournamentsApiResult<TournamentRandomExtractionResponse>> => {
+    const result = await useAPIFetch(`/admin/tournaments/${id}/random-extraction/eligible`, {});
+
+    if (!result.success) {
+      return fail(result.error);
+    }
+
+    const res = result.data as TournamentApiResponse<TournamentRandomExtractionResponse>;
+    return ok(unwrap<TournamentRandomExtractionResponse>(res), res?.message);
+  };
+
+  const approveRandomExtraction = async (
+    id: string,
+    awards: TournamentPrizeAward[],
+  ): Promise<TournamentsApiResult<Tournament>> => {
+    const result = await useApiPostFetch(`/admin/tournaments/${id}/random-extraction/approve`, {
+      awards,
+    });
+
+    if (!result.success) {
+      return fail(result.error);
+    }
+
+    const res = result.data as TournamentApiResponse<Tournament>;
+    return ok(unwrap<Tournament>(res), res?.message);
+  };
+
+  const exportChanceList = async (
+    id: string,
+  ): Promise<TournamentsApiResult<Blob>> => {
+    return downloadBlob(`/admin/tournaments/${id}/chance-list/export`);
+  };
+
   return {
     listTournaments,
     getTournament,
     createTournament,
     updateTournament,
     deleteTournament,
+    listTournamentTypes,
+    cloneTournament,
+    endTournament,
+    randomExtractionEligible,
+    randomExtraction,
+    approveRandomExtraction,
+    exportChanceList,
   };
 };

@@ -13,7 +13,7 @@
 		public function getTournament(string $id): Tournament
 		{
 			$tournament = Tournament::query()
-				->with(['prizes'])
+				->with(['prizes', 'prizeAwards'])
 				->find($id);
 
 			if (!$tournament) {
@@ -59,7 +59,7 @@
 					'position' => $position,
 					'player' => (string)$row->username,
 					'score' => $score,
-					'prize_label' => $this->prizeLabelFor($tournament->prizes, $position, $score),
+					'prize_label' => $this->leaderboardPrizeLabelFor($tournament, $position, $score),
 				];
 				$position++;
 			}
@@ -113,7 +113,7 @@
 				->count();
 
 			$position = $aheadCount + 1;
-			$estPrizeLabel = $this->prizeLabelFor($tournament->prizes, $position, $score);
+			$estPrizeLabel = $this->leaderboardPrizeLabelFor($tournament, $position, $score);
 
 			$badgeText = null;
 			$badgeVariant = null;
@@ -165,5 +165,19 @@
 
 			return '-';
 		}
-	}
 
+		private function leaderboardPrizeLabelFor(Tournament $tournament, int $position, int $score): string
+		{
+			if (($tournament->tournament_type ?? 'DEFAULT') !== 'RANDOM') {
+				return $this->prizeLabelFor($tournament->prizes, $position, $score);
+			}
+
+			if (!$tournament->random_prizes_allocated_at) {
+				return '-';
+			}
+
+			$award = $tournament->prizeAwards->firstWhere('draw_position', $position);
+
+			return $award ? (string)$award->prize_name : '-';
+		}
+	}

@@ -22,12 +22,12 @@ export const TOURNAMENTS_HEADERS: VDataTableHeaders = [
   { title: "Thumbnail", key: "thumbnail", sortable: false, width: 140 },
   { title: "Name", key: "name", sortable: true, width: 240 },
   { title: "Status", key: "status", sortable: true, width: 140 },
+  { title: "Type", key: "tournament_type", sortable: false, width: 150 },
   { title: "Starts", key: "started_at", sortable: true, width: 200 },
   { title: "Ends", key: "ended_at", sortable: true, width: 200 },
   { title: "Point rate", key: "point_rate", sortable: false, width: 140 },
   { title: "Games", key: "games_count", sortable: false, width: 90 },
   { title: "Prizes", key: "prizes_count", sortable: false, width: 90 },
   { title: "Created", key: "created_at", sortable: true, width: 200 },
-  { title: "Actions", key: "actions", sortable: false, width: 180 },
+  { title: "Actions", key: "actions", sortable: false, width: 360 },
 ];
-

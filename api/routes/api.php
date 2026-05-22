@@ -235,7 +235,14 @@
 
 		#admin tournaments
 		Route::prefix('admin')->group(function () {
+			Route::get('/tournaments/types', [AdminTournamentController::class, 'types']);
 			Route::get('/tournaments', [AdminTournamentController::class, 'index']);
+			Route::post('/tournaments/{id}/clone', [AdminTournamentController::class, 'clone']);
+			Route::post('/tournaments/{id}/end', [AdminTournamentController::class, 'end']);
+			Route::get('/tournaments/{id}/random-extraction/eligible', [AdminTournamentController::class, 'randomExtractionEligible']);
+			Route::get('/tournaments/{id}/chance-list/export', [AdminTournamentController::class, 'exportChanceList']);
+			Route::post('/tournaments/{id}/random-extraction', [AdminTournamentController::class, 'randomExtraction']);
+			Route::post('/tournaments/{id}/random-extraction/approve', [AdminTournamentController::class, 'approveRandomExtraction']);
 			Route::get('/tournaments/{id}', [AdminTournamentController::class, 'show']);
 			Route::post('/tournaments', [AdminTournamentController::class, 'store']);
 			Route::put('/tournaments/{id}', [AdminTournamentController::class, 'update']);

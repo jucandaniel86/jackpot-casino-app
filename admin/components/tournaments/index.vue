@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { TOURNAMENTS_HEADERS } from "./config";
-import type { Tournament, TournamentListFilters } from "~/types/tournaments";
+import type {
+  Tournament,
+  TournamentListFilters,
+  TournamentPrizeAward,
+  TournamentRandomPlayer,
+} from "~/types/tournaments";
 
 const router = useRouter();
 const { confirmDelete, toastSuccess, toastError, axiosErrorAlert } = useAlert();
@@ -10,6 +15,11 @@ const items = ref<Tournament[]>([]);
 const total = ref(0);
 const loading = ref(false);
 const errorMessage = ref<string | null>(null);
+const extractionDialog = ref(false);
+const extractionLoading = ref(false);
+const extractionTournament = ref<Tournament | null>(null);
+const eligiblePlayers = ref<TournamentRandomPlayer[]>([]);
+const extractedAwards = ref<TournamentPrizeAward[]>([]);
 
 const page = ref(1);
 const perPage = ref(20);
@@ -133,6 +143,107 @@ function onDelete(item: Tournament) {
     toastSuccess(result.message || "Tournament deleted successfully.");
     fetchData();
   });
+}
+
+async function onClone(item: Tournament) {
+  const result = await api.cloneTournament(String(item.id));
+  if (!result.success) {
+    toastError(result.message || "Failed to clone tournament.");
+    return;
+  }
+
+  toastSuccess(result.message || "Tournament cloned successfully.");
+  fetchData();
+}
+
+async function onEnd(item: Tournament) {
+  const result = await api.endTournament(String(item.id));
+  if (!result.success) {
+    toastError(result.message || "Failed to end tournament.");
+    return;
+  }
+
+  toastSuccess(result.message || "Tournament ended successfully.");
+  fetchData();
+}
+
+async function onExportChanceList(item: Tournament) {
+  const result = await api.exportChanceList(String(item.id));
+  if (!result.success || !result.data) {
+    toastError(result.message || "Failed to export chance list.");
+    return;
+  }
+
+  const url = URL.createObjectURL(result.data);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `tournament-${item.id}-chance-list.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+async function openRandomExtraction(item: Tournament) {
+  extractionTournament.value = item;
+  extractionDialog.value = true;
+  eligiblePlayers.value = [];
+  extractedAwards.value = [];
+  extractionLoading.value = true;
+
+  const result = await api.randomExtractionEligible(String(item.id));
+  extractionLoading.value = false;
+
+  if (!result.success || !result.data) {
+    toastError(result.message || "Failed to load eligible players.");
+    return;
+  }
+
+  eligiblePlayers.value = result.data.eligible_players ?? [];
+}
+
+async function extractRandomAwards() {
+  if (!extractionTournament.value) return;
+
+  extractionLoading.value = true;
+  const result = await api.randomExtraction(String(extractionTournament.value.id));
+  extractionLoading.value = false;
+
+  if (!result.success || !result.data) {
+    toastError(result.message || "Failed to run random extraction.");
+    return;
+  }
+
+  eligiblePlayers.value = result.data.eligible_players ?? [];
+  extractedAwards.value = result.data.awards ?? [];
+}
+
+async function approveRandomAwards() {
+  if (!extractionTournament.value || extractedAwards.value.length === 0) return;
+
+  extractionLoading.value = true;
+  const result = await api.approveRandomExtraction(
+    String(extractionTournament.value.id),
+    extractedAwards.value,
+  );
+  extractionLoading.value = false;
+
+  if (!result.success) {
+    toastError(result.message || "Failed to approve random extraction.");
+    return;
+  }
+
+  toastSuccess(result.message || "Random extraction approved successfully.");
+  extractionDialog.value = false;
+  fetchData();
+}
+
+function canRandomExtract(item: Tournament) {
+  return (
+    item.tournament_type === "RANDOM" &&
+    item.status === "finished" &&
+    !item.random_prizes_allocated_at
+  );
 }
 
 function statusColor(status: string) {
@@ -345,6 +456,16 @@ function fmtDate(v: any) {
           </v-chip>
         </template>
 
+        <template #item.tournament_type="{ item }">
+          <v-chip
+            size="small"
+            :color="item.tournament_type === 'RANDOM' ? 'deep-purple' : 'blue-grey'"
+            label
+          >
+            {{ item.tournament_type || "DEFAULT" }}
+          </v-chip>
+        </template>
+
         <template #item.started_at="{ item }">
           {{ fmtDate(item.started_at) }}
         </template>
@@ -366,7 +487,7 @@ function fmtDate(v: any) {
         </template>
 
         <template #item.actions="{ item }">
-          <div class="d-flex ga-2">
+          <div class="d-flex ga-2 flex-wrap">
             <v-btn
               size="small"
               variant="flat"
@@ -374,6 +495,41 @@ function fmtDate(v: any) {
               @click="goEdit(String(item.id))"
             >
               Edit
+            </v-btn>
+            <v-btn
+              size="small"
+              variant="tonal"
+              color="primary"
+              @click="onClone(item)"
+            >
+              Clone
+            </v-btn>
+            <v-btn
+              size="small"
+              variant="tonal"
+              color="warning"
+              :disabled="item.status === 'finished'"
+              @click="onEnd(item)"
+            >
+              End
+            </v-btn>
+            <v-btn
+              v-if="item.status === 'finished'"
+              size="small"
+              variant="tonal"
+              color="success"
+              @click="onExportChanceList(item)"
+            >
+              Export list
+            </v-btn>
+            <v-btn
+              v-if="canRandomExtract(item)"
+              size="small"
+              variant="flat"
+              color="deep-purple"
+              @click="openRandomExtraction(item)"
+            >
+              Random extraction
             </v-btn>
             <v-btn
               size="small"
@@ -393,5 +549,91 @@ function fmtDate(v: any) {
         </template>
       </v-data-table-server>
     </v-card>
+
+    <v-dialog v-model="extractionDialog" max-width="980">
+      <v-card>
+        <v-card-title class="d-flex align-center justify-space-between">
+          <span>Random extraction</span>
+          <v-btn icon="mdi-close" variant="text" @click="extractionDialog = false" />
+        </v-card-title>
+        <v-divider />
+        <v-card-text>
+          <v-alert
+            type="info"
+            variant="tonal"
+            class="mb-4"
+          >
+            Eligible players are selected by tournament range. Each point is one draw chance.
+          </v-alert>
+
+          <v-progress-linear v-if="extractionLoading" indeterminate color="primary" class="mb-4" />
+
+          <div class="text-subtitle-2 mb-2">Eligible players</div>
+          <v-table density="compact" class="mb-4">
+            <thead>
+              <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th class="text-right">Points / chances</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="eligiblePlayers.length === 0">
+                <td colspan="3" class="text-medium-emphasis">No eligible players.</td>
+              </tr>
+              <tr v-for="player in eligiblePlayers" :key="player.user_id">
+                <td>{{ player.user_id }}</td>
+                <td>{{ player.username }}</td>
+                <td class="text-right">{{ player.points }}</td>
+              </tr>
+            </tbody>
+          </v-table>
+
+          <template v-if="extractedAwards.length">
+            <div class="text-subtitle-2 mb-2">Extracted prizes</div>
+            <v-table density="compact">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Prize</th>
+                  <th>Winner</th>
+                  <th class="text-right">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="award in extractedAwards" :key="`${award.tournament_prize_id}-${award.draw_position}`">
+                  <td>{{ award.draw_position }}</td>
+                  <td>{{ award.prize_name }} ({{ award.prize_currency || "" }} {{ award.prize_amount }})</td>
+                  <td>{{ award.username || award.user_id }}</td>
+                  <td class="text-right">{{ award.points }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </template>
+        </v-card-text>
+        <v-divider />
+        <v-card-actions class="justify-end">
+          <v-btn variant="text" @click="extractionDialog = false">Close</v-btn>
+          <v-btn
+            color="deep-purple"
+            variant="flat"
+            :loading="extractionLoading"
+            :disabled="eligiblePlayers.length === 0"
+            @click="extractRandomAwards"
+          >
+            Extract
+          </v-btn>
+          <v-btn
+            v-if="extractedAwards.length"
+            color="success"
+            variant="flat"
+            :loading="extractionLoading"
+            @click="approveRandomAwards"
+          >
+            Approve
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>

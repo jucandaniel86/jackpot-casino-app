@@ -22,6 +22,8 @@ class StoreTournamentRequest extends FormRequest
 			'ended_at' => 'required|date|after:started_at',
 			'status' => 'required|in:draft,scheduled,active,finished,cancelled',
 			'point_rate' => 'required|integer|min:1',
+			'tournament_type' => 'nullable|in:DEFAULT,RANDOM',
+			'tournament_range' => 'nullable|integer|min:-1',
 			'game_ids' => 'required|array|min:1',
 			'game_ids.*' => 'required',
 			'prizes' => 'nullable|array',

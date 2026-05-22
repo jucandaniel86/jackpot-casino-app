@@ -5,6 +5,8 @@ export type TournamentStatus =
   | "finished"
   | "cancelled";
 
+export type TournamentType = "DEFAULT" | "RANDOM";
+
 export type TournamentGame = {
   id: string;
   game_id: string;
@@ -39,6 +41,26 @@ export type TournamentPrize = {
   updated_at?: string;
 };
 
+export type TournamentPrizeAward = {
+  id?: number;
+  tournament_id?: string;
+  tournament_prize_id: string;
+  user_id: number;
+  username?: string;
+  points: number;
+  draw_position: number;
+  prize_name: string;
+  prize_currency: string | null;
+  prize_amount: string | number;
+  approved_at?: string | null;
+};
+
+export type TournamentRandomPlayer = {
+  user_id: number;
+  username: string;
+  points: number;
+};
+
 export type Tournament = {
   id: string;
   name: string;
@@ -48,8 +70,12 @@ export type Tournament = {
   ended_at: string;
   status: TournamentStatus;
   point_rate: number;
+  tournament_type: TournamentType;
+  tournament_range: number;
+  random_prizes_allocated_at?: string | null;
   games: TournamentGame[];
   prizes: TournamentPrize[];
+  prize_awards?: TournamentPrizeAward[];
   created_at: string;
   updated_at: string;
 };
@@ -90,8 +116,21 @@ export type TournamentPayload = {
   ended_at: string;
   status: TournamentStatus;
   point_rate: number;
+  tournament_type?: TournamentType;
+  tournament_range?: number;
   game_ids: string[];
   prizes?: TournamentPrizePayload[] | null;
+};
+
+export type TournamentTypeOption = {
+  title: string;
+  value: TournamentType;
+};
+
+export type TournamentRandomExtractionResponse = {
+  eligible_players: TournamentRandomPlayer[];
+  awards: TournamentPrizeAward[];
+  allocated: boolean;
 };
 
 export type TournamentListResponse = {

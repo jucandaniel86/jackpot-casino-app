@@ -20,6 +20,9 @@ class Tournament extends Model
 		'ended_at',
 		'status',
 		'point_rate',
+		'tournament_type',
+		'tournament_range',
+		'random_prizes_allocated_at',
 	];
 
 	protected $appends = [
@@ -29,6 +32,7 @@ class Tournament extends Model
 	protected $casts = [
 		'started_at' => 'datetime',
 		'ended_at' => 'datetime',
+		'random_prizes_allocated_at' => 'datetime',
 	];
 
 	public function getThumbnailUrlAttribute(): ?string
@@ -61,5 +65,10 @@ class Tournament extends Model
 	public function prizes(): HasMany
 	{
 		return $this->hasMany(TournamentPrize::class, 'tournament_id');
+	}
+
+	public function prizeAwards(): HasMany
+	{
+		return $this->hasMany(TournamentPrizeAward::class, 'tournament_id');
 	}
 }
