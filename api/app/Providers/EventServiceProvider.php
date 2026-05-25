@@ -38,6 +38,9 @@
 			\App\Events\PlayerRegistered::class => [
 				\App\Listeners\SendWelcomeEmail::class,
 			],
+			\App\Events\BetWinCreated::class => [
+				\App\Listeners\ProcessTournamentWinPoints::class,
+			],
 		];
 
 		/**

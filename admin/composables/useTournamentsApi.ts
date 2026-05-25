@@ -8,6 +8,8 @@ import type {
   TournamentPrizeAward,
   TournamentTypeOption,
 } from "~/types/tournaments";
+import { useAuthStore } from "~/store/auth"; 
+import { useLayoutStore } from "~/store/app";
 
 const toErrorMessage = (error: any): string => {
   const data = error?.response?._data ?? error?.data ?? null;

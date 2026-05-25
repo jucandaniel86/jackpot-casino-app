@@ -215,8 +215,13 @@ class TournamentController extends Controller
 
 			foreach ($players as $player) {
 				$chances = max(0, (int)$player['points']);
+				$username = trim((string)($player['username'] ?? ''));
+				if ($username === '') {
+					continue;
+				}
+
 				for ($i = 0; $i < $chances; $i++) {
-					fputcsv($handle, [(string)$player['user_id']]);
+					fputcsv($handle, [$username]);
 				}
 			}
 

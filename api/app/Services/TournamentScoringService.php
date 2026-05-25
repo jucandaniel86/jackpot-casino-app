@@ -6,7 +6,9 @@ use App\Enums\TransactionTypes;
 use App\Models\Bet;
 use App\Models\Tournament;
 use App\Models\TournamentScore;
+use App\Models\TournamentScoreEvent;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -59,18 +61,7 @@ class TournamentScoringService
 
 		foreach ($tournaments as $tournament) {
 			DB::transaction(function () use ($tournament, $bet, $userId, $whenPlaced) {
-				$inserted = DB::table('tournament_score_events')->insertOrIgnore([
-					'tournament_id' => $tournament->id,
-					'bet_id' => (int)$bet->id,
-					'bet_transaction_id' => $bet->transaction_id ?? null,
-					'user_id' => $userId,
-					'delta_points' => 1,
-					'occurred_at' => $whenPlaced,
-					'created_at' => now(),
-					'updated_at' => now(),
-				]);
-
-				if ($inserted !== 1) {
+				if (!$this->createScoreEvent($tournament, $bet, $userId, $whenPlaced)) {
 					return;
 				}
 
@@ -95,5 +86,27 @@ class TournamentScoringService
 				$score->save();
 			});
 		}
+	}
+
+	private function createScoreEvent(Tournament $tournament, Bet $bet, int $userId, Carbon $whenPlaced): bool
+	{
+		try {
+			TournamentScoreEvent::query()->create([
+				'tournament_id' => $tournament->id,
+				'bet_id' => (int)$bet->id,
+				'bet_transaction_id' => $bet->transaction_id ?? null,
+				'user_id' => $userId,
+				'delta_points' => 1,
+				'occurred_at' => $whenPlaced,
+			]);
+		} catch (QueryException $exception) {
+			if ((string)$exception->getCode() === '23000') {
+				return false;
+			}
+
+			throw $exception;
+		}
+
+		return true;
 	}
 }

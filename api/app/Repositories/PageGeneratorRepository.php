@@ -13,8 +13,10 @@
 	use App\Models\Promotion;
 	use App\Models\Providers;
 	use App\Models\Tag;
+	use App\Models\Tournament;
 	use App\Traits\ContainerGeneratorTrait;
 	use Illuminate\Http\Request;
+	use Illuminate\Support\Facades\DB;
 	use Illuminate\Support\Str;
 
 	class PageGeneratorRepository implements PageGeneratorInterface
@@ -346,6 +348,79 @@
 				'slug' => $game->slug,
 				'gameID' => $game->id,
 				'rgs_game_id' => $game->game_id,
+				'tournament' => $this->generateGameTournamentData($game),
+			];
+		}
+
+		private function generateGameTournamentData(Game $game): ?array
+		{
+			$tournament = Tournament::query()
+				->where('status', 'active')
+				->where('started_at', '<=', now())
+				->where('ended_at', '>=', now())
+				->whereHas('tournamentGames', function ($query) use ($game) {
+					$query->where('game_id', $game->game_id);
+				})
+				->orderBy('ended_at')
+				->first();
+
+			if (!$tournament) {
+				return null;
+			}
+
+			$userStanding = null;
+
+			if (auth('casino')->check()) {
+				$userStanding = $this->generateTournamentUserStanding($tournament, (int)auth('casino')->user()->id);
+			}
+
+			return [
+				'id' => $tournament->id,
+				'name' => $tournament->name,
+				'ended_at' => $tournament->ended_at?->toIso8601String(),
+				'thumbnail' => $tournament->thumbnail,
+				'thumbnail_url' => $tournament->thumbnail_url,
+				'user_standing' => $userStanding,
+			];
+		}
+
+		private function generateTournamentUserStanding(Tournament $tournament, int $userId): array
+		{
+			$row = DB::table('tournament_scores')
+				->where('tournament_id', $tournament->id)
+				->where('user_id', $userId)
+				->first(['points', 'updated_at']);
+
+			if (!$row) {
+				return [
+					'rank' => null,
+					'points' => 0,
+				];
+			}
+
+			$points = (int)$row->points;
+			$updatedAt = (string)$row->updated_at;
+
+			$aheadCount = (int)DB::table('tournament_scores')
+				->where('tournament_id', $tournament->id)
+				->where(function ($query) use ($points, $updatedAt, $userId) {
+					$query->where('points', '>', $points)
+						->orWhere(function ($query) use ($points, $updatedAt, $userId) {
+							$query->where('points', '=', $points)
+								->where(function ($query) use ($updatedAt, $userId) {
+									$query->where('updated_at', '<', $updatedAt)
+										->orWhere(function ($query) use ($updatedAt, $userId) {
+											$query->where('updated_at', '=', $updatedAt)
+												->where('user_id', '<', $userId);
+										});
+								});
+						});
+				})
+				->count();
+
+			return [
+				'rank' => $aheadCount + 1,
+				'points' => $points,
 			];
 		}
 
