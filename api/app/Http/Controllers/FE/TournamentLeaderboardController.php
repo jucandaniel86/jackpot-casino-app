@@ -29,7 +29,13 @@
 		{
 			$user = $request->user();
 
-			$data = $repo->userStanding($id, (int)$user->id);
+			$standing = $repo->userStanding($id, (int)$user->id);
+			$data = [
+				'tournament_id' => $id,
+				'rank' => $standing['position'] ?? null,
+				'points' => $standing['score'] ?? 0,
+				'standing' => $standing,
+			];
 
 			return response()->json([
 				'success' => true,
@@ -37,4 +43,3 @@
 			]);
 		}
 	}
-

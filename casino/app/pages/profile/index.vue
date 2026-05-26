@@ -60,7 +60,7 @@ definePageMeta({
 })
 </script>
 <template>
-  <div v-if="isLogged">
+  <div v-if="isLogged" class="mt-3">
     <v-tabs v-model="currentTab" align-tabs="start" class="mb-5">
       <v-tab
         v-for="(tab, i) in tabs"

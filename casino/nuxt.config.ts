@@ -11,6 +11,12 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/app.css'],
+  typescript: {
+    tsconfig: {
+      compilerOptions: {},
+      // whatever else you need
+    },
+  },
 
   runtimeConfig: {
     public: {

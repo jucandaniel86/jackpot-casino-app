@@ -20,7 +20,6 @@ use App\Http\Controllers\FE\TabController;
 use App\Http\Controllers\FE\TransactionsController;
 use App\Http\Controllers\FE\TournamentController;
 use App\Http\Controllers\FE\TournamentLeaderboardController;
-use App\Http\Controllers\FE\TournamentScoreStreamController;
 use App\Http\Controllers\FE\WalletController;
 use App\Http\Controllers\FE\WinStreamController;
 use App\Http\Controllers\FE\WithdrawRequestsController;
@@ -89,7 +88,6 @@ Route::middleware(['payload.crypto:both', 'casino.id.decode'])->group(function (
 			Route::post('/wallets/current', [WalletController::class, 'setCurrent']);
 
 			Route::get('/tournaments/{id}/standing', [TournamentLeaderboardController::class, 'standing']);
-			Route::get('/games/{slug}/tournament/stream', TournamentScoreStreamController::class)->middleware('throttle:casino-stream');
 
 			Route::get('/withdraw-requests', WithdrawRequestsHistoryController::class);
 			Route::post('/withdraw-requests', WithdrawRequestsController::class);

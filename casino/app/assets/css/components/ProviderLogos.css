@@ -43,6 +43,7 @@
 
 .v-slide-group__content {
   gap: 8px;
+  padding: 2px 8px;
 }
 
 .v-slide-group {

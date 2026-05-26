@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61ca90ed-6a03-40a4-98a4-3b2d16e4f8c6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/PageGeneratorRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Events/TournamentPointsAwarded.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FE/TournamentLeaderboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FE/TournamentLeaderboardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FE/TournamentScoreStreamController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Observers/TournamentScoreEventObserver.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/frontend-casino.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/frontend-casino.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../casino/app/pages/game/[slug].vue" beforeDir="false" afterPath="$PROJECT_DIR$/../casino/app/pages/game/[slug].vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -210,7 +217,7 @@
       <workItem from="1777031958790" duration="4865000" />
       <workItem from="1777454955242" duration="707000" />
       <workItem from="1777455760536" duration="1276000" />
-      <workItem from="1779092461537" duration="3681000" />
+      <workItem from="1779092461537" duration="5659000" />
     </task>
     <servers />
   </component>

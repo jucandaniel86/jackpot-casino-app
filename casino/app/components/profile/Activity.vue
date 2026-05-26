@@ -19,6 +19,7 @@ enum TransactionType {
 const { name } = useDisplay()
 const { convertCurrency, convertDate, isset } = useUtils()
 const { t } = useI18n()
+const route = useRoute()
 
 //models
 const activities = ProfileActivityFilters.map((el) => ({
@@ -141,8 +142,24 @@ watch(page, async () => {
   await fetchResults()
 })
 
+watch(
+  () => route.query.history,
+  (newVal) => {
+    if (newVal) {
+      activityType.value =
+        ProfileActivityFilters.find((el) => el.id === 'bets')?.id || activities[0]?.value
+    } else {
+      activityType.value = activities[0]?.value
+    }
+  },
+)
+
 //mounted
 onMounted(() => {
+  if (route.query.history) {
+    activityType.value =
+      ProfileActivityFilters.find((el) => el.id === 'bets')?.id || activities[0]?.value
+  }
   fetchResults()
 })
 </script>
@@ -245,11 +262,7 @@ onMounted(() => {
         />
       </div>
 
-      <v-table
-        v-else-if="activityType === 'bets'"
-        color="dark"
-        class="transactions-table mt-8"
-      >
+      <v-table v-else-if="activityType === 'bets'" color="dark" class="transactions-table mt-8">
         <thead>
           <tr>
             <th>{{ t('settings.game') }}</th>

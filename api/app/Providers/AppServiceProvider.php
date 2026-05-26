@@ -4,10 +4,8 @@
 
 	use App\Models\Bet;
 	use App\Models\Player;
-	use App\Models\TournamentScoreEvent;
 	use App\Observers\BetObserver;
 	use App\Observers\PlayerObserver;
-	use App\Observers\TournamentScoreEventObserver;
 	use Illuminate\Support\ServiceProvider;
 	use Illuminate\Mail\Events\MessageSending;
 	use Illuminate\Mail\Events\MessageSent;
@@ -39,7 +37,6 @@
 
 			Player::observe(PlayerObserver::class);
 			Bet::observe(BetObserver::class);
-			TournamentScoreEvent::observe(TournamentScoreEventObserver::class);
 
 			Event::listen([MessageSending::class, MessageSent::class], function (object $event) {
 				$message = $event->message ?? null;
