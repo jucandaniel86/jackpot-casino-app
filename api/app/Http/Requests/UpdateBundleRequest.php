@@ -13,6 +13,15 @@ class UpdateBundleRequest extends FormRequest
 		return true;
 	}
 
+	protected function prepareForValidation(): void
+	{
+		foreach (['metadata', 'starts_at', 'ends_at'] as $field) {
+			if ($this->input($field) === '') {
+				$this->merge([$field => null]);
+			}
+		}
+	}
+
 	public function rules(): array
 	{
 		$id = (string)$this->route('id');
@@ -35,6 +44,7 @@ class UpdateBundleRequest extends FormRequest
 			'coin_amount' => 'nullable|numeric|min:0',
 
 			'thumbnail' => 'nullable|string|max:500',
+			'thumbnail_file' => 'nullable|image|max:5120',
 			'icon' => 'nullable|string|max:500',
 			'label' => 'nullable|string|max:255',
 			'subtitle' => 'nullable|string|max:255',

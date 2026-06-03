@@ -14,6 +14,8 @@ const emit = defineEmits<{
 const { toastError } = useAlert();
 
 const formRef = ref<any>(null);
+const thumbnailFile = ref<File | File[] | null>(null);
+const thumbnailPreview = ref<string | null>(null);
 
 const model = reactive<{
   name: string;
@@ -77,9 +79,7 @@ const model = reactive<{
 
 const required = (v: any) => !!v || "Required.";
 const nonNegative = (v: any) =>
-  v === null || v === undefined || v === "" || Number(v) >= 0
-    ? true
-    : "Min 0.";
+  v === null || v === undefined || v === "" || Number(v) >= 0 ? true : "Min 0.";
 
 const slugRule = (v: any) => {
   const value = String(v ?? "");
@@ -121,6 +121,7 @@ const mapFromItem = (item: Bundle) => {
   model.coin_amount = asNumber(item.coin_amount, 0);
 
   model.thumbnail = item.thumbnail ?? "";
+  thumbnailPreview.value = item.thumbnail_url ?? item.thumbnail ?? null;
   model.icon = item.icon ?? "";
   model.badge_text = item.badge_text ?? "";
   model.badge_color = item.badge_color ?? "";
@@ -146,9 +147,26 @@ watch(
   () => props.item,
   (item) => {
     if (item) mapFromItem(item);
+    else thumbnailPreview.value = null;
+    thumbnailFile.value = null;
   },
-  { immediate: true },
+  { immediate: true }
 );
+
+watch(thumbnailFile, (fileValue) => {
+  if (
+    typeof thumbnailPreview.value === "string" &&
+    thumbnailPreview.value.startsWith("blob:")
+  ) {
+    URL.revokeObjectURL(thumbnailPreview.value);
+  }
+
+  const file = Array.isArray(fileValue) ? fileValue[0] : fileValue;
+  thumbnailPreview.value =
+    file instanceof File
+      ? URL.createObjectURL(file)
+      : props.item?.thumbnail_url ?? props.item?.thumbnail ?? null;
+});
 
 function validateAmounts(): boolean {
   const gc = asNumber(model.gc_amount, 0);
@@ -210,6 +228,7 @@ function buildPayload(): BundlePayload | null {
     coin_amount: asNumber(model.coin_amount, 0),
 
     thumbnail: asNullableString(model.thumbnail),
+    thumbnail_file: thumbnailFile.value,
     icon: asNullableString(model.icon),
     badge_text: asNullableString(model.badge_text),
     badge_color: asNullableString(model.badge_color),
@@ -361,10 +380,32 @@ async function onSave() {
           <v-col cols="12" md="4">
             <v-text-field
               v-model="model.thumbnail"
-              label="Thumbnail"
+              label="Thumbnail URL or filename"
               variant="outlined"
               density="comfortable"
               clearable
+            />
+          </v-col>
+          <v-col cols="12" md="4">
+            <div class="mb-2">
+              <v-img
+                v-if="thumbnailPreview"
+                :src="thumbnailPreview"
+                max-width="180"
+                aspect-ratio="16/9"
+                cover
+                class="rounded"
+              />
+            </div>
+
+            <v-file-input
+              v-model="thumbnailFile"
+              label="Thumbnail upload"
+              accept="image/*"
+              variant="outlined"
+              density="comfortable"
+              clearable
+              show-size
             />
           </v-col>
           <v-col cols="12" md="4">
@@ -534,4 +575,3 @@ async function onSave() {
     </div>
   </v-form>
 </template>
-

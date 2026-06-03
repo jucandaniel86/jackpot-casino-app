@@ -13,7 +13,8 @@
 			'providers' => '/uploads/providers/',
 			'rewards' => '/uploads/rewards/',
 			'sliders' => '/uploads/sliders/',
-			'tournaments' => '/uploads/tournaments/'
+			'tournaments' => '/uploads/tournaments/',
+			'bundles' => '/uploads/bundles/'
 		],
 		'demoCurrency' => 'FUN',
 		'defaultCasinoId' => env('DEFAULT_CASINO_ID', 'gf-coin-casino')

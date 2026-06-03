@@ -1,11 +1,41 @@
 <script setup lang="ts">
-import type { BuyBundle } from './buy-bundles-config'
+import type { BuyBundle } from '~/core/store/buy'
 
-const props = defineProps<{ bundle: BuyBundle; compact?: boolean }>()
+type BundleItemSize = 'default' | 'xs'
+
+const props = withDefaults(
+  defineProps<{
+    bundle: BuyBundle
+    compact?: boolean
+    size?: BundleItemSize
+    showBuyButton?: boolean
+    buyDisabled?: boolean
+  }>(),
+  {
+    compact: false,
+    size: 'default',
+    showBuyButton: true,
+    buyDisabled: false,
+  },
+)
 const emit = defineEmits<{ buy: [bundle: BuyBundle] }>()
 
-const coinsLabel = computed(() => props.bundle.coins.toLocaleString())
-const isHero = computed(() => props.bundle.id === 'high-roller-pack')
+const coinsLabel = computed(() => Number(props.bundle.coins || 0).toLocaleString())
+const isHero = computed(() => props.bundle.tier === 'featured' || Boolean(props.bundle.featured))
+const isExtraSmall = computed(() => props.size === 'xs')
+const imageUrl = computed(() => props.bundle.thumbnail || props.bundle.image_url)
+const ctaLabel = computed(() => {
+  if (props.bundle.cta_text) return props.bundle.cta_text
+
+  return props.compact || isExtraSmall.value ? 'Buy' : 'Buy Now'
+})
+const currencyLabel = computed(() => props.bundle.price_currency || '-')
+const realMoneyLabel = computed(() => {
+  if (props.bundle.priceLabel) return props.bundle.priceLabel
+  if (props.bundle.price_amount === null || props.bundle.price_amount === undefined) return '-'
+
+  return `${currencyLabel.value} ${Number(props.bundle.price_amount).toFixed(2)}`
+})
 </script>
 
 <template>
@@ -13,42 +43,73 @@ const isHero = computed(() => props.bundle.id === 'high-roller-pack')
     variant="flat"
     class="bb-card"
     :class="{
-      'bb-card--hero': isHero,
+      'bb-card--hero': isHero && !isExtraSmall,
       'bb-card--compact': props.compact,
+      'bb-card--xs': isExtraSmall,
     }"
   >
-    <div v-if="bundle.badge" class="bb-card__badge">
+    <div v-if="bundle.badge && !isExtraSmall" class="bb-card__badge">
       {{ bundle.badge }}
     </div>
 
-    <div v-if="!props.compact" class="bb-card__shimmer" />
+    <div v-if="!props.compact && !isExtraSmall" class="bb-card__shimmer" />
 
-    <div class="bb-card__visual">
-      <v-icon :icon="bundle.icon" :size="isHero ? 88 : props.compact ? 28 : 72" />
+    <div class="bb-card__visual" :class="{ 'bb-card__visual--image': imageUrl }">
+      <v-img
+        v-if="imageUrl"
+        :src="imageUrl"
+        :alt="bundle.name"
+        :width="isExtraSmall ? 90 : '100%'"
+        :height="isExtraSmall ? 90 : undefined"
+        aspect-ratio="1"
+        class="bb-card__image mb-2"
+        cover
+      />
+      <v-icon
+        v-else
+        :icon="bundle.icon"
+        :size="isExtraSmall ? 42 : isHero ? 88 : props.compact ? 28 : 72"
+      />
     </div>
 
     <div class="bb-card__content">
       <div class="bb-card__name">{{ bundle.name }}</div>
 
-      <div class="bb-card__coins">
+      <template v-if="isExtraSmall">
+        <div class="bb-card__xs-line">
+          <span>Coins</span>
+          <strong>{{ coinsLabel }}</strong>
+        </div>
+        <div class="bb-card__xs-line">
+          <span>Currency</span>
+          <strong>{{ currencyLabel }}</strong>
+        </div>
+        <div class="bb-card__xs-line">
+          <span>Real money</span>
+          <strong>{{ realMoneyLabel }}</strong>
+        </div>
+      </template>
+
+      <div v-else class="bb-card__coins">
         {{ coinsLabel }}
         <span>Coins</span>
       </div>
 
-      <div v-if="bundle.bonusLabel" class="bb-card__bonus">
+      <div v-if="bundle.bonusLabel && !isExtraSmall" class="bb-card__bonus">
         {{ bundle.bonusLabel }}
       </div>
     </div>
 
-    <div class="bb-card__footer">
+    <div v-if="props.showBuyButton" class="bb-card__footer">
       <div class="bb-card__price">{{ bundle.priceLabel }}</div>
       <v-btn
         class="bb-gold-btn"
         variant="flat"
         :class="{ 'bb-gold-btn--compact': props.compact }"
+        :disabled="props.buyDisabled"
         @click="emit('buy', bundle)"
       >
-        {{ props.compact ? 'Buy' : 'Buy Now' }}
+        {{ ctaLabel }}
       </v-btn>
     </div>
   </v-card>
@@ -56,6 +117,12 @@ const isHero = computed(() => props.bundle.id === 'high-roller-pack')
 
 <style scoped>
 .bb-card {
+  --bb-gold: var(--base-color, #f2cf8e);
+  --bb-gold-strong: #f5c542;
+  --bb-surface-low: #1c1b1b;
+  --bb-text: #e5e2e1;
+  --bb-muted: #d1c5ae;
+
   position: relative;
   display: flex;
   min-height: 420px;
@@ -102,6 +169,21 @@ const isHero = computed(() => props.bundle.id === 'high-roller-pack')
   background: var(--bb-surface-low) !important;
 }
 
+.bb-card--xs {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 14px;
+  min-height: 0;
+  align-items: center;
+  padding: 12px;
+  text-align: left;
+  background: var(--bb-surface-low, rgba(28, 27, 27, 0.92)) !important;
+}
+
+.bb-card--xs:hover {
+  transform: none;
+}
+
 .bb-card__shimmer {
   position: absolute;
   inset: 0;
@@ -135,7 +217,8 @@ const isHero = computed(() => props.bundle.id === 'high-roller-pack')
   position: relative;
   z-index: 1;
   display: flex;
-  height: 118px;
+  height: 180px;
+  width: 100%;
   align-items: center;
   justify-content: center;
   color: var(--bb-gold);
@@ -149,9 +232,40 @@ const isHero = computed(() => props.bundle.id === 'high-roller-pack')
   color: var(--bb-muted);
 }
 
+.bb-card__visual--image {
+  height: auto;
+}
+
+.bb-card--xs .bb-card__visual {
+  width: 90px;
+  height: 90px;
+  margin: 0;
+}
+
+.bb-card__image {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+}
+
+.bb-card--compact .bb-card__image {
+  flex: 0 0 100%;
+}
+
+.bb-card--xs .bb-card__image {
+  width: 90px;
+  height: 90px;
+  flex: 0 0 90px;
+  margin-bottom: 0 !important;
+}
+
 .bb-card__content {
   position: relative;
   z-index: 1;
+}
+
+.bb-card--xs .bb-card__content {
+  min-width: 0;
 }
 
 .bb-card__name {
@@ -175,6 +289,33 @@ const isHero = computed(() => props.bundle.id === 'high-roller-pack')
   letter-spacing: 0.02em;
   margin-bottom: 4px;
   text-transform: uppercase;
+}
+
+.bb-card--xs .bb-card__name {
+  color: var(--bb-text);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+  text-transform: none;
+}
+
+.bb-card__xs-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--bb-muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.bb-card__xs-line strong {
+  color: var(--bb-text);
+  font-size: 13px;
+  font-weight: 900;
+  text-align: right;
 }
 
 .bb-card__coins {
@@ -241,6 +382,12 @@ const isHero = computed(() => props.bundle.id === 'high-roller-pack')
   justify-content: space-between;
   gap: 12px;
   padding-top: 18px;
+}
+
+.bb-card--xs .bb-card__footer {
+  grid-column: 2;
+  gap: 10px;
+  padding-top: 10px;
 }
 
 .bb-card__price {

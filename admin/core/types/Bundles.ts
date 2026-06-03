@@ -11,6 +11,7 @@ export type Bundle = {
   coin_amount: string | number;
 
   thumbnail: string | null;
+  thumbnail_url?: string | null;
   icon: string | null;
   badge_text: string | null;
   badge_color: string | null;
@@ -18,6 +19,7 @@ export type Bundle = {
   text_color: string | null;
   ribbon_text: string | null;
   image_url: string | null;
+  thumbnail_file?: File | File[] | null;
 
   is_active: boolean;
   is_featured: boolean;
@@ -107,4 +109,3 @@ export type BundleApiResponse<T> = {
   message?: string;
   data: T;
 };
-

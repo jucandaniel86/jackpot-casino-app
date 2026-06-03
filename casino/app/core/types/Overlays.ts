@@ -3,4 +3,5 @@ export enum OverlaysTypes {
   REGISTER = 'register',
   WALLET = 'wallet',
   FORGOT = 'forgot',
+  BUY = 'buy',
 }

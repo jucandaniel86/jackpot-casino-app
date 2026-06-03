@@ -33,6 +33,7 @@ watch(
       OverlaysTypes.REGISTER,
       OverlaysTypes.WALLET,
       OverlaysTypes.FORGOT,
+      OverlaysTypes.BUY,
     ]
     overlayView.value = overlay
     if (overlay && allowedValues.indexOf(overlay) !== -1) {
@@ -66,12 +67,15 @@ watch(dialog, () => {
   </v-navigation-drawer>
 
   <v-dialog
-    v-if="[OverlaysTypes.WALLET, OverlaysTypes.FORGOT].indexOf(overlayView) !== -1"
+    v-if="
+      [OverlaysTypes.WALLET, OverlaysTypes.FORGOT, OverlaysTypes.BUY].indexOf(overlayView) !== -1
+    "
     v-model="dialog"
     :persistent="overlayView !== OverlaysTypes.FORGOT"
     transition="dialog-bottom-transition"
   >
     <wallet v-if="isLogged && overlayView === OverlaysTypes.WALLET" />
     <forgot v-if="overlayView === OverlaysTypes.FORGOT" />
+    <buy-bundle-overlay v-if="overlayView === OverlaysTypes.BUY && isLogged" />
   </v-dialog>
 </template>

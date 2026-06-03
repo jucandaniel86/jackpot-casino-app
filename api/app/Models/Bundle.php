@@ -11,6 +11,8 @@ class Bundle extends Model
 	use HasUuids;
 	use SoftDeletes;
 
+	protected $appends = ['thumbnail_url'];
+
 	protected $fillable = [
 		'name',
 		'slug',
@@ -55,4 +57,17 @@ class Bundle extends Model
 		'starts_at' => 'datetime',
 		'ends_at' => 'datetime',
 	];
+
+	public function getThumbnailUrlAttribute(): ?string
+	{
+		if (!$this->thumbnail) {
+			return null;
+		}
+
+		if (str_starts_with($this->thumbnail, 'http://') || str_starts_with($this->thumbnail, 'https://') || str_starts_with($this->thumbnail, '/')) {
+			return $this->thumbnail;
+		}
+
+		return url(config('casino.uploads.bundles', '/uploads/bundles/') . $this->thumbnail);
+	}
 }

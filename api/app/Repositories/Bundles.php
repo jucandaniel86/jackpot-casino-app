@@ -3,12 +3,16 @@
 namespace App\Repositories;
 
 use App\Models\Bundle;
+use App\Traits\UploadFilesTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Bundles
 {
+	use UploadFilesTrait;
+
 	/**
 	 * @param array{
 	 *   is_active?: bool|string|int|null,
@@ -119,6 +123,7 @@ class Bundles
 	 *   gc_amount?: string|int|float|null,
 	 *   coin_amount?: string|int|float|null,
 	 *   thumbnail?: string|null,
+	 *   thumbnail_file?: \Illuminate\Http\UploadedFile|null,
 	 *   icon?: string|null,
 	 *   badge_text?: string|null,
 	 *   badge_color?: string|null,
@@ -140,6 +145,7 @@ class Bundles
 		$payload = $this->normalizePayload($data);
 
 		$bundle = Bundle::query()->create($payload);
+		$this->uploadBundleThumbnail($bundle, $data);
 
 		return $this->find((string)$bundle->id);
 	}
@@ -155,6 +161,7 @@ class Bundles
 	 *   gc_amount?: string|int|float|null,
 	 *   coin_amount?: string|int|float|null,
 	 *   thumbnail?: string|null,
+	 *   thumbnail_file?: \Illuminate\Http\UploadedFile|null,
 	 *   icon?: string|null,
 	 *   badge_text?: string|null,
 	 *   badge_color?: string|null,
@@ -177,6 +184,7 @@ class Bundles
 
 		$bundle->fill($this->normalizePayload($data));
 		$bundle->save();
+		$this->uploadBundleThumbnail($bundle, $data);
 
 		return $this->find($id);
 	}
@@ -184,6 +192,9 @@ class Bundles
 	public function delete(string $id): void
 	{
 		$bundle = $this->find($id);
+		if ($this->isStoredThumbnail($bundle->thumbnail)) {
+			$this->deleteFile($this->uploadPath() . $bundle->thumbnail);
+		}
 		$bundle->delete();
 	}
 
@@ -251,5 +262,41 @@ class Bundles
 		}
 
 		return $payload;
+	}
+
+	private function uploadBundleThumbnail(Bundle $bundle, array $data): void
+	{
+		if (
+			!isset($data['thumbnail_file']) ||
+			$data['thumbnail_file'] === 'null' ||
+			$data['thumbnail_file'] === null
+		) {
+			return;
+		}
+
+		$oldThumbnail = $bundle->thumbnail;
+		$thumbnail = $this->uploadThumbnail(
+			$data['thumbnail_file'],
+			$this->uploadPath(),
+			$bundle->name,
+			function () use ($oldThumbnail) {
+				if ($this->isStoredThumbnail($oldThumbnail)) {
+					$this->deleteFile($this->uploadPath() . $oldThumbnail);
+				}
+			}
+		);
+
+		$bundle->thumbnail = $thumbnail;
+		$bundle->save();
+	}
+
+	private function uploadPath(): string
+	{
+		return config('casino.uploads.bundles', '/uploads/bundles/');
+	}
+
+	private function isStoredThumbnail(?string $thumbnail): bool
+	{
+		return (bool)$thumbnail && !Str::startsWith($thumbnail, ['http://', 'https://', '/']);
 	}
 }

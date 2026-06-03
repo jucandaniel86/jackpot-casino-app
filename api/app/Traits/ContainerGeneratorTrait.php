@@ -705,7 +705,7 @@
 				'bonusLabel' => $bundle->ribbon_text ?: $bundle->subtitle,
 				'featured' => (bool)$bundle->is_featured,
 				'popular' => (bool)$bundle->is_popular,
-				'thumbnail' => $bundle->thumbnail,
+				'thumbnail' => $this->formatBundleImageUrl($bundle->thumbnail),
 				'image_url' => $bundle->image_url,
 				'slug' => $bundle->slug,
 				'short_description' => $bundle->short_description,
@@ -717,5 +717,18 @@
 				'cta_text' => $bundle->cta_text,
 				'metadata' => $bundle->metadata,
 			];
+		}
+
+		private function formatBundleImageUrl(?string $value): ?string
+		{
+			if (!$value) {
+				return null;
+			}
+
+			if (Str::startsWith($value, ['http://', 'https://', '/'])) {
+				return $value;
+			}
+
+			return url(config('casino.uploads.bundles', '/uploads/bundles/') . $value);
 		}
 	}

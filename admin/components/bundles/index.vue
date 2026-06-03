@@ -154,6 +154,10 @@ function amount(v: any) {
   const n = Number(v);
   return Number.isFinite(n) ? n.toFixed(2) : String(v);
 }
+
+function thumbnailSrc(item: Bundle) {
+  return item.thumbnail_url || item.thumbnail || item.image_url || "";
+}
 </script>
 
 <template>
@@ -316,19 +320,17 @@ function amount(v: any) {
         @update:sort-by="fetchData"
       >
         <template #item.preview="{ item }">
-          <div class="d-flex ga-2 align-center">
-            <v-avatar size="42" variant="tonal" color="blue-grey">
-              <v-img v-if="item.icon" :src="item.icon" />
-              <span v-else>—</span>
-            </v-avatar>
+          <div class="d-flex align-center">
             <v-img
-              v-if="item.thumbnail || item.image_url"
-              :src="(item.thumbnail || item.image_url) as any"
-              width="90"
-              height="50"
+              v-if="thumbnailSrc(item)"
+              :src="thumbnailSrc(item)"
+              width="64"
+              height="64"
+              aspect-ratio="1"
               cover
               style="border-radius: 8px"
             />
+            <span v-else class="text-medium-emphasis">—</span>
           </div>
         </template>
 

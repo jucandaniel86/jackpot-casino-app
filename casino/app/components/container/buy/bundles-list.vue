@@ -2,107 +2,91 @@
 import { useAuthStore } from '~/core/store/auth'
 import { OverlaysTypes } from '~/core/types/Overlays'
 import BuyBundleCard from './bundle-item.vue'
-import {
-  buyBundleFilters,
-  featuredBuyBundles,
-  standardBuyBundles,
-  type BuyBundle,
-  type BuyBundleFilter,
-} from './buy-bundles-config'
 import type { ContainerType } from '~/core/types/Container'
+import { type BuyBundle, buyStore } from '~/core/store/buy'
 
 const { options } = defineProps<{ options: ContainerType }>()
 const { display, styles } = useContainerOptions(options)
+const { setBundles } = buyStore()
 
 const router = useRouter()
 const { isLogged } = storeToRefs(useAuthStore())
+const { startBuying, setCurrentBundle } = buyStore()
 
-const selectedFilter = ref<BuyBundleFilter>('all')
+const allBundles = computed<BuyBundle[]>(() => options.data?.bundles ?? [])
 
-const matchesFilter = (bundle: BuyBundle) => {
-  if (selectedFilter.value === 'featured') return Boolean(bundle.featured)
-  if (selectedFilter.value === 'popular') return Boolean(bundle.popular)
-  return true
-}
+const featuredBundles = computed<BuyBundle[]>(() => {
+  const bundles =
+    options.data?.featuredBundles ?? allBundles.value.filter((bundle) => bundle.featured)
 
-const visibleFeaturedBundles = computed(() => featuredBuyBundles.filter(matchesFilter))
-const visibleStandardBundles = computed(() => standardBuyBundles.filter(matchesFilter))
+  return bundles
+})
 
-const openPurchaseFlow = () => {
+const standardBundles = computed<BuyBundle[]>(() => {
+  const bundles =
+    options.data?.standardBundles ??
+    allBundles.value.filter((bundle) => bundle.tier !== 'featured' && !bundle.featured)
+
+  return bundles
+})
+
+const hasBundles = computed(
+  () => featuredBundles.value.length > 0 || standardBundles.value.length > 0,
+)
+
+const openPurchaseFlow = (bundle: BuyBundle) => {
+  setCurrentBundle(bundle)
+  startBuying()
   router.replace({
     query: {
-      overlay: isLogged.value ? OverlaysTypes.WALLET : OverlaysTypes.REGISTER,
+      overlay: isLogged.value ? OverlaysTypes.BUY : OverlaysTypes.LOGIN,
     },
   })
 }
+
+onMounted(() => {
+  setBundles(options.data?.bundles ?? [])
+})
 </script>
 
 <template>
   <div v-if="display" :id="options.id" :style="styles" class="bb-page">
     <section class="bb-hero">
       <div class="bb-hero__copy">
-        <div class="bb-eyebrow">Sovereign Vault</div>
         <h1>Buy Bundles</h1>
-        <p>
-          Elevate your play with exclusive coin packages. Precision crafted for the discerning high
-          roller.
-        </p>
       </div>
-
-      <v-btn-toggle v-model="selectedFilter" class="bb-filters" mandatory>
-        <v-btn
-          v-for="filter in buyBundleFilters"
-          :key="filter.value"
-          class="bb-filter"
-          :class="{ 'bb-filter--active': selectedFilter === filter.value }"
-          :value="filter.value"
-          variant="flat"
-        >
-          {{ filter.label }}
-        </v-btn>
-      </v-btn-toggle>
     </section>
 
-    <section v-if="visibleFeaturedBundles.length" class="bb-featured">
+    <section v-if="featuredBundles.length" class="bb-featured">
       <BuyBundleCard
-        v-for="bundle in visibleFeaturedBundles"
+        v-for="bundle in featuredBundles"
         :key="bundle.id"
         :bundle="bundle"
+        :buy-disabled="true"
         @buy="openPurchaseFlow"
       />
     </section>
 
     <section class="bb-standard">
-      <h2 class="bb-section-title">
+      <h2 v-if="standardBundles.length" class="bb-section-title">
         <span />
-        Standard Packages
+        Bundles
       </h2>
 
-      <v-row v-if="visibleStandardBundles.length" class="bb-standard__grid">
-        <v-col
-          v-for="bundle in visibleStandardBundles"
-          :key="bundle.id"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-        >
-          <BuyBundleCard compact :bundle="bundle" @buy="openPurchaseFlow" />
+      <v-row v-if="standardBundles.length" class="bb-standard__grid">
+        <v-col v-for="bundle in standardBundles" :key="bundle.id" cols="12" sm="6" md="4" lg="3">
+          <BuyBundleCard
+            :compact="false"
+            :bundle="bundle"
+            :buy-disabled="true"
+            @buy="openPurchaseFlow"
+          />
         </v-col>
       </v-row>
 
-      <v-card v-else class="bb-empty" variant="flat"> No bundles match this filter yet. </v-card>
-    </section>
-
-    <section class="bb-vip">
-      <div class="bb-vip__content">
-        <div class="bb-eyebrow">Daily drops and private access</div>
-        <h2>Exclusive VIP Rewards</h2>
-        <p>Join the Sovereign Circle for daily coin drops and early access to high-limit tables.</p>
-        <v-btn class="bb-secondary-btn" variant="flat" @click="openPurchaseFlow">
-          Learn More
-        </v-btn>
-      </div>
+      <v-card v-if="!hasBundles" class="bb-empty" variant="flat">
+        No bundles available yet.
+      </v-card>
     </section>
   </div>
 </template>
@@ -137,15 +121,6 @@ const openPurchaseFlow = () => {
   max-width: 620px;
 }
 
-.bb-eyebrow {
-  color: var(--bb-gold-strong);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.2em;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
 .bb-hero h1 {
   color: var(--bb-text);
   font-size: clamp(44px, 7vw, 72px);
@@ -153,38 +128,6 @@ const openPurchaseFlow = () => {
   letter-spacing: -0.06em;
   line-height: 0.95;
   margin: 0 0 18px;
-}
-
-.bb-hero p,
-.bb-vip p {
-  color: var(--bb-muted);
-  font-size: 17px;
-  font-weight: 300;
-  line-height: 1.65;
-  margin: 0;
-}
-
-.bb-filters {
-  flex: 0 0 auto;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 12px;
-  background: var(--bb-surface-low);
-  box-shadow: none;
-}
-
-.bb-filter {
-  background: transparent !important;
-  border-radius: 8px !important;
-  box-shadow: none !important;
-  color: var(--bb-muted) !important;
-  font-weight: 800 !important;
-  padding: 0 24px !important;
-}
-
-.bb-filter--active {
-  background: var(--bb-surface-highest) !important;
-  color: var(--bb-gold) !important;
 }
 
 .bb-featured {
@@ -229,71 +172,10 @@ const openPurchaseFlow = () => {
   border-radius: 12px;
 }
 
-.bb-vip {
-  position: relative;
-  display: flex;
-  min-height: 264px;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 18px;
-  padding: 42px;
-  isolation: isolate;
-  background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.28)),
-    radial-gradient(circle at 88% 26%, rgba(245, 197, 66, 0.28), transparent 32%),
-    radial-gradient(circle at 70% 88%, rgba(242, 207, 142, 0.14), transparent 28%),
-    linear-gradient(135deg, #191817, var(--bb-surface-high));
-  box-shadow: inset 0 0 0 1px rgba(245, 197, 66, 0.14);
-}
-
-.bb-vip::after {
-  content: '';
-  position: absolute;
-  inset: auto -8% -35% auto;
-  width: 420px;
-  height: 420px;
-  border-radius: 999px;
-  background: rgba(245, 197, 66, 0.08);
-  filter: blur(8px);
-  z-index: -1;
-}
-
-.bb-vip__content {
-  max-width: 540px;
-}
-
-.bb-vip h2 {
-  color: var(--bb-gold);
-  font-size: clamp(30px, 4vw, 42px);
-  font-weight: 950;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin: 0 0 12px;
-}
-
-.bb-secondary-btn {
-  background: var(--bb-gold-strong) !important;
-  border-radius: 10px !important;
-  color: #251a00 !important;
-  font-weight: 950 !important;
-  letter-spacing: 0.12em !important;
-  margin-top: 26px;
-  padding: 0 30px !important;
-  text-transform: uppercase !important;
-}
-
 @media (max-width: 959px) {
   .bb-hero {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .bb-filters {
-    width: 100%;
-  }
-
-  .bb-filter {
-    flex: 1 1 0;
   }
 
   .bb-featured {
@@ -308,15 +190,6 @@ const openPurchaseFlow = () => {
 
   .bb-hero h1 {
     font-size: 46px;
-  }
-
-  .bb-hero p,
-  .bb-vip p {
-    font-size: 15px;
-  }
-
-  .bb-vip {
-    padding: 28px;
   }
 }
 </style>
