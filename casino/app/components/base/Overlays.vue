@@ -3,6 +3,7 @@ import { useAuthStore } from '~/core/store/auth'
 import { OverlaysTypes } from '~/core/types/Overlays'
 import Forgot from '../auth/Forgot.vue'
 import Restricted from '../overlays/restricted/Restricted.vue'
+import BuyBundleOverlay from '../overlays/buy/BuyBundleOverlay.vue'
 const overlayView = ref()
 const dialog = ref<boolean>(false)
 const route = useRoute()
