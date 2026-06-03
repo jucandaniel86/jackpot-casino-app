@@ -6,6 +6,7 @@ use App\Models\Bundle;
 use App\Traits\UploadFilesTrait;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -110,6 +111,35 @@ class Bundles
 		}
 
 		return $bundle;
+	}
+
+	public function activeMinimal(int $limit = 24): Collection
+	{
+		$now = now();
+
+		if ($limit <= 0) {
+			$limit = 24;
+		}
+
+		if ($limit > 100) {
+			$limit = 100;
+		}
+
+		return Bundle::query()
+			->where('is_active', true)
+			->where(function ($query) use ($now) {
+				$query->whereNull('starts_at')->orWhere('starts_at', '<=', $now);
+			})
+			->where(function ($query) use ($now) {
+				$query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
+			})
+			->orderByDesc('is_featured')
+			->orderBy('sort_order')
+			->orderByDesc('created_at')
+			->limit($limit)
+			->get()
+			->map(fn (Bundle $bundle) => $this->formatMinimalForFrontend($bundle))
+			->values();
 	}
 
 	/**
@@ -262,6 +292,33 @@ class Bundles
 		}
 
 		return $payload;
+	}
+
+	private function formatMinimalForFrontend(Bundle $bundle): array
+	{
+		$priceAmount = (float)$bundle->price_amount;
+		$coins = (int)round((float)$bundle->coin_amount > 0 ? (float)$bundle->coin_amount : (float)$bundle->gc_amount);
+		$priceCurrency = strtoupper((string)($bundle->price_currency ?: 'EUR'));
+
+		return [
+			'id' => (string)$bundle->id,
+			'name' => (string)$bundle->name,
+			'coins' => $coins,
+			'priceLabel' => trim($priceCurrency . ' ' . number_format($priceAmount, 2, '.', ',')),
+			'icon' => $bundle->icon ?: 'mdi-coins',
+			'tier' => $bundle->is_featured ? 'featured' : 'standard',
+			'badge' => $bundle->badge_text ?: $bundle->label,
+			'bonusLabel' => $bundle->ribbon_text ?: $bundle->subtitle,
+			'featured' => (bool)$bundle->is_featured,
+			'popular' => (bool)$bundle->is_popular,
+			'thumbnail' => $bundle->thumbnail_url,
+			'image_url' => $bundle->image_url,
+			'price_amount' => $bundle->price_amount,
+			'price_currency' => $bundle->price_currency,
+			'gc_amount' => $bundle->gc_amount,
+			'coin_amount' => $bundle->coin_amount,
+			'cta_text' => $bundle->cta_text,
+		];
 	}
 
 	private function uploadBundleThumbnail(Bundle $bundle, array $data): void

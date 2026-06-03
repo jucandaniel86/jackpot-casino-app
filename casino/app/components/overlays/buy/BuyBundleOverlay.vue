@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type BuyBundle, buyStore } from '~/core/store/buy'
-import BundleItem from '../container/buy/bundle-item.vue'
+import BundleItem from '../../container/buy/bundle-item.vue'
 
 const store = buyStore()
 const { currentBundle, bundles } = storeToRefs(store)
@@ -19,24 +19,16 @@ function close() {
   replace({ query: {} })
 }
 
-function extractBundles(pageData: any): BuyBundle[] {
-  const sections = pageData?.children?.main ?? []
-  const bundlesSection = Array.isArray(sections)
-    ? sections.find((section: any) => section?.container === 'BundlesContainer')
-    : null
-
-  return bundlesSection?.data?.bundles ?? []
-}
-
 async function loadBundles() {
+  if (currentBundle.value) return
   if (availableBundles.value.length > 0) return
 
   loadingBundles.value = true
   bundlesError.value = ''
 
   try {
-    const pageData = await useAPIFetch('/page/bundles')
-    setBundles(extractBundles(pageData))
+    const response = await useAPIFetch('/bundles/active')
+    setBundles(response?.data ?? [])
   } catch {
     bundlesError.value = 'Could not load bundles. Please try again.'
   } finally {
@@ -77,11 +69,20 @@ onMounted(loadBundles)
       <div v-else class="my-4">
         <v-progress-linear v-if="loadingBundles" indeterminate color="primary" class="mb-3" />
 
+        <div v-if="loadingBundles" class="buy-bundles-picker">
+          <v-skeleton-loader
+            v-for="index in 3"
+            :key="index"
+            type="list-item-avatar-three-line"
+            class="buy-bundles-picker__skeleton"
+          />
+        </div>
+
         <v-alert v-if="bundlesError" type="error" variant="tonal" density="compact" class="mb-3">
           {{ bundlesError }}
         </v-alert>
 
-        <div v-if="availableBundles.length" class="buy-bundles-picker">
+        <div v-if="!loadingBundles && availableBundles.length" class="buy-bundles-picker">
           <button
             v-for="bundle in availableBundles"
             :key="bundle.id"
@@ -135,6 +136,10 @@ onMounted(loadBundles)
   border: 0;
   padding: 0;
   text-align: inherit;
+}
+
+.buy-bundles-picker__skeleton {
+  border-radius: 8px;
 }
 
 .buy-test-fields {

@@ -2,7 +2,7 @@
 import { useAuthStore } from '~/core/store/auth'
 import { OverlaysTypes } from '~/core/types/Overlays'
 import Forgot from '../auth/Forgot.vue'
-
+import Restricted from '../overlays/restricted/Restricted.vue'
 const overlayView = ref()
 const dialog = ref<boolean>(false)
 const route = useRoute()
@@ -77,5 +77,7 @@ watch(dialog, () => {
     <wallet v-if="isLogged && overlayView === OverlaysTypes.WALLET" />
     <forgot v-if="overlayView === OverlaysTypes.FORGOT" />
     <buy-bundle-overlay v-if="overlayView === OverlaysTypes.BUY && isLogged" />
+
+    <restricted v-if="!isLogged" @on-close="onClose" @change-view="changeView" />
   </v-dialog>
 </template>
