@@ -74,7 +74,7 @@ onMounted(() => {
       </h2>
 
       <v-row v-if="standardBundles.length" class="bb-standard__grid">
-        <v-col v-for="bundle in standardBundles" :key="bundle.id" cols="12" sm="6" md="4" lg="3">
+        <v-col v-for="bundle in standardBundles" :key="bundle.id" cols="12" sm="6" md="4" lg="4">
           <BuyBundleCard
             :compact="false"
             :bundle="bundle"

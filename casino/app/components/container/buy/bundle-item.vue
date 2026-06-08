@@ -270,7 +270,7 @@ const realMoneyLabel = computed(() => {
 
 .bb-card__name {
   color: var(--bb-text);
-  font-size: 25px;
+  font-size: 22px;
   font-weight: 900;
   letter-spacing: -0.02em;
   margin-bottom: 12px;
