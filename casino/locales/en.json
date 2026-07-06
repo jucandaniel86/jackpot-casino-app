@@ -51,6 +51,12 @@
     "settings": "Settings",
     "logout": "Logout"
   },
+  "profile": {
+    "dailyRedeemTitle": "Daily Redeem",
+    "dailyRedeemSubtitle": "Your reward is ready",
+    "dailyRedeemShortCta": "Daily reward",
+    "dailyRedeemClaimed": "You already claimed today's reward."
+  },
   "wallet": {
     "balance": "Balance",
     "withdrawable": "Withdrawable",
@@ -108,7 +114,7 @@
     "startSessionError": "The game cannot be played for the moment. Please try again later!",
     "err404Title": "'Uh oh, Page not Found'",
     "err404Content": "Sorry the page you were looking for doesn't exist or has been moved.",
-    "realMoney": "Play Real Money",
+    "realMoney": "Play",
     "demo": "Play DEMO",
     "currencyDisclaimer": "The in-game balance will be displayed in JKP."
   },

@@ -29,7 +29,7 @@ const previousBodyStyles = ref({
 const isBodyScrollLocked = ref(false)
 
 //composables
-const { setPageLoading, setSidebar, setLoadWallets } = useAppStore()
+const { setPageLoading, setLoadWallets } = useAppStore()
 const route = useRoute()
 const router = useRouter()
 const { isLogged } = storeToRefs(useAuthStore())
@@ -170,9 +170,6 @@ const getGamePage = async (): Promise<void> => {
     })
   }
 
-  if (gameData.children.leftSidebar) {
-    setSidebar(gameData.children.leftSidebar)
-  }
   setPageLoading(false)
 
   gameLoading.value = false
@@ -332,14 +329,6 @@ watch(
                   max-width="200"
                   @click.prevent="startGameSession(false)"
                   >{{ t('gamePage.realMoney') }}</v-btn
-                >
-                <v-btn
-                  :disabled="loadingPlayerSesson"
-                  color="purple"
-                  class="w-100"
-                  max-width="200"
-                  @click.prevent="startDemoSession"
-                  >{{ t('gamePage.demo') }}</v-btn
                 >
               </p>
             </div>

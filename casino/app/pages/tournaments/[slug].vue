@@ -9,13 +9,12 @@ type TournamentPageResponse = {
   success?: boolean
   message?: string
   data?: {
-    sidebar?: unknown
     tournament?: Tournament | null
   }
 }
 
 const route = useRoute()
-const { setPageLoading, setSidebar } = useAppStore()
+const { setPageLoading } = useAppStore()
 
 const props = reactive<{ tournament: Tournament; closed?: boolean }>({
   tournament: {} as Tournament,
@@ -46,10 +45,6 @@ const loadTournament = async (): Promise<void> => {
     props.tournament = data.tournament
     detailsOpen.value = !props.closed
     loaded.value = true
-
-    if (data.sidebar) {
-      setSidebar(data.sidebar)
-    }
   } finally {
     setPageLoading(false)
   }

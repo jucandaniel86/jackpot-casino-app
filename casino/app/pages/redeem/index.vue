@@ -28,7 +28,9 @@ const redeemingUid = ref<string | null>(null)
 const router = useRouter()
 const { success: alertSuccess, error: alertError } = useAlerts()
 const { setLoadWallets } = useAppStore()
-const { isLogged } = storeToRefs(useAuthStore())
+const authStore = useAuthStore()
+const { isLogged } = storeToRefs(authStore)
+const { setUser } = authStore
 
 const visibleRewards = computed(() =>
   rewards.value.filter((reward) => reward.type !== 'registration_reward' || !isLogged.value),
@@ -48,6 +50,19 @@ const loadRewards = async () => {
     alertError('We could not load rewards.')
   } finally {
     isLoading.value = false
+  }
+}
+
+const refreshPlayerProfile = async () => {
+  if (!isLogged.value) return
+
+  try {
+    const profile = await useAPIFetch('/player/profile')
+    if (profile?.user) {
+      setUser(profile.user)
+    }
+  } catch (_error) {
+    // Rewards can still be claimed even if the profile badge cannot refresh immediately.
   }
 }
 
@@ -79,6 +94,7 @@ const redeemEmailReward = async (reward: Reward, email?: string) => {
   alertSuccess(data.message || 'Reward claimed.')
   setLoadWallets(true)
   await loadRewards()
+  await refreshPlayerProfile()
 }
 
 const redeemDailyReward = async (reward: Reward) => {

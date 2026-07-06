@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useAppStore } from '~/core/store/app'
+import { useSidebarStore } from '~/core/store/sidebar'
 
 const { name } = useDisplay()
 
 const isMobile = computed(() => ['xs', 'sm'].indexOf(name.value) !== -1)
 const { snackbar, snackbarMessage } = storeToRefs(useAppStore())
 const { toggleSnackbar } = useAppStore()
+const { fetchSidebar } = useSidebarStore()
+
+await callOnce('sidebar', () => fetchSidebar())
 </script>
 <template>
   <v-layout>

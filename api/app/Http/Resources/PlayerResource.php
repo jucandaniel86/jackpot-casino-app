@@ -2,6 +2,7 @@
 
 	namespace App\Http\Resources;
 
+	use App\Repositories\RewardRepository;
 	use Illuminate\Http\Request;
 	use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,7 +20,11 @@
 				'username' => $this->username,
 				'email' => $this->email,
 				'created_at' => $this->created_at,
-				'status' => $this->active ? "ACTIVE" : "DISABLED"
+				'status' => $this->active ? "ACTIVE" : "DISABLED",
+				'daily_redeem' => app(RewardRepository::class)->dailyRedeemOffer(
+					$this->resource,
+					(string)($this->int_casino_id ?? $request->get('casino_id') ?? '')
+				),
 			];
 		}
 	}

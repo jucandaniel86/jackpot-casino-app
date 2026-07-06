@@ -11,6 +11,23 @@ type UserType = {
   id: string
   created_at: string
   status: string
+  daily_redeem?: {
+    can_claim: boolean
+    reward?: {
+      uid: string
+      title: string
+      subtitle?: string | null
+      description?: string | null
+      thumbnailUrl?: string | null
+      rule?: Record<string, any> | null
+    } | null
+    claim_state?: {
+      is_claimed: boolean
+      message?: string | null
+      next_claim_at?: string | null
+      seconds_until_next?: number | null
+    } | null
+  } | null
 }
 
 export const useAuthStore = defineStore(

@@ -14,7 +14,6 @@
 	use App\Models\Sliders;
 	use App\Models\Tournament;
 	use App\Models\TournamentPrize;
-	use App\Repositories\MenuRepository;
 	use Illuminate\Support\Collection;
 	use Illuminate\Support\Carbon;
 	use Illuminate\Support\Facades\DB;
@@ -266,13 +265,9 @@
 				}
 			})->values();
 
-			$Menus = new MenuRepository();
-
 			return [
 				'id' => $section->id,
 				'children' => [
-					'leftSidebar' => $Menus->menu("SIDEBAR"),
-					'footer' => $Menus->menu('FOOTER'),
 				],
 				'data' => [
 					'offers' => $offers

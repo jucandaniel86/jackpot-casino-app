@@ -1,44 +1,56 @@
-import type { MenuItemConfig } from '~/config/Menu.config'
 import * as Pk from '../../../package.json'
+import type { MenuItemConfig } from '~/config/Menu.config'
+import { useAPIFetch } from '~/composables/useApiFetch'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const useSidebarStore = defineStore(
-  'sidebar',
-  () => {
-    const sidebarOpen = ref(false)
-    const sidebar = ref<MenuItemConfig[]>([])
-    const version = ref<string>(Pk.version)
+export const useSidebarStore = defineStore('sidebar', () => {
+  const sidebarOpen = ref(false)
+  const sidebar = ref<MenuItemConfig[]>([])
+  const sidebarLoaded = ref(false)
+  const sidebarLoading = ref(false)
+  const version = ref<string>(Pk.version)
+  let fetchPromise: Promise<void> | null = null
 
-    const setSidebarOpen = (payload: boolean) => {
-      sidebarOpen.value = payload
+  const setSidebarOpen = (payload: boolean) => {
+    sidebarOpen.value = payload
+  }
+
+  const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value
+  }
+
+  const fetchSidebar = async (force = false): Promise<void> => {
+    if (sidebarLoaded.value && !force) {
+      return
     }
 
-    const toggleSidebar = () => {
-      sidebarOpen.value = !sidebarOpen.value
+    if (fetchPromise) {
+      return fetchPromise
     }
 
-    const setSidebar = (_payload: any) => {
-      if (sidebar.value.length === 0) {
-        sidebar.value = _payload
-      }
-    }
+    sidebarLoading.value = true
 
-    return {
-      version,
-      sidebarOpen,
-      sidebar,
-      setSidebarOpen,
-      toggleSidebar,
-      setSidebar,
-    }
-  },
-  {
-    persist: {
-      key: 'casino-sidebar',
-      pick: ['sidebar'],
-      storage: piniaPluginPersistedstate.cookies({
-        maxAge: 60 * 60 * 24,
-      }),
-    },
-  },
-)
+    fetchPromise = useAPIFetch('/sidebar')
+      .then((response) => {
+        const items = Array.isArray(response) ? response : response?.data
+        sidebar.value = Array.isArray(items) ? items : []
+        sidebarLoaded.value = true
+      })
+      .finally(() => {
+        sidebarLoading.value = false
+        fetchPromise = null
+      })
+
+    return fetchPromise
+  }
+
+  return {
+    version,
+    sidebarOpen,
+    sidebar,
+    sidebarLoaded,
+    sidebarLoading,
+    setSidebarOpen,
+    toggleSidebar,
+    fetchSidebar,
+  }
+})

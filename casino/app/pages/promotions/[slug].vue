@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { useAppStore } from '~/core/store/app'
 
-const { setPageLoading, setSidebar } = useAppStore()
+const { setPageLoading } = useAppStore()
 const renderID = ref('')
 const data = ref()
 const route = useRouter()
@@ -37,9 +37,6 @@ const loadPage = async (): Promise<void> => {
   }
 
   data.value = pageData
-  if (data.value.children.leftSidebar) {
-    setSidebar(data.value.children.leftSidebar)
-  }
 
   renderID.value = page + '_' + new Date().getTime()
   setPageLoading(false)

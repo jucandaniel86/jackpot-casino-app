@@ -17,6 +17,7 @@ use App\Http\Controllers\FE\ProviderController;
 use App\Http\Controllers\FE\RedeemController;
 use App\Http\Controllers\FE\RewardController;
 use App\Http\Controllers\FE\SearchController;
+use App\Http\Controllers\FE\SidebarController;
 use App\Http\Controllers\FE\TabController;
 use App\Http\Controllers\FE\TransactionsController;
 use App\Http\Controllers\FE\TournamentController;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['payload.crypto:both', 'casino.id.decode'])->group(function () {
 	Route::middleware('throttle:casino-public')->group(function () {
 		Route::get('/page/{slug}', FePageController::class);
+		Route::get('/sidebar', SidebarController::class);
 		Route::get('/bundles/active', [BundleController::class, 'active']);
 		Route::get('/game/{slug}', FeGameController::class);
 		Route::get('/provider/{slug}', ProviderController::class);

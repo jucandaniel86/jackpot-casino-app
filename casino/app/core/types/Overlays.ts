@@ -4,4 +4,5 @@ export enum OverlaysTypes {
   WALLET = 'wallet',
   FORGOT = 'forgot',
   BUY = 'buy',
+  REDEEM = 'redeem',
 }

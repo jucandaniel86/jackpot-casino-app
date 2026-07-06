@@ -565,7 +565,6 @@
 				'seo' => $seo,
 				'children' => [
 					'main' => $main,
-					'leftSidebar' => $Menus->menu("SIDEBAR", $currentCasino),
 					'footer' => $Menus->menu('FOOTER', $currentCasino),
 				],
 				'restricted' => false,

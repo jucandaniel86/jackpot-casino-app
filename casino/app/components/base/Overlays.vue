@@ -4,6 +4,7 @@ import { OverlaysTypes } from '~/core/types/Overlays'
 import Forgot from '../auth/Forgot.vue'
 import Restricted from '../overlays/restricted/Restricted.vue'
 import BuyBundleOverlay from '../overlays/buy/BuyBundleOverlay.vue'
+import RedeemOverlay from '~/components/overlays/redeem/RedeemOverlay.vue'
 const overlayView = ref()
 const dialog = ref<boolean>(false)
 const route = useRoute()
@@ -35,6 +36,7 @@ watch(
       OverlaysTypes.WALLET,
       OverlaysTypes.FORGOT,
       OverlaysTypes.BUY,
+      OverlaysTypes.REDEEM,
     ]
     overlayView.value = overlay
     if (overlay && allowedValues.indexOf(overlay) !== -1) {
@@ -70,6 +72,7 @@ watch(dialog, () => {
   <v-dialog
     v-if="
       [OverlaysTypes.WALLET, OverlaysTypes.FORGOT, OverlaysTypes.BUY].indexOf(overlayView) !== -1
+      || overlayView === OverlaysTypes.REDEEM
     "
     v-model="dialog"
     :persistent="overlayView !== OverlaysTypes.FORGOT"
@@ -78,6 +81,7 @@ watch(dialog, () => {
     <wallet v-if="isLogged && overlayView === OverlaysTypes.WALLET" />
     <forgot v-if="overlayView === OverlaysTypes.FORGOT" />
     <buy-bundle-overlay v-if="overlayView === OverlaysTypes.BUY && isLogged" />
+    <redeem-overlay v-if="overlayView === OverlaysTypes.REDEEM && isLogged" @on-close="onClose" />
 
     <restricted v-if="!isLogged" @on-close="onClose" @change-view="changeView" />
   </v-dialog>

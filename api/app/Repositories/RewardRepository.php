@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Enums\RewardType;
 use App\Exceptions\ApiResponseException;
 use App\Interfaces\RewardInterface;
+use App\Models\Player;
 use App\Models\Reward;
 use App\Models\RewardClaim;
 use App\Traits\QueryTrait;
@@ -52,6 +53,65 @@ class RewardRepository implements RewardInterface
     public function types(): array
     {
         return RewardType::options();
+    }
+
+    public function dailyRedeemOffer(Player $player, ?string $casinoId = null): ?array
+    {
+        $reward = Reward::query()
+            ->where('type', RewardType::DAILY_REDEEM->value)
+            ->where('is_active', true)
+            ->where(function ($query) {
+                $query->whereNull('starts_at')
+                    ->orWhere('starts_at', '<=', now());
+            })
+            ->where(function ($query) {
+                $query->whereNull('ends_at')
+                    ->orWhere('ends_at', '>=', now());
+            })
+            ->when($casinoId !== null && $casinoId !== '', function ($query) use ($casinoId) {
+                $query->where(function ($query) use ($casinoId) {
+                    $query->where('int_casino_id', $casinoId)
+                        ->orWhereNull('int_casino_id');
+                });
+            }, function ($query) {
+                $query->whereNull('int_casino_id');
+            })
+            ->orderBy('page_order')
+            ->orderBy('id')
+            ->first();
+
+        if (!$reward) {
+            return null;
+        }
+
+        $rewardData = $reward->toArray();
+        $periodKey = $this->periodKey($rewardData);
+        $claim = RewardClaim::query()
+            ->where('player_id', $player->id)
+            ->where('reward_id', $reward->id)
+            ->where('period_key', $periodKey)
+            ->first(['claimed_at']);
+        $nextClaimAt = $this->nextClaimAt($rewardData);
+
+        return [
+            'can_claim' => $claim === null,
+            'reward' => [
+                'uid' => $reward->uid,
+                'title' => $reward->title,
+                'subtitle' => $reward->subtitle,
+                'description' => $reward->description,
+                'thumbnailUrl' => $reward->thumbnailUrl,
+                'rule' => $reward->rule,
+            ],
+            'claim_state' => [
+                'is_claimed' => $claim !== null,
+                'period_key' => $periodKey,
+                'claimed_at' => $claim?->claimed_at?->toIso8601String(),
+                'next_claim_at' => $nextClaimAt?->toIso8601String(),
+                'seconds_until_next' => $nextClaimAt ? (int)ceil(max(0, now($this->rewardTimezone($rewardData))->diffInSeconds($nextClaimAt, false))) : null,
+                'message' => $claim !== null ? 'You already claimed today\'s reward.' : null,
+            ],
+        ];
     }
 
     public function insert(array $params = [])

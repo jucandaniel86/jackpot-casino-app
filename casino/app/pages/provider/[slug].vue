@@ -6,7 +6,7 @@ import { useAppStore } from '~/core/store/app'
 import { useAPIFetch } from '~/composables/useApiFetch'
 import { useSeoContainer } from '~/composables/useSeoContainer'
 
-const { setPageLoading, setSidebar } = useAppStore()
+const { setPageLoading } = useAppStore()
 const renderID = ref('')
 const { back } = useRouter()
 const data = ref()
@@ -43,7 +43,6 @@ const loadPage = async (): Promise<void> => {
 
   data.value = pageData
   renderID.value = page + '_' + new Date().getTime()
-  setSidebar(data.value.children.leftSidebar)
   setPageLoading(false)
 }
 

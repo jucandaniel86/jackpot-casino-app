@@ -1,11 +1,9 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { useAppStore } from '~/core/store/app'
-import { useSidebarStore } from '~/core/store/sidebar'
 import { useSeoSettings } from '~/composables/useSeoSettings'
 
 const { setPageLoading } = useAppStore()
-const { setSidebar } = useSidebarStore()
 const renderID = ref('')
 const data = ref()
 const route = useRouter()
@@ -43,9 +41,6 @@ const loadPage = async (): Promise<void> => {
 
   data.value = pageData
   renderID.value = page + '_' + new Date().getTime()
-  if (data.value.children.leftSidebar) {
-    setSidebar(data.value.children.leftSidebar)
-  }
   setPageLoading(false)
 }
 
